@@ -1,7 +1,7 @@
 {
   "appId": "com.albasirah.app",
   "appName": "AL BASIRAH",
-  "webDir": "out",
+  "webDir": "src/out",
   "server": {
     "androidScheme": "https"
   },
