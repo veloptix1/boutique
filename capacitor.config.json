@@ -1,0 +1,12 @@
+{
+  "appId": "com.albasirah.app",
+  "appName": "AL BASIRAH",
+  "webDir": "out",
+  "server": {
+    "androidScheme": "https"
+  },
+  "android": {
+    "allowMixedContent": true,
+    "backgroundColor": "#0d5c4a"
+  }
+}
