@@ -1,3 +1,7 @@
+"use client";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { supabase } from "@/lib/supabase";
 import { IconPlay, IconStar, IconCheck, IconSpeaker } from "./icons";
 
 const audios = [
@@ -7,6 +11,16 @@ const audios = [
 ];
 
 export default function Hero() {
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+
+  const handleStartListening = async () => {
+    setLoading(true);
+    const { data: { user } } = await supabase.auth.getUser();
+    if (user) router.push("/audio");
+    else router.push("/auth");
+  };
+
   return (
     <section className="relative min-h-screen flex items-center justify-center
                         px-[6%] pt-28 pb-24 overflow-hidden
@@ -18,7 +32,6 @@ export default function Hero() {
                       bg-gold -bottom-20 -right-20 pointer-events-none" />
 
       <div className="relative z-10 max-w-[1200px] w-full grid md:grid-cols-2 gap-12 items-center">
-        {/* Texte gauche */}
         <div className="text-center md:text-left">
           <div className="inline-flex items-center gap-2 bg-white border border-emerald/10
                           px-4 py-2 rounded-full text-[0.7rem] sm:text-xs font-semibold
@@ -44,31 +57,31 @@ export default function Hero() {
           </p>
 
           <div className="flex gap-3 flex-wrap justify-center md:justify-start">
-            <a href="/audio" className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full
-                                        bg-emerald text-white font-semibold text-sm
-                                        shadow-[0_10px_25px_rgba(13,92,74,0.25)]
-                                        hover:bg-emerald-dark hover:-translate-y-0.5
-                                        transition-all">
+            <button onClick={handleStartListening} disabled={loading}
+              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full
+                         bg-emerald text-white font-semibold text-sm
+                         shadow-[0_10px_25px_rgba(13,92,74,0.25)]
+                         hover:bg-emerald-dark hover:-translate-y-0.5
+                         transition-all disabled:opacity-50">
               <IconPlay size={16} color="#fff" />
-              Commencer l'écoute
-            </a>
-            <a href="/dashboard" className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full
-                                             bg-white text-emerald-dark font-semibold text-sm
-                                             border-2 border-emerald/15
-                                             hover:border-gold hover:text-gold transition-all">
+              {loading ? "Chargement..." : "Commencer l'écoute"}
+            </button>
+            <button onClick={handleStartListening}
+              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full
+                         bg-white text-emerald-dark font-semibold text-sm
+                         border-2 border-emerald/15
+                         hover:border-gold hover:text-gold transition-all">
               Mon espace
-            </a>
+            </button>
           </div>
         </div>
 
-        {/* Carte audio droite */}
         <div className="relative flex justify-center mt-8 md:mt-0">
           <div className="bg-white rounded-[28px] p-5 sm:p-7 w-full max-w-[360px]
                           shadow-[0_30px_60px_rgba(13,92,74,0.15)]
                           relative overflow-hidden">
             <div className="absolute top-0 left-0 w-full h-1.5
                             bg-gradient-to-r from-emerald via-gold to-terracotta" />
-
             <div className="flex items-center gap-3 mb-5">
               <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald to-emerald-light
                               flex items-center justify-center shrink-0">
@@ -79,7 +92,6 @@ export default function Hero() {
                 <div className="text-xs text-gray-500">Les savants de référence</div>
               </div>
             </div>
-
             {audios.map((a, i) => (
               <div key={i} className="flex items-center gap-3 p-3 rounded-2xl bg-cream
                                       mb-2.5 hover:bg-[#f0e9d9] hover:translate-x-1
@@ -94,8 +106,7 @@ export default function Hero() {
                 </div>
                 <div className="flex items-end gap-[2px] h-4">
                   {[0,1,2,3].map((n) => (
-                    <span key={n}
-                          className="w-[2.5px] bg-emerald rounded-sm animate-eq"
+                    <span key={n} className="w-[2.5px] bg-emerald rounded-sm animate-eq"
                           style={{ animationDelay: `${n * 0.15}s`, height: `${6 + (n % 3) * 3}px` }} />
                   ))}
                 </div>
