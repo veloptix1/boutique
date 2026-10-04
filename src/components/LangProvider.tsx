@@ -1,0 +1,254 @@
+"use client";
+import { createContext, useContext, useEffect, useState, ReactNode } from "react";
+
+type Lang = "fr" | "en" | "ar";
+
+type Ctx = {
+  lang: Lang;
+  setLang: (l: Lang) => void;
+  t: any;
+  rtl: boolean;
+};
+
+const translations: Record<Lang, any> = {
+  fr: {
+    nav: {
+      live: "Live",
+      warning: "Mise en garde",
+      new: "Nouveau",
+      faq: "FAQ",
+      conditions: "Conditions",
+      support: "Support",
+      salafiya: "Salafiya",
+      dashboard: "Tableau de bord",
+    },
+    burger: { language: "Langue", menu: "Menu" },
+    audio: {
+      title: "Bibliothèque Audio",
+      subtitle: "Écoutez les enseignements des savants et oustaz",
+      bySavants: "Par nos Savants",
+      byOustaz: "Par nos Oustaz",
+      quran: "Coran",
+      seeAll: "Voir tout",
+      minutes: "min",
+      empty: "Aucun audio pour le moment",
+      login: "Connectez-vous pour écouter",
+    },
+    home: {
+      heroTitle: "AL BASIRAH",
+      heroSubtitle: "Écoutez la parole des savants, découvrez les hadiths authentiques et nourrissez votre âme.",
+      startListening: "Commencer l'écoute",
+      learnMore: "En savoir plus",
+      libraryTitle: "Bibliothèque Audio",
+      librarySubtitle: "Les savants de référence",
+      whyTitle: "Pourquoi AL BASIRAH ?",
+      whySubtitle: "Une expérience pensée pour les francophones",
+      categories: "Nos catégories",
+      categoriesSubtitle: "Explorez par thème",
+    },
+    categories: {
+      croyance: "Croyance",
+      priere: "La Prière",
+      livre: "Livre",
+      rapporteurs: "Rapporteurs Hadith",
+      prophetes: "Histoire des Prophètes",
+      saaba: "Histoire des Sahaba",
+      biographie: "Biographie des Savants",
+      tafsir: "Tafsir",
+    },
+    features: {
+      audioTitle: "Audio des savants",
+      audioDesc: "Des centaines d'enseignements authentiques en français et en arabe.",
+      hadithTitle: "Hadiths authentiques",
+      hadithDesc: "Texte arabe, traduction française et degré d'authenticité vérifié.",
+      offlineTitle: "Écoute hors ligne",
+      offlineDesc: "Téléchargez vos audios préférés et écoutez sans connexion.",
+      searchTitle: "Recherche rapide",
+      searchDesc: "Trouvez un hadith, un savant ou un thème en quelques secondes.",
+    },
+    common: {
+      back: "Retour",
+      loading: "Chargement...",
+      all: "Tout",
+      listen: "Écouter",
+      download: "Télécharger",
+      share: "Partager",
+    },
+  },
+  en: {
+    nav: {
+      live: "Live",
+      warning: "Warning",
+      new: "New",
+      faq: "FAQ",
+      conditions: "Terms",
+      support: "Support",
+      salafiya: "Salafiyah",
+      dashboard: "Dashboard",
+    },
+    burger: { language: "Language", menu: "Menu" },
+    audio: {
+      title: "Audio Library",
+      subtitle: "Listen to teachings of scholars and teachers",
+      bySavants: "By our Scholars",
+      byOustaz: "By our Teachers",
+      quran: "Quran",
+      seeAll: "See all",
+      minutes: "min",
+      empty: "No audio yet",
+      login: "Log in to listen",
+    },
+    home: {
+      heroTitle: "AL BASIRAH",
+      heroSubtitle: "Listen to the words of scholars, discover authentic hadiths and nourish your soul.",
+      startListening: "Start listening",
+      learnMore: "Learn more",
+      libraryTitle: "Audio Library",
+      librarySubtitle: "Reference scholars",
+      whyTitle: "Why AL BASIRAH?",
+      whySubtitle: "An experience designed for everyone",
+      categories: "Our categories",
+      categoriesSubtitle: "Explore by topic",
+    },
+    categories: {
+      croyance: "Belief",
+      priere: "Prayer",
+      livre: "Books",
+      rapporteurs: "Hadith Narrators",
+      prophetes: "Prophets' Stories",
+      saaba: "Companions' Stories",
+      biographie: "Scholars' Biography",
+      tafsir: "Tafsir",
+    },
+    features: {
+      audioTitle: "Scholars' audio",
+      audioDesc: "Hundreds of authentic teachings in French and Arabic.",
+      hadithTitle: "Authentic hadiths",
+      hadithDesc: "Arabic text, translation and verified authenticity.",
+      offlineTitle: "Offline listening",
+      offlineDesc: "Download your favorite audios and listen without internet.",
+      searchTitle: "Quick search",
+      searchDesc: "Find a hadith, a scholar or a topic in seconds.",
+    },
+    common: {
+      back: "Back",
+      loading: "Loading...",
+      all: "All",
+      listen: "Listen",
+      download: "Download",
+      share: "Share",
+    },
+  },
+  ar: {
+    nav: {
+      live: "مباشر",
+      warning: "تنبيه",
+      new: "جديد",
+      faq: "الأسئلة الشائعة",
+      conditions: "الشروط",
+      support: "الدعم",
+      salafiya: "السلفية",
+      dashboard: "لوحة التحكم",
+    },
+    burger: { language: "اللغة", menu: "القائمة" },
+    audio: {
+      title: "المكتبة الصوتية",
+      subtitle: "استمع إلى دروس العلماء والأساتذة",
+      bySavants: "من علمائنا",
+      byOustaz: "من أساتذتنا",
+      quran: "القرآن",
+      seeAll: "عرض الكل",
+      minutes: "دقيقة",
+      empty: "لا يوجد صوت حالياً",
+      login: "سجّل الدخول للاستماع",
+    },
+    home: {
+      heroTitle: "البصيرة",
+      heroSubtitle: "استمع إلى كلام العلماء، واكتشف الأحاديث الصحيحة، وغذّي روحك.",
+      startListening: "ابدأ الاستماع",
+      learnMore: "اعرف المزيد",
+      libraryTitle: "المكتبة الصوتية",
+      librarySubtitle: "العلماء المرجعيون",
+      whyTitle: "لماذا البصيرة؟",
+      whySubtitle: "تجربة مصممة للجميع",
+      categories: "أقسامنا",
+      categoriesSubtitle: "استكشف حسب الموضوع",
+    },
+    categories: {
+      croyance: "العقيدة",
+      priere: "الصلاة",
+      livre: "الكتب",
+      rapporteurs: "رواة الحديث",
+      prophetes: "قصص الأنبياء",
+      saaba: "قصص الصحابة",
+      biographie: "سير العلماء",
+      tafsir: "التفسير",
+    },
+    features: {
+      audioTitle: "صوتيات العلماء",
+      audioDesc: "مئات الدروس الصحيحة بالفرنسية والعربية.",
+      hadithTitle: "أحاديث صحيحة",
+      hadithDesc: "النص العربي، الترجمة، ودرجة الصحة.",
+      offlineTitle: "الاستماع دون اتصال",
+      offlineDesc: "حمّل صوتياتك المفضلة واستمع بدون إنترنت.",
+      searchTitle: "بحث سريع",
+      searchDesc: "اعثر على حديث أو عالم أو موضوع في ثوانٍ.",
+    },
+    common: {
+      back: "رجوع",
+      loading: "جارٍ التحميل...",
+      all: "الكل",
+      listen: "استمع",
+      download: "تحميل",
+      share: "مشاركة",
+    },
+  },
+};
+
+const defaultCtx: Ctx = {
+  lang: "fr",
+  setLang: () => {},
+  t: translations.fr,
+  rtl: false,
+};
+
+const LangContext = createContext<Ctx>(defaultCtx);
+
+export function LangProvider({ children }: { children: ReactNode }) {
+  const [lang, setLangState] = useState<Lang>("fr");
+
+  useEffect(() => {
+    try {
+      const saved = (localStorage.getItem("lang") as Lang) || "fr";
+      if (saved === "fr" || saved === "en" || saved === "ar") {
+        setLangState(saved);
+      }
+    } catch {}
+  }, []);
+
+  const setLang = (l: Lang) => {
+    setLangState(l);
+    try {
+      localStorage.setItem("lang", l);
+      document.documentElement.dir = l === "ar" ? "rtl" : "ltr";
+      document.documentElement.lang = l;
+    } catch {}
+  };
+
+  return (
+    <LangContext.Provider
+      value={{
+        lang,
+        setLang,
+        t: translations[lang] || translations.fr,
+        rtl: lang === "ar",
+      }}
+    >
+      {children}
+    </LangContext.Provider>
+  );
+}
+
+export function useLang() {
+  return useContext(LangContext);
+}
