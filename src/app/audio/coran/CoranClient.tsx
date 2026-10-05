@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
+import { playAudio } from "@/components/AudioPlayer";
 import { IconSearch, IconPlay, IconDownload } from "@/components/icons";
 
 type Sourate = {
@@ -28,7 +29,6 @@ export default function CoranClient() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [openMenuFor, setOpenMenuFor] = useState<number | null>(null);
-  const [playingId, setPlayingId] = useState<string | null>(null);
 
   useEffect(() => {
     (async () => {
@@ -39,11 +39,8 @@ export default function CoranClient() {
         ]);
         setSourates(s.data || []);
         setAudios(a.data || []);
-      } catch (e) {
-        console.error(e);
-      } finally {
-        setLoading(false);
-      }
+      } catch (e) { console.error(e); }
+      finally { setLoading(false); }
     })();
   }, []);
 
@@ -90,7 +87,6 @@ export default function CoranClient() {
         </p>
       </div>
 
-      {/* Recherche */}
       <div className="relative mb-8">
         <div className="absolute left-5 top-1/2 -translate-y-1/2 text-emerald/50 pointer-events-none">
           <IconSearch size={18} />
@@ -124,16 +120,14 @@ export default function CoranClient() {
               <div key={s.numero}
                 className="bg-white rounded-2xl border border-emerald/5
                            hover:border-emerald/15 transition-all">
-                <div className="flex items-center gap-2 sm:gap-4 p-3 sm:p-4">
+                <div className="flex items-center gap-3 p-3 sm:p-4">
 
-                  {/* Numéro */}
                   <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-emerald/8
                                   flex items-center justify-center text-emerald font-bold
                                   text-xs sm:text-sm shrink-0">
                     {s.numero}
                   </div>
 
-                  {/* Nom */}
                   <Link href={`/audio/coran/sourate?numero=${s.numero}`}
                     className="flex-1 min-w-0 no-underline group">
                     <div className="font-semibold text-emerald-dark text-xs sm:text-sm
@@ -148,33 +142,30 @@ export default function CoranClient() {
                     </div>
                   </Link>
 
-                  {/* Menu burger - VISIBLE et STYLÉ */}
                   <button
                     onClick={() => hasAudio && setOpenMenuFor(s.numero)}
                     aria-label={hasAudio ? "Voir les récitateurs" : "Aucun audio"}
+                    disabled={!hasAudio}
                     className={`relative w-10 h-10 sm:w-11 sm:h-11 rounded-xl
                                 flex flex-col items-center justify-center gap-[3px]
-                                transition shrink-0
+                                transition shrink-0 border-2
                       ${hasAudio
-                        ? "bg-emerald text-gold hover:bg-emerald-dark cursor-pointer shadow-md"
-                        : "bg-gray-200 text-gray-400 cursor-not-allowed"}`}
+                        ? "bg-emerald border-emerald text-gold hover:bg-emerald-dark cursor-pointer"
+                        : "bg-white border-emerald/20 text-emerald/30 cursor-not-allowed"}`}
                   >
                     <span className="w-4 h-[2px] bg-current rounded" />
                     <span className="w-4 h-[2px] bg-current rounded" />
                     <span className="w-2.5 h-[2px] bg-current rounded self-start ml-3" />
-
-                    {/* Badge nombre de récitateurs */}
                     {hasAudio && (
-                      <span className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full
-                                       bg-gold text-emerald-dark text-[0.6rem] font-bold
-                                       flex items-center justify-center
-                                       border-2 border-white">
+                      <span className="absolute -top-1.5 -right-1.5 min-w-[1.1rem] h-[1.1rem]
+                                       px-1 rounded-full bg-gold text-emerald-dark
+                                       text-[0.6rem] font-bold flex items-center justify-center
+                                       border-2 border-white leading-none">
                         {audiosSourate.length}
                       </span>
                     )}
                   </button>
 
-                  {/* Bouton télécharger */}
                   {hasAudio && (
                     <a
                       href={audiosSourate[0].audio_url}
@@ -195,17 +186,17 @@ export default function CoranClient() {
         </div>
       )}
 
-      {/* Modal récitateurs */}
       {openMenuFor !== null && (
         <div
           className="fixed inset-0 z-[999] bg-black/60 backdrop-blur-sm
-                     flex items-end sm:items-center justify-center p-0 sm:p-4"
+                     flex items-end sm:items-center justify-center"
           onClick={() => setOpenMenuFor(null)}
         >
           <div
             onClick={(e) => e.stopPropagation()}
             className="w-full sm:max-w-md bg-white rounded-t-3xl sm:rounded-3xl
-                       max-h-[80vh] overflow-hidden flex flex-col"
+                       max-h-[80vh] overflow-hidden flex flex-col
+                       shadow-[0_-20px_60px_rgba(0,0,0,0.3)]"
           >
             <div className="px-5 py-4 border-b border-emerald/10 flex items-center justify-between shrink-0">
               <div>
@@ -229,7 +220,14 @@ export default function CoranClient() {
               {getAudiosFor(openMenuFor).map((a) => (
                 <div key={a.id} className="border-b border-emerald/5 last:border-0">
                   <button
-                    onClick={() => setPlayingId(playingId === a.id ? null : a.id)}
+                    onClick={() => {
+                      playAudio({
+                        url: a.audio_url,
+                        titre: `Sourate ${a.sourate_numero}`,
+                        auteur: a.recitateur_nom,
+                      });
+                      setOpenMenuFor(null);
+                    }}
                     className="w-full px-5 py-4 flex items-center gap-3
                                hover:bg-cream transition text-left">
                     <div className="w-10 h-10 rounded-full bg-gold
@@ -247,12 +245,6 @@ export default function CoranClient() {
                       )}
                     </div>
                   </button>
-
-                  {playingId === a.id && (
-                    <div className="px-5 pb-4">
-                      <audio src={a.audio_url} controls autoPlay className="w-full" />
-                    </div>
-                  )}
                 </div>
               ))}
             </div>
