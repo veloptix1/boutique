@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
+import { playAudio } from "@/components/AudioPlayer";
 import { useLang } from "@/components/LangProvider";
 import {
   IconSpeaker, IconBook, IconUser, IconPlay, IconArrowRight, IconSearch,
@@ -195,7 +196,7 @@ export default function AudioClient() {
                            transition overflow-hidden">
                 <div className="flex items-center gap-4 p-4">
                   <button
-                    onClick={() => setPlayingId(playingId === a.id ? null : a.id)}
+                    onClick={() => playAudio({ url: a.audio_url, titre: getTitre(a), auteur: "AL BASIRAH" })}
                     className="w-12 h-12 rounded-full bg-gold flex items-center justify-center
                                 shadow-[0_4px_14px_rgba(212,175,55,0.35)] shrink-0
                                 hover:scale-110 transition">

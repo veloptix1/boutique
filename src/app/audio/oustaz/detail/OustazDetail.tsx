@@ -3,21 +3,19 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
+import { playAudio } from "@/components/AudioPlayer";
 import { useLang } from "@/components/LangProvider";
 import {
   IconUser, IconLocation, IconCalendar, IconSpeaker, IconPlay,
   IconStar, IconCrown, IconStarFull, IconBook,
 } from "@/components/icons";
 
-type Savant = any;
-type Audio = any;
-
 export default function OustazDetail() {
   const searchParams = useSearchParams();
   const slug = searchParams.get("slug") || "";
   const { lang } = useLang();
-  const [savant, setSavant] = useState<Savant>(null);
-  const [audios, setAudios] = useState<Audio[]>([]);
+  const [savant, setSavant] = useState<any>(null);
+  const [audios, setAudios] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -106,19 +104,33 @@ export default function OustazDetail() {
       ) : (
         <div className="grid gap-3">
           {audios.map((a: any) => (
-            <div key={a.id} className="bg-white rounded-2xl p-4 border border-emerald/5">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full bg-gold flex items-center justify-center shrink-0"><IconPlay size={14} /></div>
-                <div className="flex-1 min-w-0">
-                  <div className="font-semibold text-emerald-dark text-sm truncate">{getAudioTitle(a)}</div>
-                  {a.duree && <div className="text-xs text-gray-500">{Math.floor(a.duree / 60)} min {a.duree % 60}s</div>}
+            <button
+              key={a.id}
+              onClick={() => playAudio({
+                url: a.audio_url,
+                titre: getAudioTitle(a),
+                auteur: getName(),
+              })}
+              className="bg-white rounded-2xl p-4 border border-emerald/5
+                         hover:border-emerald/15
+                         hover:shadow-[0_10px_30px_rgba(13,92,74,0.08)]
+                         transition text-left w-full flex items-center gap-4">
+              <div className="w-12 h-12 rounded-full bg-gold flex items-center justify-center
+                              shadow-[0_4px_14px_rgba(212,175,55,0.35)] shrink-0">
+                <IconPlay size={14} />
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="font-semibold text-emerald-dark text-sm truncate">
+                  {getAudioTitle(a)}
                 </div>
-                <IconStar size={14} color="#d4af37" />
+                {a.duree && (
+                  <div className="text-xs text-gray-500">
+                    {Math.floor(a.duree / 60)} min {a.duree % 60}s
+                  </div>
+                )}
               </div>
-              <div className="mt-3 pt-3 border-t border-emerald/10">
-                <audio src={a.audio_url} controls className="w-full" />
-              </div>
-            </div>
+              <IconStar size={14} color="#d4af37" />
+            </button>
           ))}
         </div>
       )}

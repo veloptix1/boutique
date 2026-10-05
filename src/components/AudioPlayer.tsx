@@ -14,6 +14,10 @@ export function playAudio(player: Player) {
   globalSetPlayer?.(player);
 }
 
+export function stopAudio() {
+  globalSetPlayer?.(null);
+}
+
 export default function AudioPlayer() {
   const [player, setPlayer] = useState<Player | null>(null);
   const [playing, setPlaying] = useState(false);
@@ -66,7 +70,6 @@ export default function AudioPlayer() {
           <div className="h-full bg-gold transition-all"
                style={{ width: `${duration ? (progress / duration) * 100 : 0}%` }} />
         </div>
-
         <div className="flex items-center gap-3 p-3">
           <button onClick={togglePlay}
             className="w-11 h-11 rounded-full bg-gold flex items-center justify-center
@@ -79,7 +82,6 @@ export default function AudioPlayer() {
               <IconPlay size={14} />
             )}
           </button>
-
           <div className="flex-1 min-w-0">
             <div className="font-semibold text-white text-xs sm:text-sm truncate">
               {player.titre}
@@ -88,11 +90,9 @@ export default function AudioPlayer() {
               {player.auteur}
             </div>
           </div>
-
           <div className="text-[0.65rem] text-white/60 hidden sm:block shrink-0">
             {formatTime(progress)} / {formatTime(duration)}
           </div>
-
           <button onClick={close}
             className="w-8 h-8 rounded-full bg-white/10 text-white/60
                        hover:bg-terracotta hover:text-white transition shrink-0
@@ -100,7 +100,6 @@ export default function AudioPlayer() {
             ×
           </button>
         </div>
-
         <audio
           ref={audioRef}
           onTimeUpdate={(e) => setProgress(e.currentTarget.currentTime)}
