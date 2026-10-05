@@ -4,8 +4,8 @@ import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 import {
-  IconMosque, IconSpeaker, IconLivre, IconBook,
-  IconUser, IconHome, IconArrowRight, IconParchemin, IconCrown,
+  IconMosque, IconSpeaker, IconLivre, IconBook, IconCrown,
+  IconUser, IconHome, IconArrowRight, IconParchemin, IconStar,
 } from "@/components/icons";
 
 const menu = [
@@ -14,8 +14,13 @@ const menu = [
   { href: "/admin/livres",       label: "Livres",          Icon: IconLivre },
   { href: "/admin/audios",       label: "Audios",          Icon: IconSpeaker },
   { href: "/admin/hadiths",      label: "Hadiths",         Icon: IconParchemin },
-  { href: "/admin/mises",        label: "Mises en garde",  Icon: IconCrown },
+  { href: "/admin/rapporteurs",  label: "Rapporteurs",     Icon: IconUser },
   { href: "/admin/coran",        label: "Coran",           Icon: IconBook },
+  { href: "/admin/prophetes",    label: "Prophètes",       Icon: IconStar },
+  { href: "/admin/sahaba",       label: "Sahaba",          Icon: IconUser },
+  { href: "/admin/live",         label: "Vidéos",          Icon: IconBook },
+  { href: "/admin/mises",        label: "Mises en garde",  Icon: IconCrown },
+  { href: "/admin/support",      label: "Support",         Icon: IconUser },
   { href: "/admin/utilisateurs", label: "Utilisateurs",    Icon: IconUser },
 ];
 
@@ -63,9 +68,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             </div>
             <div>
               <div className="font-extrabold tracking-wider text-sm">ADMIN</div>
-              <div className="text-[0.6rem] text-gold tracking-widest">
-                AL BASIRAH
-              </div>
+              <div className="text-[0.6rem] text-gold tracking-widest">AL BASIRAH</div>
             </div>
           </Link>
         </div>
@@ -75,15 +78,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             const active = pathname === href ||
               (href !== "/admin" && pathname.startsWith(href));
             return (
-              <Link
-                key={href}
-                href={href}
+              <Link key={href} href={href}
                 className={`flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-medium
                             transition-all no-underline
                   ${active
                     ? "bg-gold text-emerald-dark font-bold"
-                    : "text-white/70 hover:bg-white/5 hover:text-white"}`}
-              >
+                    : "text-white/70 hover:bg-white/5 hover:text-white"}`}>
                 <Icon size={18} />
                 {label}
               </Link>
@@ -92,12 +92,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </nav>
 
         <div className="p-4 border-t border-white/10">
-          <Link
-            href="/dashboard"
+          <Link href="/dashboard"
             className="flex items-center justify-between px-4 py-3 rounded-2xl
                        bg-white/5 text-white/70 text-sm hover:bg-white/10
-                       hover:text-white transition no-underline"
-          >
+                       hover:text-white transition no-underline">
             Retour à l'app
             <IconArrowRight size={14} />
           </Link>
@@ -113,10 +111,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </div>
           <span className="font-bold text-sm tracking-wider">ADMIN</span>
         </Link>
-        <button
-          onClick={() => setMenuOpen(!menuOpen)}
-          className="w-9 h-9 rounded-lg bg-white/10 flex items-center justify-center"
-        >
+        <button onClick={() => setMenuOpen(!menuOpen)}
+          className="w-9 h-9 rounded-lg bg-white/10 flex items-center justify-center">
           <span className="text-gold text-xl leading-none">{menuOpen ? "×" : "☰"}</span>
         </button>
       </div>
@@ -129,27 +125,21 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             const active = pathname === href ||
               (href !== "/admin" && pathname.startsWith(href));
             return (
-              <Link
-                key={href}
-                href={href}
-                onClick={() => setMenuOpen(false)}
+              <Link key={href} href={href} onClick={() => setMenuOpen(false)}
                 className={`flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-medium
                             transition-all no-underline
                   ${active
                     ? "bg-gold text-emerald-dark font-bold"
-                    : "text-white/70 hover:bg-white/5 hover:text-white"}`}
-              >
+                    : "text-white/70 hover:bg-white/5 hover:text-white"}`}>
                 <Icon size={18} />
                 {label}
               </Link>
             );
           })}
-          <Link
-            href="/dashboard"
+          <Link href="/dashboard"
             className="flex items-center justify-between px-4 py-3 rounded-2xl
                        bg-white/5 text-white/70 text-sm hover:bg-white/10
-                       hover:text-white transition no-underline"
-          >
+                       hover:text-white transition no-underline">
             Retour à l'app
             <IconArrowRight size={14} />
           </Link>
