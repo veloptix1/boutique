@@ -68,6 +68,7 @@ export default function DashboardPage() {
     { Icon: IconUser,    label: "Profil",  href: "/profil",  color: "indigo" },
     { Icon: IconBook,    label: "Vidéos",  href: "/live",    color: "emerald" },
     { Icon: IconStar,    label: "Prophètes", href: "/prophetes", color: "gold" },
+    { Icon: IconUser,    label: "Sahaba",   href: "/sahaba",    color: "terracotta" },
   ];
 
   return (
