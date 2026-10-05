@@ -213,7 +213,7 @@ export default function AudioClient() {
                       {getTitre(a)}
                     </div>
                     {savant && (
-                      <Link href={`/audio/savants/${savant.slug}`}
+                      <Link href={`/audio/savants/detail?slug=${savant.slug}`}
                         className="text-xs text-gold hover:underline truncate block">
                         {savant.nom_fr}
                       </Link>
@@ -225,7 +225,7 @@ export default function AudioClient() {
                   </div>
 
                   {savant && (
-                    <Link href={`/audio/savants/${savant.slug}`}
+                    <Link href={`/audio/savants/detail?slug=${savant.slug}`}
                       className="text-gray-300 hover:text-emerald transition shrink-0 hidden sm:block">
                       <IconArrowRight size={16} />
                     </Link>
