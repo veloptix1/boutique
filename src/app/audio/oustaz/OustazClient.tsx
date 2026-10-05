@@ -137,7 +137,7 @@ export default function OustazClient() {
           {filtered.map((o) => (
             <Link
               key={o.id}
-              href={`/audio/oustaz/${o.slug}`}
+              href={`/audio/oustaz/detail?slug=${o.slug}`}
               className="group bg-white rounded-2xl overflow-hidden
                          border border-emerald/5 hover:-translate-y-1
                          hover:shadow-[0_15px_35px_rgba(193,80,46,0.15)]

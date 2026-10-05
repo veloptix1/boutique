@@ -168,7 +168,7 @@ export default function LivresClient() {
           {filtered.map((l) => (
             <Link
               key={l.id}
-              href={`/livres/${l.slug}`}
+              href={`/livres/detail?slug=${l.slug}`}
               className="group bg-white rounded-2xl overflow-hidden
                          border border-emerald/5 hover:-translate-y-1
                          hover:shadow-[0_15px_35px_rgba(13,92,74,0.15)]

@@ -134,7 +134,7 @@ export default function CoranClient() {
                   </div>
 
                   {/* Nom */}
-                  <Link href={`/audio/coran/${s.numero}`}
+                  <Link href={`/audio/coran/sourate?numero=${s.numero}`}
                     className="flex-1 min-w-0 no-underline group">
                     <div className="font-semibold text-emerald-dark text-xs sm:text-sm
                                     truncate group-hover:text-emerald transition">
