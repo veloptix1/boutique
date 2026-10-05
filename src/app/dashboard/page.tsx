@@ -1,4 +1,5 @@
 "use client";
+import { Bismillah, EndMark } from "@/components/PageHeader";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -73,6 +74,7 @@ export default function DashboardPage() {
 
   return (
     <main className="px-[6%] pt-24 pb-40 max-w-[1200px] mx-auto min-h-screen">
+      <Bismillah />
 
       {/* En-tête salutation */}
       <div className="relative mb-12 rounded-3xl overflow-hidden
@@ -180,6 +182,7 @@ export default function DashboardPage() {
           );
         })}
       </div>
+      <EndMark />
     </main>
   );
 }

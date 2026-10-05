@@ -1,4 +1,5 @@
 "use client";
+import { Bismillah, EndMark } from "@/components/PageHeader";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";

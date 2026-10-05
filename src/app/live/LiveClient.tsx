@@ -5,7 +5,6 @@ import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 import { useLang } from "@/components/LangProvider";
 import { IconUser, IconSearch, IconPlay, IconArrowRight } from "@/components/icons";
-import { Bismillah, EndMark } from "@/components/PageHeader";
 
 type Video = {
   id: string;

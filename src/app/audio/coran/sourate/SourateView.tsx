@@ -1,4 +1,5 @@
 "use client";
+import { Bismillah, EndMark } from "@/components/PageHeader";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
@@ -50,6 +51,7 @@ export default function SourateView() {
 
   return (
     <main className="px-[6%] pt-24 pb-40 max-w-[900px] mx-auto min-h-screen">
+      <Bismillah />
       <Link href="/audio/coran" className="text-emerald text-sm font-semibold hover:underline">← Retour au Coran</Link>
       <div className="mt-8 mb-12 text-center">
         <div className="font-amiri text-gold text-4xl mb-3" dir="rtl">سورة {info.nom_ar}</div>
@@ -87,6 +89,7 @@ export default function SourateView() {
       <div className="mt-12 text-center">
         <Link href="/audio/coran" className="text-emerald font-semibold hover:underline">← Retour au Coran</Link>
       </div>
+      <EndMark />
     </main>
   );
 }

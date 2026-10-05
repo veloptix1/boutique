@@ -1,4 +1,5 @@
 "use client";
+import { Bismillah, EndMark } from "@/components/PageHeader";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
@@ -78,6 +79,7 @@ export default function SavantsClient() {
 
   return (
     <main className="px-[6%] pt-24 pb-40 max-w-[1200px] mx-auto">
+      <Bismillah />
 
       <Link href="/audio" className="text-emerald text-sm font-semibold hover:underline inline-flex items-center gap-1">
         ← {t.common.back}
@@ -205,6 +207,7 @@ export default function SavantsClient() {
           ))}
         </div>
       )}
+      <EndMark />
     </main>
   );
 }

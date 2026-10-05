@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 import { IconCheck } from "@/components/icons";
-import { Bismillah, EndMark } from "@/components/PageHeader";
 
 type Ticket = {
   id: string;

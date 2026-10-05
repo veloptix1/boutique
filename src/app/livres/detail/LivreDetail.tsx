@@ -1,4 +1,5 @@
 "use client";
+import { Bismillah, EndMark } from "@/components/PageHeader";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
@@ -27,6 +28,7 @@ export default function LivreDetail() {
   if (loading) return <div className="min-h-screen flex items-center justify-center bg-cream"><p className="text-emerald">Chargement...</p></div>;
   if (!livre) return (
     <main className="px-[6%] pt-32 pb-32 max-w-[1200px] mx-auto text-center">
+      <Bismillah />
       <h1 className="font-amiri font-bold text-emerald-dark text-3xl mb-4">Livre introuvable</h1>
       <Link href="/livres" className="text-emerald hover:underline font-semibold">← Retour aux livres</Link>
     </main>
@@ -77,6 +79,7 @@ export default function LivreDetail() {
           </div>
         </div>
       )}
+      <EndMark />
     </main>
   );
 }

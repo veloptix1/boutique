@@ -1,4 +1,5 @@
 "use client";
+import { Bismillah, EndMark } from "@/components/PageHeader";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
@@ -34,6 +35,7 @@ export default function PropheteDetail() {
   if (!prophete) {
     return (
       <main className="px-[6%] pt-32 pb-32 max-w-[1200px] mx-auto text-center">
+      <Bismillah />
         <h1 className="font-amiri font-bold text-emerald-dark text-3xl mb-4">
           Prophète introuvable
         </h1>
@@ -180,6 +182,7 @@ export default function PropheteDetail() {
           ← Retour aux prophètes
         </Link>
       </div>
+      <EndMark />
     </main>
   );
 }

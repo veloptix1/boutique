@@ -5,7 +5,6 @@ import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 import { useLang } from "@/components/LangProvider";
 import { IconSearch, IconArrowRight, IconStar } from "@/components/icons";
-import { Bismillah, EndMark } from "@/components/PageHeader";
 
 type Prophete = {
   id: string;

@@ -1,4 +1,5 @@
 "use client";
+import { Bismillah, EndMark } from "@/components/PageHeader";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { signIn, signUp } from "@/lib/auth";

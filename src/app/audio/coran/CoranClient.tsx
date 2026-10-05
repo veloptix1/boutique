@@ -1,4 +1,5 @@
 "use client";
+import { Bismillah, EndMark } from "@/components/PageHeader";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
@@ -65,6 +66,7 @@ export default function CoranClient() {
 
   return (
     <main className="px-[6%] pt-24 pb-40 max-w-[1200px] mx-auto min-h-screen">
+      <Bismillah />
 
       <Link href="/audio" className="text-emerald text-sm font-semibold hover:underline">
         ← Retour
@@ -251,6 +253,7 @@ export default function CoranClient() {
           </div>
         </div>
       )}
+      <EndMark />
     </main>
   );
 }
