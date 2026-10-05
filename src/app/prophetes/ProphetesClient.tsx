@@ -1,9 +1,11 @@
 "use client";
+import { Bismillah, EndMark } from "@/components/PageHeader";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 import { useLang } from "@/components/LangProvider";
 import { IconSearch, IconArrowRight, IconStar } from "@/components/icons";
+import { Bismillah, EndMark } from "@/components/PageHeader";
 
 type Prophete = {
   id: string;
@@ -59,7 +61,9 @@ export default function ProphetesClient() {
         ← Retour
       </Link>
 
-      <div className="mt-6 mb-10">
+      <div className="mt-8"><Bismillah /></div>
+
+      <div className="mb-10">
         <div className="flex items-center gap-3 mb-3">
           <div className="w-12 h-12 rounded-2xl bg-gold/15 flex items-center justify-center text-gold">
             <IconStar size={24} />
@@ -136,6 +140,7 @@ export default function ProphetesClient() {
           ))}
         </div>
       )}
+      <EndMark />
     </main>
   );
 }

@@ -1,9 +1,11 @@
 "use client";
+import { Bismillah, EndMark } from "@/components/PageHeader";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 import { useLang } from "@/components/LangProvider";
 import { IconUser, IconSearch, IconPlay, IconArrowRight } from "@/components/icons";
+import { Bismillah, EndMark } from "@/components/PageHeader";
 
 type Video = {
   id: string;
@@ -75,7 +77,9 @@ export default function LiveClient() {
         ← Retour
       </Link>
 
-      <div className="mt-6 mb-10">
+      <div className="mt-8"><Bismillah /></div>
+
+      <div className="mb-10">
         <div className="flex items-center gap-3 mb-3">
           <div className="w-12 h-12 rounded-2xl bg-terracotta/10 flex items-center justify-center text-terracotta">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -219,6 +223,7 @@ export default function LiveClient() {
           })}
         </div>
       )}
+      <EndMark />
     </main>
   );
 }
