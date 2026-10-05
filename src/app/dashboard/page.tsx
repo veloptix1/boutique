@@ -67,6 +67,7 @@ export default function DashboardPage() {
     { Icon: IconParchemin, label: "Hadiths", href: "/hadiths", color: "terracotta" },
     { Icon: IconUser,    label: "Profil",  href: "/profil",  color: "indigo" },
     { Icon: IconBook,    label: "Vidéos",  href: "/live",    color: "emerald" },
+    { Icon: IconStar,    label: "Prophètes", href: "/prophetes", color: "gold" },
   ];
 
   return (
