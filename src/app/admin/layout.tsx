@@ -21,6 +21,7 @@ const menu = [
   { href: "/admin/live",         label: "Vidéos",          Icon: IconBook },
   { href: "/admin/mises",        label: "Mises en garde",  Icon: IconCrown },
   { href: "/admin/support",      label: "Support",         Icon: IconUser },
+  { href: "/admin/versions",     label: "Versions App",    Icon: IconBook },
   { href: "/admin/utilisateurs", label: "Utilisateurs",    Icon: IconUser },
 ];
 
