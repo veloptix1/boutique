@@ -91,12 +91,12 @@ jobs:
           FILE="upload/albasirah-${VERSION}.apk"
           
           curl -X POST \
-            "https://YOUR_SUPABASE_URL.supabase.co/storage/v1/object/apk/albasirah-${VERSION}.apk" \
+            "https://fstvfuolfzhyorituyht.supabase.co/storage/v1/object/apk/albasirah-${VERSION}.apk" \
             -H "Authorization: Bearer ${{ secrets.SUPABASE_SERVICE_KEY }}" \
             -H "Content-Type: application/vnd.android.package-archive" \
             --data-binary "@${FILE}"
           
-          echo "URL: https://YOUR_SUPABASE_URL.supabase.co/storage/v1/object/public/apk/albasirah-${VERSION}.apk"
+          echo "URL: https://fstvfuolfzhyorituyht.supabase.co/storage/v1/object/public/apk/albasirah-${VERSION}.apk"
         env:
           SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
 
@@ -106,7 +106,7 @@ jobs:
           SIZE=$(du -h "upload/albasirah-${VERSION}.apk" | cut -f1)
           
           curl -X POST \
-            "https://YOUR_SUPABASE_URL.supabase.co/rest/v1/app_versions" \
+            "https://fstvfuolfzhyorituyht.supabase.co/rest/v1/app_versions" \
             -H "apikey: ${{ secrets.SUPABASE_SERVICE_KEY }}" \
             -H "Authorization: Bearer ${{ secrets.SUPABASE_SERVICE_KEY }}" \
             -H "Content-Type: application/json" \
@@ -115,7 +115,7 @@ jobs:
               \"platform\": \"android\",
               \"version\": \"1.0.${VERSION}\",
               \"version_code\": ${VERSION},
-              \"download_url\": \"https://YOUR_SUPABASE_URL.supabase.co/storage/v1/object/public/apk/albasirah-${VERSION}.apk\",
+              \"download_url\": \"https://fstvfuolfzhyorituyht.supabase.co/storage/v1/object/public/apk/albasirah-${VERSION}.apk\",
               \"taille\": \"${SIZE}\",
               \"release_notes\": \"Nouvelle version v1.0.${VERSION}\",
               \"obligatoire\": false,
