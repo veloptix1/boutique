@@ -19,6 +19,7 @@ const menu = [
   { href: "/admin/prophetes",    label: "Prophètes",       Icon: IconStar },
   { href: "/admin/sahaba",       label: "Sahaba",          Icon: IconUser },
   { href: "/admin/live",         label: "Vidéos",          Icon: IconBook },
+  { href: "/admin/actualites",   label: "Actualités",      Icon: IconStar },
   { href: "/admin/mises",        label: "Mises en garde",  Icon: IconCrown },
   { href: "/admin/support",      label: "Support",         Icon: IconUser },
   { href: "/admin/versions",     label: "Versions App",    Icon: IconBook },
