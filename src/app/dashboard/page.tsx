@@ -71,6 +71,7 @@ export default function DashboardPage() {
     { Icon: IconStar,    label: "Prophètes", href: "/prophetes", color: "gold" },
     { Icon: IconUser,    label: "Sahaba",   href: "/sahaba",    color: "terracotta" },
     { Icon: IconParchemin, label: "Rapporteurs", href: "/rapporteurs", color: "indigo" },
+    { Icon: IconBook,    label: "Télécharger", href: "/telecharger", color: "emerald" },
   ];
 
   return (
