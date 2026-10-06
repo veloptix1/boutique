@@ -53,6 +53,21 @@ jobs:
       - name: Sync Capacitor
         run: npx cap sync android
 
+      - name: Set app icons
+        run: |
+          for folder in mipmap-mdpi mipmap-hdpi mipmap-xhdpi mipmap-xxhdpi mipmap-xxxhdpi; do
+            mkdir -p android/app/src/main/res/$folder
+            cp public/icon-512.png android/app/src/main/res/$folder/ic_launcher.png 2>/dev/null || true
+            cp public/icon-512.png android/app/src/main/res/$folder/ic_launcher_round.png 2>/dev/null || true
+            cp public/icon-512.png android/app/src/main/res/$folder/ic_launcher_foreground.png 2>/dev/null || true
+          done
+
+      - name: Set app name
+        run: |
+          if [ -f android/app/src/main/res/values/strings.xml ]; then
+            sed -i 's/<string name="app_name">.*<\/string>/<string name="app_name">AL BASIRAH<\/string>/' android/app/src/main/res/values/strings.xml
+          fi
+
       - name: Make gradlew executable
         working-directory: android
         run: chmod +x gradlew
@@ -61,11 +76,59 @@ jobs:
         working-directory: android
         run: ./gradlew assembleDebug --no-daemon
 
+      - name: Get version
+        id: version
+        run: echo "version=${{ github.run_number }}" >> $GITHUB_OUTPUT
+
+      - name: Rename APK
+        run: |
+          mkdir -p upload
+          cp android/app/build/outputs/apk/debug/app-debug.apk upload/albasirah-${{ steps.version.outputs.version }}.apk
+
+      - name: Upload to Supabase Storage
+        run: |
+          VERSION=${{ steps.version.outputs.version }}
+          FILE="upload/albasirah-${VERSION}.apk"
+          
+          curl -X POST \
+            "https://YOUR_SUPABASE_URL.supabase.co/storage/v1/object/apk/albasirah-${VERSION}.apk" \
+            -H "Authorization: Bearer ${{ secrets.SUPABASE_SERVICE_KEY }}" \
+            -H "Content-Type: application/vnd.android.package-archive" \
+            --data-binary "@${FILE}"
+          
+          echo "URL: https://YOUR_SUPABASE_URL.supabase.co/storage/v1/object/public/apk/albasirah-${VERSION}.apk"
+        env:
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+
+      - name: Update Supabase table
+        run: |
+          VERSION=${{ steps.version.outputs.version }}
+          SIZE=$(du -h "upload/albasirah-${VERSION}.apk" | cut -f1)
+          
+          curl -X POST \
+            "https://YOUR_SUPABASE_URL.supabase.co/rest/v1/app_versions" \
+            -H "apikey: ${{ secrets.SUPABASE_SERVICE_KEY }}" \
+            -H "Authorization: Bearer ${{ secrets.SUPABASE_SERVICE_KEY }}" \
+            -H "Content-Type: application/json" \
+            -H "Prefer: return=representation" \
+            -d "{
+              \"platform\": \"android\",
+              \"version\": \"1.0.${VERSION}\",
+              \"version_code\": ${VERSION},
+              \"download_url\": \"https://YOUR_SUPABASE_URL.supabase.co/storage/v1/object/public/apk/albasirah-${VERSION}.apk\",
+              \"taille\": \"${SIZE}\",
+              \"release_notes\": \"Nouvelle version v1.0.${VERSION}\",
+              \"obligatoire\": false,
+              \"actif\": true
+            }"
+        env:
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
-          name: albasirah-debug-apk
-          path: android/app/build/outputs/apk/debug/app-debug.apk
+          name: albasirah-apk
+          path: upload/albasirah-*.apk
           retention-days: 30
 
       - name: Create Release
@@ -74,7 +137,7 @@ jobs:
         with:
           tag_name: v1.0.${{ github.run_number }}
           name: AL BASIRAH v1.0.${{ github.run_number }}
-          files: android/app/build/outputs/apk/debug/app-debug.apk
+          files: upload/albasirah-*.apk
           generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
