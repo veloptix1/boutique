@@ -5,22 +5,23 @@ import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 import { playAudio } from "@/components/AudioPlayer";
 import { Bismillah, EndMark } from "@/components/PageHeader";
-import { IconPlay } from "@/components/icons";
+import { IconPlay, IconArrowRight } from "@/components/icons";
 
 type Ayah = { numberInSurah: number; text: string; number: number };
 
 const RECITATEURS = [
-  { slug: "ar.alafasy",            nom: "Cheikh Mishary Al-Afasy" },
-  { slug: "ar.husary",             nom: "Cheikh Mahmoud Khalil Al-Husary" },
-  { slug: "ar.abdulbasitmurattal", nom: "Cheikh Abdul-Basit (Murattal)" },
-  { slug: "ar.abdurrahmaansudais", nom: "Cheikh Abdul-Rahman Al-Sudais" },
-  { slug: "ar.minshawi",           nom: "Cheikh Muhammad Al-Minshawi" },
-  { slug: "ar.muhammadayyoub",     nom: "Cheikh Muhammad Ayyoub" },
-  { slug: "ar.hudhaify",           nom: "Cheikh Ali Al-Hudhaify" },
-  { slug: "ar.shaatree",           nom: "Cheikh Abu Bakr Ash-Shaatree" },
-  { slug: "ar.ahmedajamy",         nom: "Cheikh Ahmed Al-Ajamy" },
-  { slug: "ar.hanirifai",          nom: "Cheikh Hani Ar-Rifaï" },
-  { slug: "ar.mahermuaiqly",       nom: "Cheikh Maher Al-Muaiqly" },
+  { slug: "ar.alafasy",            nom: "Cheikh Mishary Al-Afasy",        pays: "Koweït" },
+  { slug: "ar.husary",             nom: "Cheikh Mahmoud Khalil Al-Husary",pays: "Égypte" },
+  { slug: "ar.husarymujawwad",     nom: "Cheikh Al-Husary (Mujawwad)",    pays: "Égypte" },
+  { slug: "ar.abdulbasitmurattal", nom: "Cheikh Abdul-Basit (Murattal)",  pays: "Égypte" },
+  { slug: "ar.abdurrahmaansudais", nom: "Cheikh Abdul-Rahman Al-Sudais",  pays: "Arabie Saoudite" },
+  { slug: "ar.minshawi",           nom: "Cheikh Muhammad Al-Minshawi",    pays: "Égypte" },
+  { slug: "ar.muhammadayyoub",     nom: "Cheikh Muhammad Ayyoub",         pays: "Arabie Saoudite" },
+  { slug: "ar.hudhaify",           nom: "Cheikh Ali Al-Hudhaify",         pays: "Arabie Saoudite" },
+  { slug: "ar.shaatree",           nom: "Cheikh Abu Bakr Ash-Shaatree",   pays: "Arabie Saoudite" },
+  { slug: "ar.ahmedajamy",         nom: "Cheikh Ahmed Al-Ajamy",          pays: "Arabie Saoudite" },
+  { slug: "ar.hanirifai",          nom: "Cheikh Hani Ar-Rifaï",           pays: "Arabie Saoudite" },
+  { slug: "ar.mahermuaiqly",       nom: "Cheikh Maher Al-Muaiqly",        pays: "Arabie Saoudite" },
 ];
 
 const getAudioUrl = (recitateurSlug: string, numero: number) => {
@@ -36,6 +37,7 @@ export default function SourateView() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [selectedRecitateur, setSelectedRecitateur] = useState(RECITATEURS[0].slug);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -58,6 +60,14 @@ export default function SourateView() {
     })();
   }, [numero]);
 
+  useEffect(() => {
+    const closeDropdown = () => setDropdownOpen(false);
+    if (dropdownOpen) {
+      document.addEventListener("click", closeDropdown);
+      return () => document.removeEventListener("click", closeDropdown);
+    }
+  }, [dropdownOpen]);
+
   const playSourate = () => {
     if (!info) return;
     const recitateur = RECITATEURS.find((r) => r.slug === selectedRecitateur);
@@ -78,6 +88,8 @@ export default function SourateView() {
       </div>
     </div>
   );
+
+  const selectedRec = RECITATEURS.find((r) => r.slug === selectedRecitateur);
 
   return (
     <main className="px-[6%] pt-24 pb-40 max-w-[900px] mx-auto min-h-screen">
@@ -103,8 +115,9 @@ export default function SourateView() {
       </div>
 
       {/* Lecteur audio */}
-      <div className="bg-white rounded-3xl p-5 border border-emerald/5 mb-10">
-        <div className="flex items-center gap-3 mb-4">
+      <div className="bg-white rounded-3xl p-5 sm:p-6 border border-emerald/5 mb-10
+                      shadow-[0_15px_35px_rgba(13,92,74,0.06)]">
+        <div className="flex items-center gap-3 mb-5">
           <div className="w-10 h-10 rounded-2xl bg-gold/15 flex items-center justify-center text-gold">
             <IconPlay size={16} />
           </div>
@@ -113,27 +126,86 @@ export default function SourateView() {
           </div>
         </div>
 
-        <div className="flex flex-col sm:flex-row gap-3">
-          <select
-            value={selectedRecitateur}
-            onChange={(e) => setSelectedRecitateur(e.target.value)}
-            className="flex-1 px-4 py-3 rounded-2xl border-2 border-emerald/10
-                       focus:border-gold outline-none text-sm bg-white
-                       text-emerald-dark font-semibold cursor-pointer">
-            {RECITATEURS.map((r) => (
-              <option key={r.slug} value={r.slug}>{r.nom}</option>
-            ))}
-          </select>
-
+        {/* Sélecteur custom */}
+        <div className="relative mb-4" onClick={(e) => e.stopPropagation()}>
           <button
-            onClick={playSourate}
-            className="px-6 py-3 rounded-2xl bg-emerald text-white font-semibold text-sm
-                       hover:bg-emerald-dark transition shadow-[0_8px_20px_rgba(13,92,74,0.25)]
-                       inline-flex items-center justify-center gap-2">
-            <IconPlay size={16} color="#fff" />
-            Écouter
+            type="button"
+            onClick={() => setDropdownOpen(!dropdownOpen)}
+            className="w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl
+                       border-2 border-emerald/10 hover:border-emerald/20
+                       bg-white transition text-left">
+            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-emerald to-emerald-dark
+                            flex items-center justify-center text-gold shrink-0">
+              <IconPlay size={14} />
+            </div>
+            <div className="flex-1 min-w-0">
+              <div className="text-sm font-bold text-emerald-dark truncate">
+                {selectedRec?.nom}
+              </div>
+              <div className="text-xs text-gray-500">{selectedRec?.pays}</div>
+            </div>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                 stroke="#0d5c4a" strokeWidth="2.5" strokeLinecap="round"
+                 className={`transition-transform shrink-0 ${dropdownOpen ? "rotate-180" : ""}`}>
+              <path d="M6 9l6 6 6-6"/>
+            </svg>
           </button>
+
+          {dropdownOpen && (
+            <div className="absolute top-full left-0 right-0 mt-2 z-[100]
+                            bg-white rounded-2xl border-2 border-emerald/10
+                            shadow-[0_20px_50px_rgba(13,92,74,0.2)]
+                            max-h-[300px] overflow-y-auto">
+              {RECITATEURS.map((r, i) => {
+                const isActive = r.slug === selectedRecitateur;
+                return (
+                  <button
+                    key={r.slug}
+                    type="button"
+                    onClick={() => {
+                      setSelectedRecitateur(r.slug);
+                      setDropdownOpen(false);
+                    }}
+                    className={`w-full flex items-center gap-3 px-4 py-3 text-left
+                                transition-all border-b border-emerald/5 last:border-b-0
+                      ${isActive
+                        ? "bg-emerald/8"
+                        : "hover:bg-cream"}`}>
+                    <div className={`w-9 h-9 rounded-full flex items-center justify-center shrink-0
+                      ${isActive
+                        ? "bg-emerald text-gold"
+                        : "bg-gold/15 text-gold"}`}>
+                      <IconPlay size={12} />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className={`text-sm font-semibold truncate
+                        ${isActive ? "text-emerald" : "text-emerald-dark"}`}>
+                        {r.nom}
+                      </div>
+                      <div className="text-xs text-gray-500">{r.pays}</div>
+                    </div>
+                    {isActive && (
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                           stroke="#0d5c4a" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M20 6L9 17l-5-5"/>
+                      </svg>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+          )}
         </div>
+
+        {/* Bouton écouter */}
+        <button
+          onClick={playSourate}
+          className="w-full py-3.5 rounded-2xl bg-emerald text-white font-semibold text-sm
+                     hover:bg-emerald-dark transition shadow-[0_8px_20px_rgba(13,92,74,0.25)]
+                     inline-flex items-center justify-center gap-2">
+          <IconPlay size={16} color="#fff" />
+          Écouter cette sourate
+        </button>
       </div>
 
       {info.numero !== 1 && info.numero !== 9 && (
