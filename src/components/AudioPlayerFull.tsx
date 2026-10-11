@@ -394,6 +394,7 @@ export default function AudioPlayerFull() {
       <audio
         ref={audioRef}
         src={player.url}
+        src={player.url}
         onTimeUpdate={(e) => setProgress(e.currentTarget.currentTime)}
         onLoadedMetadata={(e) => setDuration(e.currentTarget.duration)}
         onEnded={() => setPlaying(false)}
