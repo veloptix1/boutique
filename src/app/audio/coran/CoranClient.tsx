@@ -22,26 +22,11 @@ type Recitateur = {
 };
 
 const RECITATEURS: Recitateur[] = [
-  { slug: "mishaari_raashid_al_3afaasee",           nom: "Cheikh Mishary Al-Afasy",          pays: "Koweït" },
-  { slug: "abdurrahmaan_as-sudays",                 nom: "Cheikh Abdul-Rahman Al-Sudais",    pays: "Arabie Saoudite" },
-  { slug: "mahmoud_khalil_al-husary",               nom: "Cheikh Mahmoud Khalil Al-Husary",  pays: "Égypte" },
-  { slug: "mahmoud_khalil_al-husary_mujawwad",      nom: "Cheikh Al-Husary (Mujawwad)",      pays: "Égypte" },
-  { slug: "abdul_basit_murattal",                   nom: "Cheikh Abdul-Basit (Murattal)",    pays: "Égypte" },
-  { slug: "abdul_basit_mujawwad",                   nom: "Cheikh Abdul-Basit (Mujawwad)",    pays: "Égypte" },
-  { slug: "muhammad_siddiq_al-minshawi",            nom: "Cheikh Muhammad Al-Minshawi",      pays: "Égypte" },
-  { slug: "muhammad_siddiq_al-minshawi_mujawwad",   nom: "Cheikh Al-Minshawi (Mujawwad)",    pays: "Égypte" },
-  { slug: "muhammad_ayyub",                         nom: "Cheikh Muhammad Ayyoub",           pays: "Arabie Saoudite" },
-  { slug: "sa'ud_ash-shuraym",                      nom: "Cheikh Saud Ash-Shuraim",          pays: "Arabie Saoudite" },
-  { slug: "ahmed_ibn_ali_al_ajamy",                 nom: "Cheikh Ahmed Al-Ajamy",            pays: "Arabie Saoudite" },
-  { slug: "maher_al_muaiqly",                       nom: "Cheikh Maher Al-Muaiqly",          pays: "Arabie Saoudite" },
-  { slug: "yasser_ad-dussary",                      nom: "Cheikh Yasser Al-Dosari",          pays: "Arabie Saoudite" },
-  { slug: "nasser_al_qatami",                       nom: "Cheikh Nasser Al-Qatami",          pays: "Koweït" },
-  { slug: "khalifa_altunaiji",                      nom: "Cheikh Khalifa Al-Tunaiji",        pays: "Émirats Arabes Unis" },
-  { slug: "saad_al_ghamdi",                         nom: "Cheikh Saad Al-Ghamdi",            pays: "Arabie Saoudite" },
-  { slug: "ali_jaber",                              nom: "Cheikh Ali Jaber",                 pays: "Arabie Saoudite" },
-  { slug: "mahmoud_ali_al_banna",                   nom: "Cheikh Mahmoud Ali Al-Banna",      pays: "Égypte" },
-  { slug: "abdullah_al-juhany",                     nom: "Cheikh Abdullah Al-Juhany",        pays: "Arabie Saoudite" },
-  { slug: "ali_al_hudhaify",                        nom: "Cheikh Ali Al-Hudhaify",           pays: "Arabie Saoudite" },
+  { slug: "mishaari_raashid_al_3afaasee", nom: "Cheikh Mishary Al-Afasy",       pays: "Koweït" },
+  { slug: "abdurrahmaan_as-sudays",       nom: "Cheikh Abdul-Rahman Al-Sudais", pays: "Arabie Saoudite" },
+  { slug: "abdul_basit_murattal",         nom: "Cheikh Abdul-Basit (Murattal)", pays: "Égypte" },
+  { slug: "yasser_ad-dussary",            nom: "Cheikh Yasser Al-Dosari",       pays: "Arabie Saoudite" },
+  { slug: "ali_jaber",                    nom: "Cheikh Ali Jaber",              pays: "Arabie Saoudite" },
 ];
 
 const getAudioUrl = (recitateur: Recitateur, numero: number) => {
@@ -58,7 +43,6 @@ export default function CoranClient() {
   const [filterType, setFilterType] = useState("tous");
   const [sort, setSort] = useState<SortOption>("num-asc");
   const [openMenuFor, setOpenMenuFor] = useState<number | null>(null);
-  const [searchRec, setSearchRec] = useState("");
 
   useEffect(() => {
     (async () => {
@@ -109,10 +93,6 @@ export default function CoranClient() {
   ];
 
   const types = ["tous", "Mecquoise", "Médinoise"];
-  const filteredRecitateurs = RECITATEURS.filter((r) =>
-    r.nom.toLowerCase().includes(searchRec.toLowerCase()) ||
-    r.pays.toLowerCase().includes(searchRec.toLowerCase())
-  );
 
   return (
     <main className="px-[6%] pt-24 pb-40 max-w-[1200px] mx-auto min-h-screen">
@@ -238,7 +218,7 @@ export default function CoranClient() {
                 </Link>
 
                 <button
-                  onClick={() => { setOpenMenuFor(s.numero); setSearchRec(""); }}
+                  onClick={() => setOpenMenuFor(s.numero)}
                   aria-label="Voir les récitateurs"
                   className="relative w-10 h-10 sm:w-11 sm:h-11 rounded-xl
                               flex flex-col items-center justify-center gap-[3px]
@@ -275,7 +255,7 @@ export default function CoranClient() {
             <div className="px-5 py-4 border-b border-emerald/10 flex items-center justify-between shrink-0">
               <div>
                 <div className="text-xs font-bold text-gold uppercase tracking-wider">
-                  {RECITATEURS.length} récitateurs disponibles
+                  Récitateurs disponibles
                 </div>
                 <div className="text-sm font-semibold text-emerald-dark mt-1">
                   Sourate {openMenuFor} — {sourates.find((s) => s.numero === openMenuFor)?.nom_translit}
@@ -290,51 +270,34 @@ export default function CoranClient() {
               </button>
             </div>
 
-            <div className="p-3 border-b border-emerald/10">
-              <input
-                type="text"
-                placeholder="Rechercher un récitateur ou un pays..."
-                value={searchRec}
-                onChange={(e) => setSearchRec(e.target.value)}
-                className="w-full px-4 py-2.5 rounded-xl border-2 border-emerald/10
-                           focus:border-gold outline-none text-sm" />
-            </div>
-
             <div className="overflow-y-auto flex-1">
-              {filteredRecitateurs.length === 0 ? (
-                <div className="px-4 py-6 text-center text-sm text-gray-400">
-                  Aucun récitateur trouvé
+              {RECITATEURS.map((r) => (
+                <div key={r.slug} className="border-b border-emerald/5 last:border-0">
+                  <button
+                    onClick={() => {
+                      playAudio({
+                        url: getAudioUrl(r, openMenuFor),
+                        titre: `Sourate ${openMenuFor} — ${sourates.find((s) => s.numero === openMenuFor)?.nom_translit}`,
+                        auteur: r.nom,
+                      });
+                      setOpenMenuFor(null);
+                    }}
+                    className="w-full px-5 py-4 flex items-center gap-3
+                               hover:bg-cream transition text-left">
+                    <div className="w-10 h-10 rounded-full bg-gold
+                                    flex items-center justify-center shrink-0">
+                      <IconPlay size={12} />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="text-sm font-bold text-emerald-dark leading-tight">
+                        {r.nom}
+                      </div>
+                      <div className="text-xs text-gray-500 mt-0.5">{r.pays}</div>
+                    </div>
+                    <IconArrowRight size={14} />
+                  </button>
                 </div>
-              ) : (
-                filteredRecitateurs.map((r) => (
-                  <div key={r.slug} className="border-b border-emerald/5 last:border-0">
-                    <button
-                      onClick={() => {
-                        playAudio({
-                          url: getAudioUrl(r, openMenuFor),
-                          titre: `Sourate ${openMenuFor} — ${sourates.find((s) => s.numero === openMenuFor)?.nom_translit}`,
-                          auteur: r.nom,
-                        });
-                        setOpenMenuFor(null);
-                        setSearchRec("");
-                      }}
-                      className="w-full px-5 py-4 flex items-center gap-3
-                                 hover:bg-cream transition text-left">
-                      <div className="w-10 h-10 rounded-full bg-gold
-                                      flex items-center justify-center shrink-0">
-                        <IconPlay size={12} />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="text-sm font-bold text-emerald-dark leading-tight">
-                          {r.nom}
-                        </div>
-                        <div className="text-xs text-gray-500 mt-0.5">{r.pays}</div>
-                      </div>
-                      <IconArrowRight size={14} />
-                    </button>
-                  </div>
-                ))
-              )}
+              ))}
             </div>
           </div>
         </div>

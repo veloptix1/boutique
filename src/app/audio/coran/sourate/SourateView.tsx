@@ -16,26 +16,11 @@ type Recitateur = {
 };
 
 const RECITATEURS: Recitateur[] = [
-  { slug: "mishaari_raashid_al_3afaasee",           nom: "Cheikh Mishary Al-Afasy",          pays: "Koweït" },
-  { slug: "abdurrahmaan_as-sudays",                 nom: "Cheikh Abdul-Rahman Al-Sudais",    pays: "Arabie Saoudite" },
-  { slug: "mahmoud_khalil_al-husary",               nom: "Cheikh Mahmoud Khalil Al-Husary",  pays: "Égypte" },
-  { slug: "mahmoud_khalil_al-husary_mujawwad",      nom: "Cheikh Al-Husary (Mujawwad)",      pays: "Égypte" },
-  { slug: "abdul_basit_murattal",                   nom: "Cheikh Abdul-Basit (Murattal)",    pays: "Égypte" },
-  { slug: "abdul_basit_mujawwad",                   nom: "Cheikh Abdul-Basit (Mujawwad)",    pays: "Égypte" },
-  { slug: "muhammad_siddiq_al-minshawi",            nom: "Cheikh Muhammad Al-Minshawi",      pays: "Égypte" },
-  { slug: "muhammad_siddiq_al-minshawi_mujawwad",   nom: "Cheikh Al-Minshawi (Mujawwad)",    pays: "Égypte" },
-  { slug: "muhammad_ayyub",                         nom: "Cheikh Muhammad Ayyoub",           pays: "Arabie Saoudite" },
-  { slug: "sa'ud_ash-shuraym",                      nom: "Cheikh Saud Ash-Shuraim",          pays: "Arabie Saoudite" },
-  { slug: "ahmed_ibn_ali_al_ajamy",                 nom: "Cheikh Ahmed Al-Ajamy",            pays: "Arabie Saoudite" },
-  { slug: "maher_al_muaiqly",                       nom: "Cheikh Maher Al-Muaiqly",          pays: "Arabie Saoudite" },
-  { slug: "yasser_ad-dussary",                      nom: "Cheikh Yasser Al-Dosari",          pays: "Arabie Saoudite" },
-  { slug: "nasser_al_qatami",                       nom: "Cheikh Nasser Al-Qatami",          pays: "Koweït" },
-  { slug: "khalifa_altunaiji",                      nom: "Cheikh Khalifa Al-Tunaiji",        pays: "Émirats Arabes Unis" },
-  { slug: "saad_al_ghamdi",                         nom: "Cheikh Saad Al-Ghamdi",            pays: "Arabie Saoudite" },
-  { slug: "ali_jaber",                              nom: "Cheikh Ali Jaber",                 pays: "Arabie Saoudite" },
-  { slug: "mahmoud_ali_al_banna",                   nom: "Cheikh Mahmoud Ali Al-Banna",      pays: "Égypte" },
-  { slug: "abdullah_al-juhany",                     nom: "Cheikh Abdullah Al-Juhany",        pays: "Arabie Saoudite" },
-  { slug: "ali_al_hudhaify",                        nom: "Cheikh Ali Al-Hudhaify",           pays: "Arabie Saoudite" },
+  { slug: "mishaari_raashid_al_3afaasee", nom: "Cheikh Mishary Al-Afasy",       pays: "Koweït" },
+  { slug: "abdurrahmaan_as-sudays",       nom: "Cheikh Abdul-Rahman Al-Sudais", pays: "Arabie Saoudite" },
+  { slug: "abdul_basit_murattal",         nom: "Cheikh Abdul-Basit (Murattal)", pays: "Égypte" },
+  { slug: "yasser_ad-dussary",            nom: "Cheikh Yasser Al-Dosari",       pays: "Arabie Saoudite" },
+  { slug: "ali_jaber",                    nom: "Cheikh Ali Jaber",              pays: "Arabie Saoudite" },
 ];
 
 const getAudioUrl = (recitateur: Recitateur, numero: number) => {
@@ -53,7 +38,6 @@ export default function SourateView() {
   const [error, setError] = useState("");
   const [selectedRecitateur, setSelectedRecitateur] = useState(RECITATEURS[0].slug);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [searchRec, setSearchRec] = useState("");
 
   useEffect(() => {
     (async () => {
@@ -94,11 +78,6 @@ export default function SourateView() {
       auteur: recitateur.nom,
     });
   };
-
-  const filteredRecitateurs = RECITATEURS.filter((r) =>
-    r.nom.toLowerCase().includes(searchRec.toLowerCase()) ||
-    r.pays.toLowerCase().includes(searchRec.toLowerCase())
-  );
 
   if (loading) return <div className="min-h-screen flex items-center justify-center bg-cream"><p className="text-emerald">Chargement...</p></div>;
   if (error || !info) return (
@@ -153,7 +132,7 @@ export default function SourateView() {
         <div className="relative mb-4" onClick={(e) => e.stopPropagation()}>
           <button
             type="button"
-            onClick={() => { setDropdownOpen(!dropdownOpen); setSearchRec(""); }}
+            onClick={() => setDropdownOpen(!dropdownOpen)}
             className="w-full flex items-center gap-3 px-4 py-4 rounded-2xl
                        border-2 border-emerald/10 hover:border-emerald/25
                        bg-white transition text-left min-h-[76px]">
@@ -178,60 +157,40 @@ export default function SourateView() {
             <div className="absolute top-full left-0 right-0 mt-2 z-[100]
                             bg-white rounded-2xl border-2 border-emerald/10
                             shadow-[0_20px_50px_rgba(13,92,74,0.2)]
-                            max-h-[450px] overflow-hidden flex flex-col">
-              <div className="p-3 border-b border-emerald/10 sticky top-0 bg-white z-10">
-                <input
-                  type="text"
-                  placeholder="Rechercher un récitateur ou un pays..."
-                  value={searchRec}
-                  onChange={(e) => setSearchRec(e.target.value)}
-                  autoFocus
-                  className="w-full px-4 py-2.5 rounded-xl border-2 border-emerald/10
-                             focus:border-gold outline-none text-sm" />
-              </div>
-
-              <div className="overflow-y-auto">
-                {filteredRecitateurs.length === 0 ? (
-                  <div className="px-4 py-6 text-center text-sm text-gray-400">
-                    Aucun récitateur trouvé
-                  </div>
-                ) : (
-                  filteredRecitateurs.map((r) => {
-                    const isActive = r.slug === selectedRecitateur;
-                    return (
-                      <button
-                        key={r.slug}
-                        type="button"
-                        onClick={() => {
-                          setSelectedRecitateur(r.slug);
-                          setDropdownOpen(false);
-                          setSearchRec("");
-                        }}
-                        className={`w-full flex items-center gap-3 px-4 py-3.5 text-left
-                                    transition-all border-b border-emerald/5 last:border-b-0
-                          ${isActive ? "bg-emerald/8" : "hover:bg-cream"}`}>
-                        <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0
-                          ${isActive ? "bg-emerald text-gold" : "bg-gold/15 text-gold"}`}>
-                          <IconPlay size={14} />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <div className={`text-sm font-bold leading-tight
-                            ${isActive ? "text-emerald" : "text-emerald-dark"}`}>
-                            {r.nom}
-                          </div>
-                          <div className="text-xs text-gray-500 mt-0.5">{r.pays}</div>
-                        </div>
-                        {isActive && (
-                          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
-                               stroke="#0d5c4a" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                            <path d="M20 6L9 17l-5-5"/>
-                          </svg>
-                        )}
-                      </button>
-                    );
-                  })
-                )}
-              </div>
+                            max-h-[400px] overflow-y-auto">
+              {RECITATEURS.map((r) => {
+                const isActive = r.slug === selectedRecitateur;
+                return (
+                  <button
+                    key={r.slug}
+                    type="button"
+                    onClick={() => {
+                      setSelectedRecitateur(r.slug);
+                      setDropdownOpen(false);
+                    }}
+                    className={`w-full flex items-center gap-3 px-4 py-3.5 text-left
+                                transition-all border-b border-emerald/5 last:border-b-0
+                      ${isActive ? "bg-emerald/8" : "hover:bg-cream"}`}>
+                    <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0
+                      ${isActive ? "bg-emerald text-gold" : "bg-gold/15 text-gold"}`}>
+                      <IconPlay size={14} />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className={`text-sm font-bold leading-tight
+                        ${isActive ? "text-emerald" : "text-emerald-dark"}`}>
+                        {r.nom}
+                      </div>
+                      <div className="text-xs text-gray-500 mt-0.5">{r.pays}</div>
+                    </div>
+                    {isActive && (
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                           stroke="#0d5c4a" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M20 6L9 17l-5-5"/>
+                      </svg>
+                    )}
+                  </button>
+                );
+              })}
             </div>
           )}
         </div>
