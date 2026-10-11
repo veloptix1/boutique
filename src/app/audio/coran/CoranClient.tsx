@@ -4,7 +4,7 @@ import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 import { playAudio } from "@/components/AudioPlayer";
 import { Bismillah, EndMark } from "@/components/PageHeader";
-import { IconSearch, IconPlay, IconDownload, IconArrowRight } from "@/components/icons";
+import { IconSearch, IconPlay, IconArrowRight } from "@/components/icons";
 
 type Sourate = {
   numero: number;
@@ -15,25 +15,26 @@ type Sourate = {
   type: string;
 };
 
-// Récitateurs disponibles dans l'API alquran.cloud
 const RECITATEURS = [
-  { slug: "ar.alafasy",                nom: "Cheikh Mishary Al-Afasy" },
-  { slug: "ar.husary",                 nom: "Cheikh Mahmoud Khalil Al-Husary" },
-  { slug: "ar.husarymujawwad",         nom: "Cheikh Al-Husary (Mujawwad)" },
-  { slug: "ar.abdulbasitmurattal",     nom: "Cheikh Abdul-Basit (Murattal)" },
-  { slug: "ar.abdurrahmaansudais",     nom: "Cheikh Abdul-Rahman Al-Sudais" },
-  { slug: "ar.minshawi",               nom: "Cheikh Muhammad Al-Minshawi" },
-  { slug: "ar.muhammadayyoub",         nom: "Cheikh Muhammad Ayyoub" },
-  { slug: "ar.hudhaify",               nom: "Cheikh Ali Al-Hudhaify" },
-  { slug: "ar.shaatree",               nom: "Cheikh Abu Bakr Ash-Shaatree" },
-  { slug: "ar.ahmedajamy",             nom: "Cheikh Ahmed Al-Ajamy" },
-  { slug: "ar.hanirifai",              nom: "Cheikh Hani Ar-Rifaï" },
-  { slug: "ar.mahermuaiqly",           nom: "Cheikh Maher Al-Muaiqly" },
+  { slug: "ar.alafasy",            nom: "Cheikh Mishary Al-Afasy",          pays: "Koweït" },
+  { slug: "ar.husary",             nom: "Cheikh Mahmoud Khalil Al-Husary",  pays: "Égypte" },
+  { slug: "ar.husarymujawwad",     nom: "Cheikh Al-Husary (Mujawwad)",      pays: "Égypte" },
+  { slug: "ar.abdulbasitmurattal", nom: "Cheikh Abdul-Basit (Murattal)",    pays: "Égypte" },
+  { slug: "ar.abdurrahmaansudais", nom: "Cheikh Abdul-Rahman Al-Sudais",    pays: "Arabie Saoudite" },
+  { slug: "ar.minshawi",           nom: "Cheikh Muhammad Al-Minshawi",      pays: "Égypte" },
+  { slug: "ar.minshawimujawwad",   nom: "Cheikh Al-Minshawi (Mujawwad)",    pays: "Égypte" },
+  { slug: "ar.muhammadayyoub",     nom: "Cheikh Muhammad Ayyoub",           pays: "Arabie Saoudite" },
+  { slug: "ar.hudhaify",           nom: "Cheikh Ali Al-Hudhaify",           pays: "Arabie Saoudite" },
+  { slug: "ar.shaatree",           nom: "Cheikh Abu Bakr Ash-Shaatree",     pays: "Arabie Saoudite" },
+  { slug: "ar.ahmedajamy",         nom: "Cheikh Ahmed Al-Ajamy",            pays: "Arabie Saoudite" },
+  { slug: "ar.hanirifai",          nom: "Cheikh Hani Ar-Rifaï",             pays: "Arabie Saoudite" },
+  { slug: "ar.mahermuaiqly",       nom: "Cheikh Maher Al-Muaiqly",          pays: "Arabie Saoudite" },
+  { slug: "ar.abdullahbasfar",     nom: "Cheikh Abdullah Basfar",           pays: "Arabie Saoudite" },
+  { slug: "ar.saoodshuraym",       nom: "Cheikh Saud Ash-Shuraim",          pays: "Arabie Saoudite" },
+  { slug: "ar.muhammadjibreel",    nom: "Cheikh Muhammad Jibreel",          pays: "Arabie Saoudite" },
 ];
 
 const getAudioUrl = (recitateurSlug: string, numero: number) => {
-  // L'API islamic.network fournit les audios directs
-  const numeroPad = String(numero).padStart(3, "0");
   return `https://cdn.islamic.network/quran/audio-surah/128/${recitateurSlug}/${numero}.mp3`;
 };
 
@@ -46,6 +47,7 @@ export default function CoranClient() {
   const [filterType, setFilterType] = useState("tous");
   const [sort, setSort] = useState<SortOption>("num-asc");
   const [openMenuFor, setOpenMenuFor] = useState<number | null>(null);
+  const [searchRec, setSearchRec] = useState("");
 
   useEffect(() => {
     (async () => {
@@ -62,7 +64,6 @@ export default function CoranClient() {
     return () => { document.body.style.overflow = ""; };
   }, [openMenuFor]);
 
-  // Filtrage
   const filtered = sourates.filter((s) => {
     if (filterType !== "tous" && s.type !== filterType) return false;
     if (!search.trim()) return true;
@@ -75,7 +76,6 @@ export default function CoranClient() {
     );
   });
 
-  // Tri
   const sorted = [...filtered].sort((a, b) => {
     switch (sort) {
       case "num-asc":      return a.numero - b.numero;
@@ -98,6 +98,10 @@ export default function CoranClient() {
   ];
 
   const types = ["tous", "Mecquoise", "Médinoise"];
+  const filteredRecitateurs = RECITATEURS.filter((r) =>
+    r.nom.toLowerCase().includes(searchRec.toLowerCase()) ||
+    r.pays.toLowerCase().includes(searchRec.toLowerCase())
+  );
 
   return (
     <main className="px-[6%] pt-24 pb-40 max-w-[1200px] mx-auto min-h-screen">
@@ -147,9 +151,8 @@ export default function CoranClient() {
         )}
       </div>
 
-      {/* Filtres type + Tri */}
+      {/* Filtres */}
       <div className="flex flex-wrap gap-3 mb-6">
-        {/* Type */}
         <div className="flex gap-2 overflow-x-auto">
           {types.map((t) => (
             <button key={t} onClick={() => setFilterType(t)}
@@ -162,7 +165,6 @@ export default function CoranClient() {
           ))}
         </div>
 
-        {/* Tri */}
         <div className="relative ml-auto">
           <select
             value={sort}
@@ -180,7 +182,6 @@ export default function CoranClient() {
         </div>
       </div>
 
-      {/* Résultats */}
       <p className="text-sm text-gray-500 mb-5">
         {sorted.length} sourate{sorted.length > 1 ? "s" : ""}
         {search && ` pour « ${search} »`}
@@ -194,64 +195,59 @@ export default function CoranClient() {
         </div>
       ) : (
         <div className="grid gap-3">
-          {sorted.map((s) => {
-            return (
-              <div key={s.numero}
-                className="bg-white rounded-2xl border border-emerald/5
-                           hover:border-emerald/15 transition-all">
-                <div className="flex items-center gap-3 p-3 sm:p-4">
+          {sorted.map((s) => (
+            <div key={s.numero}
+              className="bg-white rounded-2xl border border-emerald/5
+                         hover:border-emerald/15 transition-all">
+              <div className="flex items-center gap-3 p-3 sm:p-4">
 
-                  {/* Numéro */}
-                  <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-emerald/8
-                                  flex items-center justify-center text-emerald font-bold
-                                  text-xs sm:text-sm shrink-0">
-                    {s.numero}
-                  </div>
-
-                  {/* Nom (cliquable → texte) */}
-                  <Link href={`/audio/coran/sourate?numero=${s.numero}`}
-                    className="flex-1 min-w-0 no-underline group">
-                    <div className="font-semibold text-emerald-dark text-xs sm:text-sm
-                                    truncate group-hover:text-emerald transition">
-                      {s.nom_translit} — {s.nom_fr}
-                    </div>
-                    <div className="flex items-center gap-1.5 sm:gap-2 text-[0.65rem] sm:text-xs
-                                    text-gray-500 mt-0.5">
-                      <span className="font-amiri" dir="rtl">{s.nom_ar}</span>
-                      <span className="hidden sm:inline">·</span>
-                      <span className="hidden sm:inline">{s.versets} versets</span>
-                      <span className="hidden sm:inline">·</span>
-                      <span className={`hidden sm:inline px-2 py-0.5 rounded-full text-[0.6rem] font-bold
-                        ${s.type === "Mecquoise"
-                          ? "bg-gold/15 text-gold"
-                          : "bg-emerald/10 text-emerald"}`}>
-                        {s.type}
-                      </span>
-                    </div>
-                  </Link>
-
-                  {/* Menu récitateurs (3 traits) */}
-                  <button
-                    onClick={() => setOpenMenuFor(s.numero)}
-                    aria-label="Voir les récitateurs"
-                    className="relative w-10 h-10 sm:w-11 sm:h-11 rounded-xl
-                                flex flex-col items-center justify-center gap-[3px]
-                                transition shrink-0 border-2
-                                bg-emerald border-emerald text-gold hover:bg-emerald-dark cursor-pointer">
-                    <span className="w-4 h-[2px] bg-current rounded" />
-                    <span className="w-4 h-[2px] bg-current rounded" />
-                    <span className="w-2.5 h-[2px] bg-current rounded self-start ml-3" />
-                    <span className="absolute -top-1.5 -right-1.5 min-w-[1.1rem] h-[1.1rem]
-                                     px-1 rounded-full bg-gold text-emerald-dark
-                                     text-[0.6rem] font-bold flex items-center justify-center
-                                     border-2 border-white leading-none">
-                      {RECITATEURS.length}
-                    </span>
-                  </button>
+                <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-emerald/8
+                                flex items-center justify-center text-emerald font-bold
+                                text-xs sm:text-sm shrink-0">
+                  {s.numero}
                 </div>
+
+                <Link href={`/audio/coran/sourate?numero=${s.numero}`}
+                  className="flex-1 min-w-0 no-underline group">
+                  <div className="font-semibold text-emerald-dark text-xs sm:text-sm
+                                  truncate group-hover:text-emerald transition">
+                    {s.nom_translit} — {s.nom_fr}
+                  </div>
+                  <div className="flex items-center gap-1.5 sm:gap-2 text-[0.65rem] sm:text-xs
+                                  text-gray-500 mt-0.5">
+                    <span className="font-amiri" dir="rtl">{s.nom_ar}</span>
+                    <span className="hidden sm:inline">·</span>
+                    <span className="hidden sm:inline">{s.versets} versets</span>
+                    <span className="hidden sm:inline">·</span>
+                    <span className={`hidden sm:inline px-2 py-0.5 rounded-full text-[0.6rem] font-bold
+                      ${s.type === "Mecquoise"
+                        ? "bg-gold/15 text-gold"
+                        : "bg-emerald/10 text-emerald"}`}>
+                      {s.type}
+                    </span>
+                  </div>
+                </Link>
+
+                <button
+                  onClick={() => { setOpenMenuFor(s.numero); setSearchRec(""); }}
+                  aria-label="Voir les récitateurs"
+                  className="relative w-10 h-10 sm:w-11 sm:h-11 rounded-xl
+                              flex flex-col items-center justify-center gap-[3px]
+                              transition shrink-0 border-2
+                              bg-emerald border-emerald text-gold hover:bg-emerald-dark cursor-pointer">
+                  <span className="w-4 h-[2px] bg-current rounded" />
+                  <span className="w-4 h-[2px] bg-current rounded" />
+                  <span className="w-2.5 h-[2px] bg-current rounded self-start ml-3" />
+                  <span className="absolute -top-1.5 -right-1.5 min-w-[1.1rem] h-[1.1rem]
+                                   px-1 rounded-full bg-gold text-emerald-dark
+                                   text-[0.6rem] font-bold flex items-center justify-center
+                                   border-2 border-white leading-none">
+                    {RECITATEURS.length}
+                  </span>
+                </button>
               </div>
-            );
-          })}
+            </div>
+          ))}
         </div>
       )}
 
@@ -271,7 +267,7 @@ export default function CoranClient() {
             <div className="px-5 py-4 border-b border-emerald/10 flex items-center justify-between shrink-0">
               <div>
                 <div className="text-xs font-bold text-gold uppercase tracking-wider">
-                  Récitateurs disponibles
+                  Récitateurs
                 </div>
                 <div className="text-sm font-semibold text-emerald-dark mt-1">
                   Sourate {openMenuFor} — {sourates.find((s) => s.numero === openMenuFor)?.nom_translit}
@@ -286,33 +282,51 @@ export default function CoranClient() {
               </button>
             </div>
 
+            <div className="p-3 border-b border-emerald/10">
+              <input
+                type="text"
+                placeholder="Rechercher un récitateur..."
+                value={searchRec}
+                onChange={(e) => setSearchRec(e.target.value)}
+                className="w-full px-4 py-2.5 rounded-xl border-2 border-emerald/10
+                           focus:border-gold outline-none text-sm" />
+            </div>
+
             <div className="overflow-y-auto flex-1">
-              {RECITATEURS.map((r) => (
-                <div key={r.slug} className="border-b border-emerald/5 last:border-0">
-                  <button
-                    onClick={() => {
-                      playAudio({
-                        url: getAudioUrl(r.slug, openMenuFor),
-                        titre: `Sourate ${openMenuFor} — ${sourates.find((s) => s.numero === openMenuFor)?.nom_translit}`,
-                        auteur: r.nom,
-                      });
-                      setOpenMenuFor(null);
-                    }}
-                    className="w-full px-5 py-4 flex items-center gap-3
-                               hover:bg-cream transition text-left">
-                    <div className="w-10 h-10 rounded-full bg-gold
-                                    flex items-center justify-center shrink-0">
-                      <IconPlay size={12} />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="text-sm font-semibold text-emerald-dark truncate">
-                        {r.nom}
-                      </div>
-                    </div>
-                    <IconArrowRight size={14} />
-                  </button>
+              {filteredRecitateurs.length === 0 ? (
+                <div className="px-4 py-6 text-center text-sm text-gray-400">
+                  Aucun récitateur trouvé
                 </div>
-              ))}
+              ) : (
+                filteredRecitateurs.map((r) => (
+                  <div key={r.slug} className="border-b border-emerald/5 last:border-0">
+                    <button
+                      onClick={() => {
+                        playAudio({
+                          url: getAudioUrl(r.slug, openMenuFor),
+                          titre: `Sourate ${openMenuFor} — ${sourates.find((s) => s.numero === openMenuFor)?.nom_translit}`,
+                          auteur: r.nom,
+                        });
+                        setOpenMenuFor(null);
+                        setSearchRec("");
+                      }}
+                      className="w-full px-5 py-4 flex items-center gap-3
+                                 hover:bg-cream transition text-left">
+                      <div className="w-10 h-10 rounded-full bg-gold
+                                      flex items-center justify-center shrink-0">
+                        <IconPlay size={12} />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="text-sm font-semibold text-emerald-dark truncate">
+                          {r.nom}
+                        </div>
+                        <div className="text-xs text-gray-500">{r.pays}</div>
+                      </div>
+                      <IconArrowRight size={14} />
+                    </button>
+                  </div>
+                ))
+              )}
             </div>
           </div>
         </div>
