@@ -13,45 +13,33 @@ type Recitateur = {
   slug: string;
   nom: string;
   pays: string;
-  baseUrl?: string;
 };
 
 const RECITATEURS: Recitateur[] = [
-  // ─── API alquran.cloud (cdn.islamic.network) ───
-  { slug: "ar.alafasy",            nom: "Cheikh Mishary Al-Afasy",          pays: "Koweït" },
-  { slug: "ar.husary",             nom: "Cheikh Mahmoud Khalil Al-Husary",  pays: "Égypte" },
-  { slug: "ar.husarymujawwad",     nom: "Cheikh Al-Husary (Mujawwad)",      pays: "Égypte" },
-  { slug: "ar.abdulbasitmurattal", nom: "Cheikh Abdul-Basit (Murattal)",    pays: "Égypte" },
-  { slug: "ar.abdurrahmaansudais", nom: "Cheikh Abdul-Rahman Al-Sudais",    pays: "Arabie Saoudite" },
-  { slug: "ar.minshawi",           nom: "Cheikh Muhammad Al-Minshawi",      pays: "Égypte" },
-  { slug: "ar.minshawimujawwad",   nom: "Cheikh Al-Minshawi (Mujawwad)",    pays: "Égypte" },
-  { slug: "ar.muhammadayyoub",     nom: "Cheikh Muhammad Ayyoub",           pays: "Arabie Saoudite" },
-  { slug: "ar.hudhaify",           nom: "Cheikh Ali Al-Hudhaify",           pays: "Arabie Saoudite" },
-  { slug: "ar.shaatree",           nom: "Cheikh Abu Bakr Ash-Shaatree",     pays: "Arabie Saoudite" },
-  { slug: "ar.ahmedajamy",         nom: "Cheikh Ahmed Al-Ajamy",            pays: "Arabie Saoudite" },
-  { slug: "ar.hanirifai",          nom: "Cheikh Hani Ar-Rifaï",             pays: "Arabie Saoudite" },
-  { slug: "ar.mahermuaiqly",       nom: "Cheikh Maher Al-Muaiqly",          pays: "Arabie Saoudite" },
-  { slug: "ar.abdullahbasfar",     nom: "Cheikh Abdullah Basfar",           pays: "Arabie Saoudite" },
-  { slug: "ar.saoodshuraym",       nom: "Cheikh Saud Ash-Shuraim",          pays: "Arabie Saoudite" },
-  { slug: "ar.muhammadjibreel",    nom: "Cheikh Muhammad Jibreel",          pays: "Arabie Saoudite" },
-
-  // ─── mp3quran.net ───
-  { slug: "khalifa-tunaiji",       nom: "Cheikh Khalifa Al-Tunaiji",        pays: "Émirats Arabes Unis",  baseUrl: "https://server12.mp3quran.net/tnjy/" },
-  { slug: "saad-ghamdi",           nom: "Cheikh Saad Al-Ghamdi",            pays: "Arabie Saoudite",      baseUrl: "https://server7.mp3quran.net/s_gmd/" },
-  { slug: "yasser-dosari",         nom: "Cheikh Yasser Al-Dosari",          pays: "Arabie Saoudite",      baseUrl: "https://server11.mp3quran.net/yasser/" },
-  { slug: "ahmed-amer",            nom: "Cheikh Ahmed Al-Amer",             pays: "Arabie Saoudite",      baseUrl: "https://server10.mp3quran.net/ahmad_amer/" },
-  { slug: "abdullah-juhany",       nom: "Cheikh Abdullah Al-Juhany",        pays: "Arabie Saoudite",      baseUrl: "https://server13.mp3quran.net/jhn/" },
-  { slug: "mahmoud-ali-albanna",   nom: "Cheikh Mahmoud Ali Al-Banna",      pays: "Égypte",               baseUrl: "https://server8.mp3quran.net/bna/" },
-  { slug: "ali-jaber",             nom: "Cheikh Ali Jaber",                 pays: "Arabie Saoudite",      baseUrl: "https://server11.mp3quran.net/a_jbr/" },
-  { slug: "nasser-qatami",         nom: "Cheikh Nasser Al-Qatami",          pays: "Koweït",               baseUrl: "https://server6.mp3quran.net/qtm/" },
+  { slug: "mishaari_raashid_al_3afaasee",           nom: "Cheikh Mishary Al-Afasy",          pays: "Koweït" },
+  { slug: "abdurrahmaan_as-sudays",                 nom: "Cheikh Abdul-Rahman Al-Sudais",    pays: "Arabie Saoudite" },
+  { slug: "mahmoud_khalil_al-husary",               nom: "Cheikh Mahmoud Khalil Al-Husary",  pays: "Égypte" },
+  { slug: "mahmoud_khalil_al-husary_mujawwad",      nom: "Cheikh Al-Husary (Mujawwad)",      pays: "Égypte" },
+  { slug: "abdul_basit_murattal",                   nom: "Cheikh Abdul-Basit (Murattal)",    pays: "Égypte" },
+  { slug: "abdul_basit_mujawwad",                   nom: "Cheikh Abdul-Basit (Mujawwad)",    pays: "Égypte" },
+  { slug: "muhammad_siddiq_al-minshawi",            nom: "Cheikh Muhammad Al-Minshawi",      pays: "Égypte" },
+  { slug: "muhammad_siddiq_al-minshawi_mujawwad",   nom: "Cheikh Al-Minshawi (Mujawwad)",    pays: "Égypte" },
+  { slug: "muhammad_ayyub",                         nom: "Cheikh Muhammad Ayyoub",           pays: "Arabie Saoudite" },
+  { slug: "sa'ud_ash-shuraym",                      nom: "Cheikh Saud Ash-Shuraim",          pays: "Arabie Saoudite" },
+  { slug: "ahmed_ibn_ali_al_ajamy",                 nom: "Cheikh Ahmed Al-Ajamy",            pays: "Arabie Saoudite" },
+  { slug: "maher_al_muaiqly",                       nom: "Cheikh Maher Al-Muaiqly",          pays: "Arabie Saoudite" },
+  { slug: "yasser_ad-dussary",                      nom: "Cheikh Yasser Al-Dosari",          pays: "Arabie Saoudite" },
+  { slug: "nasser_al_qatami",                       nom: "Cheikh Nasser Al-Qatami",          pays: "Koweït" },
+  { slug: "khalifa_altunaiji",                      nom: "Cheikh Khalifa Al-Tunaiji",        pays: "Émirats Arabes Unis" },
+  { slug: "saad_al_ghamdi",                         nom: "Cheikh Saad Al-Ghamdi",            pays: "Arabie Saoudite" },
+  { slug: "ali_jaber",                              nom: "Cheikh Ali Jaber",                 pays: "Arabie Saoudite" },
+  { slug: "mahmoud_ali_al_banna",                   nom: "Cheikh Mahmoud Ali Al-Banna",      pays: "Égypte" },
+  { slug: "abdullah_al-juhany",                     nom: "Cheikh Abdullah Al-Juhany",        pays: "Arabie Saoudite" },
+  { slug: "ali_al_hudhaify",                        nom: "Cheikh Ali Al-Hudhaify",           pays: "Arabie Saoudite" },
 ];
 
 const getAudioUrl = (recitateur: Recitateur, numero: number) => {
-  const numeroPad = String(numero).padStart(3, "0");
-  if (recitateur.baseUrl) {
-    return `${recitateur.baseUrl}${numeroPad}.mp3`;
-  }
-  return `https://cdn.islamic.network/quran/audio-surah/128/${recitateur.slug}/${numero}.mp3`;
+  return `https://download.quranicaudio.com/quran/${recitateur.slug}/${numero}.mp3`;
 };
 
 export default function SourateView() {
@@ -147,7 +135,6 @@ export default function SourateView() {
         </div>
       </div>
 
-      {/* Lecteur audio */}
       <div className="bg-white rounded-3xl p-5 sm:p-6 border border-emerald/5 mb-10
                       shadow-[0_15px_35px_rgba(13,92,74,0.06)]">
         <div className="flex items-center gap-3 mb-5">
@@ -162,7 +149,6 @@ export default function SourateView() {
           </div>
         </div>
 
-        {/* Sélecteur custom large */}
         <div className="relative mb-4" onClick={(e) => e.stopPropagation()}>
           <button
             type="button"
@@ -178,14 +164,7 @@ export default function SourateView() {
               <div className="text-sm sm:text-base font-bold text-emerald-dark leading-tight">
                 {selectedRec?.nom}
               </div>
-              <div className="text-xs text-gray-500 mt-0.5 flex items-center gap-1">
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="none"
-                     stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
-                  <circle cx="12" cy="10" r="3"/>
-                </svg>
-                {selectedRec?.pays}
-              </div>
+              <div className="text-xs text-gray-500 mt-0.5">{selectedRec?.pays}</div>
             </div>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
                  stroke="#0d5c4a" strokeWidth="2.5" strokeLinecap="round"
@@ -199,7 +178,6 @@ export default function SourateView() {
                             bg-white rounded-2xl border-2 border-emerald/10
                             shadow-[0_20px_50px_rgba(13,92,74,0.2)]
                             max-h-[450px] overflow-hidden flex flex-col">
-              {/* Barre de recherche */}
               <div className="p-3 border-b border-emerald/10 sticky top-0 bg-white z-10">
                 <input
                   type="text"
@@ -211,7 +189,6 @@ export default function SourateView() {
                              focus:border-gold outline-none text-sm" />
               </div>
 
-              {/* Liste */}
               <div className="overflow-y-auto">
                 {filteredRecitateurs.length === 0 ? (
                   <div className="px-4 py-6 text-center text-sm text-gray-400">
@@ -233,9 +210,7 @@ export default function SourateView() {
                                     transition-all border-b border-emerald/5 last:border-b-0
                           ${isActive ? "bg-emerald/8" : "hover:bg-cream"}`}>
                         <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0
-                          ${isActive
-                            ? "bg-emerald text-gold"
-                            : "bg-gold/15 text-gold"}`}>
+                          ${isActive ? "bg-emerald text-gold" : "bg-gold/15 text-gold"}`}>
                           <IconPlay size={14} />
                         </div>
                         <div className="flex-1 min-w-0">
@@ -243,14 +218,7 @@ export default function SourateView() {
                             ${isActive ? "text-emerald" : "text-emerald-dark"}`}>
                             {r.nom}
                           </div>
-                          <div className="text-xs text-gray-500 mt-0.5 flex items-center gap-1">
-                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none"
-                                 stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-                              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
-                              <circle cx="12" cy="10" r="3"/>
-                            </svg>
-                            {r.pays}
-                          </div>
+                          <div className="text-xs text-gray-500 mt-0.5">{r.pays}</div>
                         </div>
                         {isActive && (
                           <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
@@ -267,7 +235,6 @@ export default function SourateView() {
           )}
         </div>
 
-        {/* Bouton écouter */}
         <button
           onClick={playSourate}
           className="w-full py-3.5 rounded-2xl bg-emerald text-white font-semibold text-sm
