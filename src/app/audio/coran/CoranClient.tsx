@@ -45,7 +45,8 @@ const RECITATEURS: Recitateur[] = [
 ];
 
 const getAudioUrl = (recitateur: Recitateur, numero: number) => {
-  return `https://download.quranicaudio.com/quran/${recitateur.slug}/${numero}.mp3`;
+  const numeroPad = String(numero).padStart(3, "0");
+  return `https://download.quranicaudio.com/quran/${recitateur.slug}/${numeroPad}.mp3`;
 };
 
 type SortOption = "num-asc" | "num-desc" | "nom-asc" | "versets-asc" | "versets-desc" | "type";
