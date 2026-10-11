@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
-import { playAudio } from "@/components/AudioPlayer";
+import { playAudio } from "@/components/AudioPlayerFull";
 import { Bismillah, EndMark } from "@/components/PageHeader";
 import { IconSearch, IconPlay, IconArrowRight } from "@/components/icons";
 

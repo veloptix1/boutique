@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
-import { playAudio } from "@/components/AudioPlayer";
+import { playAudio } from "@/components/AudioPlayerFull";
 import { Bismillah, EndMark } from "@/components/PageHeader";
 import { IconPlay } from "@/components/icons";
 

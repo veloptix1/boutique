@@ -3,7 +3,7 @@ import { Bismillah, EndMark } from "@/components/PageHeader";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
-import { playAudio } from "@/components/AudioPlayer";
+import { playAudio } from "@/components/AudioPlayerFull";
 import { useLang } from "@/components/LangProvider";
 import {
   IconSpeaker, IconBook, IconUser, IconPlay, IconArrowRight, IconSearch,

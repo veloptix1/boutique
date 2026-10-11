@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
-import { playAudio } from "@/components/AudioPlayer";
+import { playAudio } from "@/components/AudioPlayerFull";
 import { useLang } from "@/components/LangProvider";
 import {
   IconUser, IconLocation, IconCalendar, IconSpeaker, IconPlay,
