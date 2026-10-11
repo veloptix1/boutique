@@ -9,7 +9,15 @@ import { IconPlay } from "@/components/icons";
 
 type Ayah = { numberInSurah: number; text: string; number: number };
 
-const RECITATEURS = [
+type Recitateur = {
+  slug: string;
+  nom: string;
+  pays: string;
+  baseUrl?: string;
+};
+
+const RECITATEURS: Recitateur[] = [
+  // ─── API alquran.cloud (cdn.islamic.network) ───
   { slug: "ar.alafasy",            nom: "Cheikh Mishary Al-Afasy",          pays: "Koweït" },
   { slug: "ar.husary",             nom: "Cheikh Mahmoud Khalil Al-Husary",  pays: "Égypte" },
   { slug: "ar.husarymujawwad",     nom: "Cheikh Al-Husary (Mujawwad)",      pays: "Égypte" },
@@ -26,10 +34,24 @@ const RECITATEURS = [
   { slug: "ar.abdullahbasfar",     nom: "Cheikh Abdullah Basfar",           pays: "Arabie Saoudite" },
   { slug: "ar.saoodshuraym",       nom: "Cheikh Saud Ash-Shuraim",          pays: "Arabie Saoudite" },
   { slug: "ar.muhammadjibreel",    nom: "Cheikh Muhammad Jibreel",          pays: "Arabie Saoudite" },
+
+  // ─── mp3quran.net ───
+  { slug: "khalifa-tunaiji",       nom: "Cheikh Khalifa Al-Tunaiji",        pays: "Émirats Arabes Unis",  baseUrl: "https://server12.mp3quran.net/tnjy/" },
+  { slug: "saad-ghamdi",           nom: "Cheikh Saad Al-Ghamdi",            pays: "Arabie Saoudite",      baseUrl: "https://server7.mp3quran.net/s_gmd/" },
+  { slug: "yasser-dosari",         nom: "Cheikh Yasser Al-Dosari",          pays: "Arabie Saoudite",      baseUrl: "https://server11.mp3quran.net/yasser/" },
+  { slug: "ahmed-amer",            nom: "Cheikh Ahmed Al-Amer",             pays: "Arabie Saoudite",      baseUrl: "https://server10.mp3quran.net/ahmad_amer/" },
+  { slug: "abdullah-juhany",       nom: "Cheikh Abdullah Al-Juhany",        pays: "Arabie Saoudite",      baseUrl: "https://server13.mp3quran.net/jhn/" },
+  { slug: "mahmoud-ali-albanna",   nom: "Cheikh Mahmoud Ali Al-Banna",      pays: "Égypte",               baseUrl: "https://server8.mp3quran.net/bna/" },
+  { slug: "ali-jaber",             nom: "Cheikh Ali Jaber",                 pays: "Arabie Saoudite",      baseUrl: "https://server11.mp3quran.net/a_jbr/" },
+  { slug: "nasser-qatami",         nom: "Cheikh Nasser Al-Qatami",          pays: "Koweït",               baseUrl: "https://server6.mp3quran.net/qtm/" },
 ];
 
-const getAudioUrl = (recitateurSlug: string, numero: number) => {
-  return `https://cdn.islamic.network/quran/audio-surah/128/${recitateurSlug}/${numero}.mp3`;
+const getAudioUrl = (recitateur: Recitateur, numero: number) => {
+  const numeroPad = String(numero).padStart(3, "0");
+  if (recitateur.baseUrl) {
+    return `${recitateur.baseUrl}${numeroPad}.mp3`;
+  }
+  return `https://cdn.islamic.network/quran/audio-surah/128/${recitateur.slug}/${numero}.mp3`;
 };
 
 export default function SourateView() {
@@ -76,10 +98,11 @@ export default function SourateView() {
   const playSourate = () => {
     if (!info) return;
     const recitateur = RECITATEURS.find((r) => r.slug === selectedRecitateur);
+    if (!recitateur) return;
     playAudio({
-      url: getAudioUrl(selectedRecitateur, info.numero),
+      url: getAudioUrl(recitateur, info.numero),
       titre: `Sourate ${info.numero} — ${info.nom_translit}`,
-      auteur: recitateur?.nom || "Coran",
+      auteur: recitateur.nom,
     });
   };
 
@@ -139,25 +162,32 @@ export default function SourateView() {
           </div>
         </div>
 
-        {/* Sélecteur custom */}
+        {/* Sélecteur custom large */}
         <div className="relative mb-4" onClick={(e) => e.stopPropagation()}>
           <button
             type="button"
             onClick={() => { setDropdownOpen(!dropdownOpen); setSearchRec(""); }}
-            className="w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl
-                       border-2 border-emerald/10 hover:border-emerald/20
-                       bg-white transition text-left">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-emerald to-emerald-dark
+            className="w-full flex items-center gap-3 px-4 py-4 rounded-2xl
+                       border-2 border-emerald/10 hover:border-emerald/25
+                       bg-white transition text-left min-h-[76px]">
+            <div className="w-11 h-11 rounded-full bg-gradient-to-br from-emerald to-emerald-dark
                             flex items-center justify-center text-gold shrink-0">
-              <IconPlay size={14} />
+              <IconPlay size={16} />
             </div>
             <div className="flex-1 min-w-0">
-              <div className="text-sm font-bold text-emerald-dark truncate">
+              <div className="text-sm sm:text-base font-bold text-emerald-dark leading-tight">
                 {selectedRec?.nom}
               </div>
-              <div className="text-xs text-gray-500">{selectedRec?.pays}</div>
+              <div className="text-xs text-gray-500 mt-0.5 flex items-center gap-1">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
+                  <circle cx="12" cy="10" r="3"/>
+                </svg>
+                {selectedRec?.pays}
+              </div>
             </div>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
                  stroke="#0d5c4a" strokeWidth="2.5" strokeLinecap="round"
                  className={`transition-transform shrink-0 ${dropdownOpen ? "rotate-180" : ""}`}>
               <path d="M6 9l6 6 6-6"/>
@@ -168,16 +198,16 @@ export default function SourateView() {
             <div className="absolute top-full left-0 right-0 mt-2 z-[100]
                             bg-white rounded-2xl border-2 border-emerald/10
                             shadow-[0_20px_50px_rgba(13,92,74,0.2)]
-                            max-h-[400px] overflow-hidden flex flex-col">
+                            max-h-[450px] overflow-hidden flex flex-col">
               {/* Barre de recherche */}
               <div className="p-3 border-b border-emerald/10 sticky top-0 bg-white z-10">
                 <input
                   type="text"
-                  placeholder="Rechercher un récitateur..."
+                  placeholder="Rechercher un récitateur ou un pays..."
                   value={searchRec}
                   onChange={(e) => setSearchRec(e.target.value)}
                   autoFocus
-                  className="w-full px-4 py-2 rounded-xl border-2 border-emerald/10
+                  className="w-full px-4 py-2.5 rounded-xl border-2 border-emerald/10
                              focus:border-gold outline-none text-sm" />
               </div>
 
@@ -199,21 +229,28 @@ export default function SourateView() {
                           setDropdownOpen(false);
                           setSearchRec("");
                         }}
-                        className={`w-full flex items-center gap-3 px-4 py-3 text-left
+                        className={`w-full flex items-center gap-3 px-4 py-3.5 text-left
                                     transition-all border-b border-emerald/5 last:border-b-0
                           ${isActive ? "bg-emerald/8" : "hover:bg-cream"}`}>
-                        <div className={`w-9 h-9 rounded-full flex items-center justify-center shrink-0
+                        <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0
                           ${isActive
                             ? "bg-emerald text-gold"
                             : "bg-gold/15 text-gold"}`}>
-                          <IconPlay size={12} />
+                          <IconPlay size={14} />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <div className={`text-sm font-semibold truncate
+                          <div className={`text-sm font-bold leading-tight
                             ${isActive ? "text-emerald" : "text-emerald-dark"}`}>
                             {r.nom}
                           </div>
-                          <div className="text-xs text-gray-500">{r.pays}</div>
+                          <div className="text-xs text-gray-500 mt-0.5 flex items-center gap-1">
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none"
+                                 stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
+                              <circle cx="12" cy="10" r="3"/>
+                            </svg>
+                            {r.pays}
+                          </div>
                         </div>
                         {isActive && (
                           <svg width="18" height="18" viewBox="0 0 24 24" fill="none"

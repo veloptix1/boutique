@@ -15,7 +15,14 @@ type Sourate = {
   type: string;
 };
 
-const RECITATEURS = [
+type Recitateur = {
+  slug: string;
+  nom: string;
+  pays: string;
+  baseUrl?: string;
+};
+
+const RECITATEURS: Recitateur[] = [
   { slug: "ar.alafasy",            nom: "Cheikh Mishary Al-Afasy",          pays: "Koweït" },
   { slug: "ar.husary",             nom: "Cheikh Mahmoud Khalil Al-Husary",  pays: "Égypte" },
   { slug: "ar.husarymujawwad",     nom: "Cheikh Al-Husary (Mujawwad)",      pays: "Égypte" },
@@ -32,10 +39,20 @@ const RECITATEURS = [
   { slug: "ar.abdullahbasfar",     nom: "Cheikh Abdullah Basfar",           pays: "Arabie Saoudite" },
   { slug: "ar.saoodshuraym",       nom: "Cheikh Saud Ash-Shuraim",          pays: "Arabie Saoudite" },
   { slug: "ar.muhammadjibreel",    nom: "Cheikh Muhammad Jibreel",          pays: "Arabie Saoudite" },
+  { slug: "khalifa-tunaiji",       nom: "Cheikh Khalifa Al-Tunaiji",        pays: "Émirats Arabes Unis",  baseUrl: "https://server12.mp3quran.net/tnjy/" },
+  { slug: "saad-ghamdi",           nom: "Cheikh Saad Al-Ghamdi",            pays: "Arabie Saoudite",      baseUrl: "https://server7.mp3quran.net/s_gmd/" },
+  { slug: "yasser-dosari",         nom: "Cheikh Yasser Al-Dosari",          pays: "Arabie Saoudite",      baseUrl: "https://server11.mp3quran.net/yasser/" },
+  { slug: "ahmed-amer",            nom: "Cheikh Ahmed Al-Amer",             pays: "Arabie Saoudite",      baseUrl: "https://server10.mp3quran.net/ahmad_amer/" },
+  { slug: "abdullah-juhany",       nom: "Cheikh Abdullah Al-Juhany",        pays: "Arabie Saoudite",      baseUrl: "https://server13.mp3quran.net/jhn/" },
+  { slug: "mahmoud-ali-albanna",   nom: "Cheikh Mahmoud Ali Al-Banna",      pays: "Égypte",               baseUrl: "https://server8.mp3quran.net/bna/" },
+  { slug: "ali-jaber",             nom: "Cheikh Ali Jaber",                 pays: "Arabie Saoudite",      baseUrl: "https://server11.mp3quran.net/a_jbr/" },
+  { slug: "nasser-qatami",         nom: "Cheikh Nasser Al-Qatami",          pays: "Koweït",               baseUrl: "https://server6.mp3quran.net/qtm/" },
 ];
 
-const getAudioUrl = (recitateurSlug: string, numero: number) => {
-  return `https://cdn.islamic.network/quran/audio-surah/128/${recitateurSlug}/${numero}.mp3`;
+const getAudioUrl = (recitateur: Recitateur, numero: number) => {
+  const numeroPad = String(numero).padStart(3, "0");
+  if (recitateur.baseUrl) return `${recitateur.baseUrl}${numeroPad}.mp3`;
+  return `https://cdn.islamic.network/quran/audio-surah/128/${recitateur.slug}/${numero}.mp3`;
 };
 
 type SortOption = "num-asc" | "num-desc" | "nom-asc" | "versets-asc" | "versets-desc" | "type";
@@ -131,7 +148,6 @@ export default function CoranClient() {
         </p>
       </div>
 
-      {/* Barre de recherche */}
       <div className="relative mb-4">
         <div className="absolute left-5 top-1/2 -translate-y-1/2 text-emerald/50 pointer-events-none">
           <IconSearch size={18} />
@@ -151,7 +167,6 @@ export default function CoranClient() {
         )}
       </div>
 
-      {/* Filtres */}
       <div className="flex flex-wrap gap-3 mb-6">
         <div className="flex gap-2 overflow-x-auto">
           {types.map((t) => (
@@ -267,7 +282,7 @@ export default function CoranClient() {
             <div className="px-5 py-4 border-b border-emerald/10 flex items-center justify-between shrink-0">
               <div>
                 <div className="text-xs font-bold text-gold uppercase tracking-wider">
-                  Récitateurs
+                  {RECITATEURS.length} récitateurs disponibles
                 </div>
                 <div className="text-sm font-semibold text-emerald-dark mt-1">
                   Sourate {openMenuFor} — {sourates.find((s) => s.numero === openMenuFor)?.nom_translit}
@@ -285,7 +300,7 @@ export default function CoranClient() {
             <div className="p-3 border-b border-emerald/10">
               <input
                 type="text"
-                placeholder="Rechercher un récitateur..."
+                placeholder="Rechercher un récitateur ou un pays..."
                 value={searchRec}
                 onChange={(e) => setSearchRec(e.target.value)}
                 className="w-full px-4 py-2.5 rounded-xl border-2 border-emerald/10
@@ -303,7 +318,7 @@ export default function CoranClient() {
                     <button
                       onClick={() => {
                         playAudio({
-                          url: getAudioUrl(r.slug, openMenuFor),
+                          url: getAudioUrl(r, openMenuFor),
                           titre: `Sourate ${openMenuFor} — ${sourates.find((s) => s.numero === openMenuFor)?.nom_translit}`,
                           auteur: r.nom,
                         });
@@ -317,10 +332,17 @@ export default function CoranClient() {
                         <IconPlay size={12} />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <div className="text-sm font-semibold text-emerald-dark truncate">
+                        <div className="text-sm font-bold text-emerald-dark leading-tight">
                           {r.nom}
                         </div>
-                        <div className="text-xs text-gray-500">{r.pays}</div>
+                        <div className="text-xs text-gray-500 mt-0.5 flex items-center gap-1">
+                          <svg width="10" height="10" viewBox="0 0 24 24" fill="none"
+                               stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
+                            <circle cx="12" cy="10" r="3"/>
+                          </svg>
+                          {r.pays}
+                        </div>
                       </div>
                       <IconArrowRight size={14} />
                     </button>
