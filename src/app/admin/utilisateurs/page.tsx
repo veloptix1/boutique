@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
-import { IconUser } from "@/components/icons";
 
 type Profile = {
   id: string;
@@ -25,76 +24,84 @@ export default function AdminUsersPage() {
   useEffect(() => { load(); }, []);
 
   const toggleRole = async (u: Profile) => {
+    const { data: { user: me } } = await supabase.auth.getUser();
+    if (me?.id === u.id) { alert("Vous ne pouvez pas modifier votre propre rôle."); return; }
     const newRole = u.role === "admin" ? "user" : "admin";
     if (!confirm(`Passer ${u.email} en ${newRole} ?`)) return;
-    await supabase.from("profiles").update({ role: newRole }).eq("id", u.id);
+    const { error } = await supabase.from("profiles").update({ role: newRole }).eq("id", u.id);
+    if (error) { alert("Action refusée."); return; }
     load();
   };
 
   return (
     <main className="p-6 lg:p-12 max-w-[1400px] mx-auto">
       <div className="mb-8">
-        <div className="text-xs font-bold text-gold uppercase tracking-[3px] mb-2">
-          Utilisateurs
-        </div>
         <h1 className="font-amiri font-bold text-emerald-dark text-3xl">
           Utilisateurs
         </h1>
-        <p className="text-gray-500 text-sm">{users.length} inscrit(s)</p>
+        <p className="text-muted text-sm">{users.length} inscrit(s)</p>
       </div>
 
       {loading ? (
-        <p className="text-gray-400">Chargement...</p>
+        <p className="text-muted">Chargement…</p>
       ) : (
-        <div className="bg-white rounded-3xl border border-emerald/5 overflow-hidden">
-          <table className="w-full">
-            <thead className="bg-emerald/5">
-              <tr className="text-left text-xs font-bold text-emerald-dark uppercase tracking-wider">
-                <th className="px-6 py-4">Utilisateur</th>
-                <th className="px-6 py-4 hidden md:table-cell">Inscrit le</th>
-                <th className="px-6 py-4">Rôle</th>
-                <th className="px-6 py-4 text-right">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {users.map((u) => (
-                <tr key={u.id} className="border-t border-emerald/5 hover:bg-cream/50">
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-3">
-                      <div className="w-9 h-9 rounded-full bg-emerald/10 flex items-center justify-center text-emerald">
-                        <IconUser size={16} />
-                      </div>
-                      <div>
-                        <div className="font-semibold text-emerald-dark text-sm">
-                          {u.nom || "Sans nom"}
-                        </div>
-                        <div className="text-xs text-gray-400">{u.email}</div>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 text-sm text-gray-600 hidden md:table-cell">
-                    {new Date(u.created_at).toLocaleDateString("fr-FR")}
-                  </td>
-                  <td className="px-6 py-4">
-                    <span className={`px-3 py-1 rounded-full text-[0.7rem] font-bold uppercase
-                      ${u.role === "admin"
-                        ? "bg-gold/15 text-gold"
-                        : "bg-emerald/10 text-emerald"}`}>
-                      {u.role}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 text-right">
-                    <button onClick={() => toggleRole(u)}
-                      className="px-3 py-1.5 rounded-lg bg-emerald/10 text-emerald
-                                 text-xs font-semibold hover:bg-emerald/20">
-                      {u.role === "admin" ? "Retirer admin" : "Nommer admin"}
-                    </button>
-                  </td>
+        <>
+          {/* Mobile : une carte par utilisateur */}
+          <ul className="space-y-3 md:hidden">
+            {users.map((u) => (
+              <li key={u.id} className="card p-4">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0">
+                    <p className="truncate font-semibold text-emerald-dark">{u.nom || "Sans nom"}</p>
+                    <p className="truncate text-sm text-muted">{u.email}</p>
+                    <p className="mt-1 text-xs text-muted">Inscrit le {new Date(u.created_at).toLocaleDateString("fr-FR")}</p>
+                  </div>
+                  <span className={`badge shrink-0 ${u.role === "admin" ? "bg-gold/25 text-gold-deep" : "bg-emerald/10 text-emerald"}`}>
+                    {u.role === "admin" ? "Admin" : "Membre"}
+                  </span>
+                </div>
+                <button onClick={() => toggleRole(u)} className="btn-secondary btn-sm mt-3 w-full">
+                  {u.role === "admin" ? "Retirer les droits admin" : "Nommer administrateur"}
+                </button>
+              </li>
+            ))}
+          </ul>
+
+          {/* Tablette et ordinateur : tableau */}
+          <div className="card hidden overflow-hidden md:block">
+            <table className="w-full">
+              <thead className="bg-emerald/5">
+                <tr className="text-left text-sm font-semibold text-emerald-dark">
+                  <th className="px-6 py-4">Utilisateur</th>
+                  <th className="px-6 py-4">Inscrit le</th>
+                  <th className="px-6 py-4">Rôle</th>
+                  <th className="px-6 py-4 text-right">Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {users.map((u) => (
+                  <tr key={u.id} className="border-t border-line">
+                    <td className="px-6 py-4">
+                      <div className="font-semibold text-emerald-dark text-sm">{u.nom || "Sans nom"}</div>
+                      <div className="text-xs text-muted">{u.email}</div>
+                    </td>
+                    <td className="px-6 py-4 text-sm text-ink/80">{new Date(u.created_at).toLocaleDateString("fr-FR")}</td>
+                    <td className="px-6 py-4">
+                      <span className={`badge ${u.role === "admin" ? "bg-gold/25 text-gold-deep" : "bg-emerald/10 text-emerald"}`}>
+                        {u.role === "admin" ? "Admin" : "Membre"}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 text-right">
+                      <button onClick={() => toggleRole(u)} className="btn-secondary btn-sm">
+                        {u.role === "admin" ? "Retirer admin" : "Nommer admin"}
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </>
       )}
     </main>
   );

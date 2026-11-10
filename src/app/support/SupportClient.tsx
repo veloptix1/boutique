@@ -1,8 +1,10 @@
 "use client";
-import { Bismillah, EndMark } from "@/components/PageHeader";
+import { EndMark } from "@/components/PageHeader";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { BackLink, PageHeader } from "@/components/ui";
 import { supabase } from "@/lib/supabase";
+import { clamp } from "@/lib/security";
 import { IconCheck } from "@/components/icons";
 
 type Ticket = {
@@ -92,8 +94,8 @@ export default function SupportClient() {
       user_id: user.id,
       user_email: user.email,
       user_nom: profile?.nom || "Utilisateur",
-      sujet,
-      message,
+      sujet: clamp(sujet, 120),
+      message: clamp(message, 2000),
     });
 
     setSending(false);
@@ -113,8 +115,8 @@ export default function SupportClient() {
 
   const statutBadge = (s: string) => {
     if (s === "resolu") return "bg-emerald/10 text-emerald";
-    if (s === "en_cours") return "bg-gold/15 text-gold";
-    if (s === "ferme") return "bg-gray-200 text-gray-500";
+    if (s === "en_cours") return "bg-gold/15 text-gold-deep";
+    if (s === "ferme") return "bg-gray-200 text-muted";
     return "bg-terracotta/10 text-terracotta";
   };
 
@@ -126,50 +128,27 @@ export default function SupportClient() {
   };
 
   return (
-    <main className="px-[6%] pt-24 pb-40 max-w-[900px] mx-auto min-h-screen">
+    <main className="page max-w-[900px]">
 
-      <Link href="/dashboard" className="text-emerald text-sm font-semibold hover:underline">
-        ← Retour
-      </Link>
+      <BackLink href="/dashboard" label="Retour" />
 
-      <div className="mt-8"><Bismillah /></div>
 
-      <div className="mb-10">
-        <div className="flex items-center gap-3 mb-3">
-          <div className="w-12 h-12 rounded-2xl bg-emerald/10 flex items-center justify-center text-emerald">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                 stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-              <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
-            </svg>
-          </div>
-          <div className="text-xs font-bold text-gold uppercase tracking-[3px]">
-            Aide & Contact
-          </div>
-        </div>
-        <h1 className="font-amiri font-bold text-emerald-dark text-4xl sm:text-5xl mb-3">
-          Support
-        </h1>
-        <p className="text-gray-500 max-w-2xl">
-          Suivez-nous sur nos réseaux et contactez-nous pour toute question.
-        </p>
-      </div>
+      <PageHeader title="Support" subtitle="Suivez-nous sur nos réseaux et contactez-nous pour toute question." />
 
       <div className="mb-12">
         <h2 className="font-amiri font-bold text-emerald-dark text-2xl mb-5">Suivez-nous</h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {reseaux.map((r) => (
             <a key={r.nom} href={r.url} target="_blank" rel="noopener noreferrer"
-              className="bg-white rounded-3xl p-6 flex flex-col items-center
-                         border border-emerald/5 hover:-translate-y-1
-                         hover:shadow-[0_20px_40px_rgba(13,92,74,0.1)]
+              className="bg-white rounded-2xl p-6 flex flex-col items-center
+                         border border-line
                          transition-all no-underline group">
-              <div className="w-14 h-14 rounded-2xl flex items-center justify-center mb-4
-                              group-hover:scale-110 transition"
+              <div className="w-14 h-14 rounded-2xl flex items-center justify-center mb-4 transition"
                    style={{ backgroundColor: r.color, color: "#fff" }}>
                 {r.icon}
               </div>
               <div className="font-bold text-emerald-dark text-sm">{r.nom}</div>
-              <div className="text-xs text-gray-400 mt-1 truncate max-w-full">
+              <div className="text-xs text-muted mt-1 truncate max-w-full">
                 {r.url.replace(/^https?:\/\//, "")}
               </div>
             </a>
@@ -183,8 +162,8 @@ export default function SupportClient() {
         </h2>
 
         {!user ? (
-          <div className="bg-white rounded-3xl p-8 text-center border border-emerald/5">
-            <p className="text-gray-500 mb-4">Connectez-vous pour nous envoyer un message.</p>
+          <div className="bg-white rounded-2xl p-8 text-center border border-line">
+            <p className="text-muted mb-4">Connectez-vous pour nous envoyer un message.</p>
             <Link href="/auth"
               className="inline-block px-6 py-3 rounded-2xl bg-emerald text-white
                          font-semibold text-sm hover:bg-emerald-dark transition">
@@ -193,7 +172,7 @@ export default function SupportClient() {
           </div>
         ) : !showForm ? (
           <button onClick={() => setShowForm(true)}
-            className="w-full bg-white rounded-3xl p-6 border-2 border-dashed border-emerald/20
+            className="w-full bg-white rounded-2xl p-6 border border-dashed border-emerald/20
                        hover:border-emerald/40 transition flex items-center justify-center gap-3
                        text-emerald-dark font-semibold">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
@@ -204,22 +183,22 @@ export default function SupportClient() {
           </button>
         ) : (
           <form onSubmit={envoyerTicket}
-            className="bg-white rounded-3xl p-6 sm:p-8 border border-emerald/5">
+            className="bg-white rounded-2xl p-6 sm:p-8 border border-line">
             <div className="mb-4">
-              <label className="block text-xs font-semibold text-emerald-dark mb-2 uppercase tracking-wider">Sujet *</label>
+              <label className="block text-xs font-semibold text-emerald-dark mb-2">Sujet *</label>
               <input type="text" value={sujet} onChange={(e) => setSujet(e.target.value)}
                 placeholder="Ex : Problème d'audio, Question..." required
-                className="w-full px-5 py-3 rounded-2xl border-2 border-emerald/10 focus:border-gold outline-none text-sm" />
+                className="field" />
             </div>
             <div className="mb-5">
-              <label className="block text-xs font-semibold text-emerald-dark mb-2 uppercase tracking-wider">Message *</label>
+              <label className="block text-xs font-semibold text-emerald-dark mb-2">Message *</label>
               <textarea value={message} onChange={(e) => setMessage(e.target.value)} rows={5}
                 placeholder="Décrivez votre demande..." required
-                className="w-full px-5 py-3 rounded-2xl border-2 border-emerald/10 focus:border-gold outline-none text-sm resize-none" />
+                className="field resize-none" />
             </div>
             <div className="flex gap-3">
               <button type="button" onClick={() => setShowForm(false)}
-                className="px-6 py-3 rounded-2xl border-2 border-emerald/15 text-emerald-dark font-semibold text-sm">Annuler</button>
+                className="px-6 py-3 rounded-2xl border border-line text-emerald-dark font-semibold text-sm">Annuler</button>
               <button type="submit" disabled={sending}
                 className="flex-1 px-6 py-3 rounded-2xl bg-emerald text-white font-semibold text-sm hover:bg-emerald-dark transition disabled:opacity-50 inline-flex items-center justify-center gap-2">
                 <IconCheck size={16} />{sending ? "Envoi..." : "Envoyer le ticket"}
@@ -242,20 +221,20 @@ export default function SupportClient() {
           </h2>
           <div className="grid gap-4">
             {tickets.map((t) => (
-              <div key={t.id} className="bg-white rounded-3xl p-6 border border-emerald/5">
+              <div key={t.id} className="bg-white rounded-2xl p-6 border border-line">
                 <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
                   <div className="font-bold text-emerald-dark text-sm">{t.sujet}</div>
-                  <span className={`px-3 py-1 rounded-full text-[0.65rem] font-bold uppercase ${statutBadge(t.statut)}`}>
+                  <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase ${statutBadge(t.statut)}`}>
                     {statutLabel(t.statut)}
                   </span>
                 </div>
-                <p className="text-sm text-gray-600 mb-3">{t.message}</p>
-                <div className="text-xs text-gray-400">
+                <p className="text-sm text-ink/80 mb-3">{t.message}</p>
+                <div className="text-xs text-muted">
                   {new Date(t.created_at).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" })}
                 </div>
                 {t.reponse_admin && (
-                  <div className="mt-4 pt-4 border-t border-emerald/10">
-                    <div className="text-xs font-bold text-gold uppercase tracking-wider mb-2">Réponse du support</div>
+                  <div className="mt-4 pt-4 border-t border-line">
+                    <div className="text-xs font-bold text-gold mb-2">Réponse du support</div>
                     <p className="text-sm text-gray-700 bg-cream p-3 rounded-xl">{t.reponse_admin}</p>
                   </div>
                 )}

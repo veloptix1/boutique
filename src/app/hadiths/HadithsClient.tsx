@@ -1,10 +1,11 @@
 "use client";
-import { Bismillah, EndMark } from "@/components/PageHeader";
+import { EndMark } from "@/components/PageHeader";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { BackLink, ListSkeleton, PageHeader, SearchField } from "@/components/ui";
 import { supabase } from "@/lib/supabase";
 import { useLang } from "@/components/LangProvider";
-import { IconParchemin, IconUser, IconSearch } from "@/components/icons";
+import { IconParchemin, IconUser } from "@/components/icons";
 
 type Hadith = {
   id: string;
@@ -73,71 +74,27 @@ export default function HadithsClient() {
 
   const authBadge: Record<string, string> = {
     sahih: "bg-emerald/10 text-emerald",
-    hasan: "bg-gold/15 text-gold",
+    hasan: "bg-gold/15 text-gold-deep",
     daif:  "bg-terracotta/10 text-terracotta",
   };
 
   return (
-    <main className="px-[6%] pt-24 pb-40 max-w-[1200px] mx-auto">
-      <Bismillah />
+    <main className="page">
 
-      <Link href="/dashboard" className="text-emerald text-sm font-semibold hover:underline">
-        ← Retour
-      </Link>
+      <BackLink href="/dashboard" label="Retour" />
 
       {/* En-tête */}
-      <div className="mt-6 mb-10">
-        <div className="flex items-center gap-3 mb-3">
-          <div className="w-12 h-12 rounded-2xl bg-emerald/10 flex items-center justify-center text-emerald">
-            <IconParchemin size={24} />
-          </div>
-          <div className="text-xs font-bold text-gold uppercase tracking-[3px]">
-            Sunna
-          </div>
-        </div>
-        <h1 className="font-amiri font-bold text-emerald-dark text-4xl sm:text-5xl mb-3">
-          Les Hadiths
-        </h1>
-        <p className="text-gray-500 max-w-2xl">
-          Les paroles du Prophète ﷺ authentiquement rapportées,
-          avec traduction et explication.
-        </p>
-      </div>
+
+      <PageHeader title="Les Hadiths" subtitle="Les paroles du Prophète ﷺ authentiquement rapportées, avec traduction et explication." />
 
       {/* Recherche */}
-      <div className="relative mb-6">
-        <div className="absolute left-5 top-1/2 -translate-y-1/2 text-emerald/50 pointer-events-none">
-          <IconSearch size={18} />
-        </div>
-        <input
-          type="text"
-          placeholder="Rechercher par texte, source ou rapporteur..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="w-full pl-14 pr-5 py-4 rounded-2xl border-2 border-emerald/10
-                     focus:border-gold outline-none text-sm bg-white
-                     shadow-[0_4px_14px_rgba(13,92,74,0.05)]"
-        />
-        {search && (
-          <button
-            onClick={() => setSearch("")}
-            className="absolute right-5 top-1/2 -translate-y-1/2 text-gray-400
-                       hover:text-terracotta transition text-xl leading-none"
-          >
-            ×
-          </button>
-        )}
-      </div>
+      <SearchField value={search} onChange={setSearch} placeholder="Rechercher par texte, source ou rapporteur..." />
 
       {/* Filtres */}
-      <div className="flex gap-2 mb-8 overflow-x-auto pb-2">
+      <div role="group" aria-label="Filtres" className="scrollbar-none -mx-4 mb-4 flex gap-2 overflow-x-auto px-4 sm:mx-0 sm:px-0">
         {filters.map(({ id, label }) => (
           <button key={id} onClick={() => setFilter(id)}
-            className={`px-5 py-2.5 rounded-full text-sm font-semibold whitespace-nowrap
-                        transition
-              ${filter === id
-                ? "bg-emerald text-white shadow-[0_8px_20px_rgba(13,92,74,0.25)]"
-                : "bg-white text-emerald-dark border border-emerald/10 hover:border-emerald/30"}`}>
+            aria-pressed={filter === id} className="chip">
             {label}
           </button>
         ))}
@@ -145,19 +102,19 @@ export default function HadithsClient() {
 
       {/* Résultats */}
       {search && (
-        <p className="text-sm text-gray-500 mb-5">
+        <p className="text-sm text-muted mb-5">
           {filtered.length} résultat{filtered.length > 1 ? "s" : ""} pour « {search} »
         </p>
       )}
 
       {loading ? (
-        <p className="text-gray-400">Chargement...</p>
+        <ListSkeleton />
       ) : filtered.length === 0 ? (
-        <div className="bg-white rounded-3xl p-16 text-center border border-emerald/5">
+        <div className="bg-white rounded-2xl p-8 text-center border border-line">
           <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-emerald/10 flex items-center justify-center text-emerald">
             <IconParchemin size={28} />
           </div>
-          <p className="text-gray-400 mb-2">Aucun hadith</p>
+          <p className="text-muted mb-2">Aucun hadith</p>
           {(search || filter !== "tous") && (
             <button onClick={() => { setSearch(""); setFilter("tous"); }}
               className="text-emerald text-sm font-semibold hover:underline">
@@ -171,19 +128,19 @@ export default function HadithsClient() {
             const isOpen = expanded === h.id;
             return (
               <div key={h.id}
-                className="bg-white rounded-3xl p-6 sm:p-8 border border-emerald/5
+                className="bg-white rounded-2xl p-6 sm:p-8 border border-line
                            hover:border-emerald/15 transition-all">
                 {/* Bandeau */}
                 <div className="flex items-center gap-3 mb-5 flex-wrap">
-                  <span className={`px-3 py-1 rounded-full text-[0.7rem] font-bold uppercase
+                  <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase
                     ${authBadge[h.authenticite] || authBadge.sahih}`}>
                     {h.authenticite}
                   </span>
                   {h.source && (
-                    <span className="text-xs text-gray-400">{h.source}</span>
+                    <span className="text-xs text-muted">{h.source}</span>
                   )}
                   {h.rapporteur && (
-                    <span className="text-xs text-gray-400 inline-flex items-center gap-1">
+                    <span className="text-xs text-muted inline-flex items-center gap-1">
                       <IconUser size={12} /> {h.rapporteur}
                     </span>
                   )}
@@ -202,7 +159,7 @@ export default function HadithsClient() {
 
                 {/* Traduction */}
                 {getTexte(h) && (
-                  <p className="text-gray-600 leading-relaxed mb-4">
+                  <p className="text-ink/80 leading-relaxed mb-4">
                     {getTexte(h)}
                   </p>
                 )}
@@ -222,7 +179,7 @@ export default function HadithsClient() {
                     </button>
                     {isOpen && (
                       <div className="mt-4 p-5 rounded-2xl bg-emerald/5 border-l-4 border-gold">
-                        <p className="text-sm text-gray-600 leading-relaxed whitespace-pre-line">
+                        <p className="text-sm text-ink/80 leading-relaxed whitespace-pre-line">
                           {h.explication_fr}
                         </p>
                       </div>

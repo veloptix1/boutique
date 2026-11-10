@@ -4,14 +4,16 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 import { signOut } from "@/lib/auth";
-import { IconUser } from "@/components/icons";
 import PushNotificationManager from "@/components/PushNotificationManager";
+import { FullLoader, PageHeader } from "@/components/ui";
 
-type Profile = {
-  email: string;
-  nom: string | null;
-  role: string;
-};
+type Profile = { id: string; email: string; nom: string | null; role: string };
+
+const liens = [
+  { label: "Aide et support", href: "/support" },
+  { label: "Questions fréquentes", href: "/faq" },
+  { label: "Conditions d'utilisation", href: "/conditions" },
+];
 
 export default function ProfilPage() {
   const router = useRouter();
@@ -21,15 +23,8 @@ export default function ProfilPage() {
   useEffect(() => {
     (async () => {
       const { data: { user } } = await supabase.auth.getUser();
-      if (!user) {
-        router.push("/auth");
-        return;
-      }
-      const { data } = await supabase
-        .from("profiles")
-        .select("*")
-        .eq("id", user.id)
-        .single();
+      if (!user) { router.push("/auth"); return; }
+      const { data } = await supabase.from("profiles").select("id, email, nom, role").eq("id", user.id).single();
       setProfile(data);
       setLoading(false);
     })();
@@ -40,59 +35,45 @@ export default function ProfilPage() {
     router.push("/");
   };
 
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p className="text-emerald">Chargement...</p>
-      </div>
-    );
-  }
+  if (loading) return <FullLoader />;
+
+  const initiale = (profile?.nom || profile?.email || "?").trim().charAt(0).toUpperCase();
 
   return (
-    <div className="min-h-screen px-[6%] pt-28 pb-40 bg-cream">
-      <div className="max-w-md mx-auto space-y-4">
+    <main className="page max-w-md">
+      <PageHeader title="Profil" />
 
-        {/* Carte profil */}
-        <div className="bg-white rounded-[28px] p-8
-                        shadow-[0_30px_60px_rgba(13,92,74,0.15)]">
-          <div className="flex items-center gap-4 mb-6">
-            <div className="w-16 h-16 rounded-full bg-gradient-to-br from-emerald to-emerald-dark
-                            flex items-center justify-center">
-              <span className="text-gold"><IconUser size={28} /></span>
-            </div>
-            <div>
-              <h1 className="font-bold text-emerald-dark text-xl">
-                {profile?.nom || "Utilisateur"}
-              </h1>
-              <p className="text-sm text-gray-500">{profile?.email}</p>
-            </div>
-          </div>
-
-          <div className="space-y-2 text-sm text-gray-600 mb-6">
-            <p><strong>Rôle :</strong> {profile?.role}</p>
-          </div>
-
-          {profile?.role === "admin" && (
-            <Link href="/admin"
-              className="block w-full py-3 rounded-2xl bg-gold text-emerald-dark
-                         font-semibold text-center mb-3 hover:opacity-90 transition">
-              Accéder au panel admin
-            </Link>
-          )}
-
-          <button
-            onClick={handleLogout}
-            className="w-full py-3 rounded-2xl border-2 border-emerald/15
-                       text-emerald-dark font-semibold hover:border-terracotta
-                       hover:text-terracotta transition">
-            Se déconnecter
-          </button>
+      <section className="card mb-4 flex items-center gap-4 p-4">
+        <span aria-hidden="true" className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-emerald font-amiri text-2xl font-bold text-gold">
+          {initiale}
+        </span>
+        <div className="min-w-0">
+          <p className="truncate font-semibold text-emerald-dark">{profile?.nom || "Utilisateur"}</p>
+          <p className="truncate text-sm text-muted">{profile?.email}</p>
+          <span className={`badge mt-1.5 ${profile?.role === "admin" ? "bg-gold/25 text-gold-deep" : "bg-emerald/10 text-emerald"}`}>
+            {profile?.role === "admin" ? "Administrateur" : "Membre"}
+          </span>
         </div>
+      </section>
 
-        {/* Notifications */}
-        <PushNotificationManager />
+      {profile?.role === "admin" && (
+        <Link href="/admin" className="btn-gold mb-4 w-full">Ouvrir l'espace administrateur</Link>
+      )}
 
-      </div>
-    </div>
+      <div className="mb-4"><PushNotificationManager /></div>
+
+      <ul className="card mb-6 divide-y divide-line overflow-hidden">
+        {liens.map((l) => (
+          <li key={l.href}>
+            <Link href={l.href} className="flex h-14 items-center justify-between px-4 text-[0.95rem] font-medium text-emerald-dark no-underline active:bg-cream">
+              {l.label}
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className="text-muted" aria-hidden="true"><path d="M9 6l6 6-6 6" /></svg>
+            </Link>
+          </li>
+        ))}
+      </ul>
+
+      <button onClick={handleLogout} className="btn-secondary w-full text-terracotta-deep">Se déconnecter</button>
+    </main>
   );
 }

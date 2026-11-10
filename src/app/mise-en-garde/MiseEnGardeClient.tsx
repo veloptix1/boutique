@@ -1,12 +1,11 @@
 "use client";
-import { Bismillah, EndMark } from "@/components/PageHeader";
+import { EndMark } from "@/components/PageHeader";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { ListSkeleton, PageHeader, SearchField } from "@/components/ui";
 import { supabase } from "@/lib/supabase";
 import { useLang } from "@/components/LangProvider";
-import {
-  IconUser, IconSearch, IconArrowRight,
-} from "@/components/icons";
+import { IconUser } from "@/components/icons";
 
 type Mise = {
   id: string;
@@ -73,64 +72,18 @@ export default function MiseEnGardeClient() {
   const savantsAvecMises = Array.from(new Set(mises.map((m) => m.savant_id)));
 
   return (
-    <main className="px-[6%] pt-24 pb-40 max-w-[1200px] mx-auto min-h-screen">
-      <Bismillah />
+    <main className="page">
 
-      <Link href="/dashboard" className="text-emerald text-sm font-semibold hover:underline">
-        ← Retour
-      </Link>
-
-      <div className="mt-6 mb-10">
-        <div className="flex items-center gap-3 mb-3">
-          <div className="w-12 h-12 rounded-2xl bg-terracotta/10 flex items-center justify-center text-terracotta">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                 stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M10.3 3.9a2 2 0 013.4 0l8 13.8A2 2 0 0120 21H4a2 2 0 01-1.7-3.3z"/>
-              <path d="M12 9v4M12 17h.01"/>
-            </svg>
-          </div>
-          <div className="text-xs font-bold text-terracotta uppercase tracking-[3px]">
-            Salafiya
-          </div>
-        </div>
-        <h1 className="font-amiri font-bold text-emerald-dark text-4xl sm:text-5xl mb-3">
-          Mise en garde
-        </h1>
-        <p className="text-gray-500 max-w-2xl">
-          Les mises en garde des savants de la Salafiya contre les personnes,
-          groupes et sectes déviantes — avec preuves et sources.
-        </p>
-      </div>
+      <PageHeader title="Mise en garde" subtitle="Les mises en garde des savants de la Salafiya contre les personnes, groupes et sectes déviantes — avec preuves et sources." back="/dashboard" />
 
       {/* Recherche */}
-      <div className="relative mb-6">
-        <div className="absolute left-5 top-1/2 -translate-y-1/2 text-emerald/50 pointer-events-none">
-          <IconSearch size={18} />
-        </div>
-        <input
-          type="text"
-          placeholder="Rechercher par nom, savant ou raison..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="w-full pl-14 pr-5 py-4 rounded-2xl border-2 border-emerald/10
-                     focus:border-gold outline-none text-sm bg-white"
-        />
-        {search && (
-          <button onClick={() => setSearch("")}
-            className="absolute right-5 top-1/2 -translate-y-1/2 text-gray-400
-                       hover:text-terracotta text-xl leading-none">×</button>
-        )}
-      </div>
+      <SearchField value={search} onChange={setSearch} placeholder="Rechercher par nom, savant ou raison..." />
 
       {/* Filtres par savant */}
       {savantsAvecMises.length > 0 && (
-        <div className="flex gap-2 mb-8 overflow-x-auto pb-2">
+        <div role="group" aria-label="Filtres" className="scrollbar-none -mx-4 mb-4 flex gap-2 overflow-x-auto px-4 sm:mx-0 sm:px-0">
           <button onClick={() => setFilterSavant("tous")}
-            className={`px-5 py-2.5 rounded-full text-sm font-semibold whitespace-nowrap
-                        transition
-              ${filterSavant === "tous"
-                ? "bg-terracotta text-white shadow-[0_8px_20px_rgba(193,80,46,0.25)]"
-                : "bg-white text-emerald-dark border border-emerald/10"}`}>
+            aria-pressed={filterSavant === "tous"} className="chip">
             Tous ({mises.length})
           </button>
           {savantsAvecMises.map((sid) => {
@@ -138,11 +91,7 @@ export default function MiseEnGardeClient() {
             if (!s) return null;
             return (
               <button key={sid} onClick={() => setFilterSavant(sid)}
-                className={`px-5 py-2.5 rounded-full text-sm font-semibold whitespace-nowrap
-                            transition
-                  ${filterSavant === sid
-                    ? "bg-terracotta text-white shadow-[0_8px_20px_rgba(193,80,46,0.25)]"
-                    : "bg-white text-emerald-dark border border-emerald/10"}`}>
+                aria-pressed={filterSavant === sid} className="chip">
                 {s.nom_fr}
               </button>
             );
@@ -151,13 +100,13 @@ export default function MiseEnGardeClient() {
       )}
 
       {loading ? (
-        <p className="text-gray-400">Chargement...</p>
+        <ListSkeleton />
       ) : filtered.length === 0 ? (
-        <div className="bg-white rounded-3xl p-16 text-center border border-emerald/5">
+        <div className="bg-white rounded-2xl p-8 text-center border border-line">
           <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-terracotta/10 flex items-center justify-center text-terracotta">
             <IconUser size={28} />
           </div>
-          <p className="text-gray-400 mb-2">Aucune mise en garde pour le moment</p>
+          <p className="text-muted mb-2">Aucune mise en garde pour le moment</p>
           <Link href="/admin/mises"
             className="text-emerald text-sm font-semibold hover:underline">
             + Ajouter une mise en garde (admin)
@@ -169,9 +118,8 @@ export default function MiseEnGardeClient() {
             const savant = getSavant(m.savant_id);
             return (
               <div key={m.id}
-                className="bg-white rounded-3xl overflow-hidden border border-emerald/5
+                className="bg-white rounded-2xl overflow-hidden border border-line
                            hover:border-terracotta/20
-                           hover:shadow-[0_20px_50px_rgba(193,80,46,0.1)]
                            transition-all">
                 <div className="grid md:grid-cols-[200px_1fr]">
 
@@ -179,7 +127,7 @@ export default function MiseEnGardeClient() {
                   <div className="relative aspect-square bg-gradient-to-br from-terracotta/10 to-cream
                                   flex items-center justify-center overflow-hidden">
                     {m.cible_photo_url ? (
-                      <img src={m.cible_photo_url} alt={m.cible_nom}
+                      <img loading="lazy" decoding="async" src={m.cible_photo_url} alt={m.cible_nom}
                         className="w-full h-full object-cover" />
                     ) : (
                       <div className="w-20 h-20 rounded-full bg-terracotta/20 flex items-center justify-center text-terracotta">
@@ -187,8 +135,7 @@ export default function MiseEnGardeClient() {
                       </div>
                     )}
                     <div className="absolute top-3 left-3 px-2 py-0.5 rounded-full
-                                    bg-terracotta text-white text-[0.6rem] font-bold
-                                    uppercase tracking-wider">
+                                    bg-terracotta text-white text-xs font-bold">
                       Mise en garde
                     </div>
                   </div>
@@ -199,7 +146,7 @@ export default function MiseEnGardeClient() {
                     {savant && (
                       <Link href={`/audio/savants/detail?slug=${savant.slug}`}
                         className="inline-flex items-center gap-2 text-xs font-bold
-                                   text-gold uppercase tracking-wider mb-3
+                                   text-gold mb-3
                                    hover:underline w-fit">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
                              stroke="currentColor" strokeWidth="2" strokeLinecap="round">
@@ -214,14 +161,14 @@ export default function MiseEnGardeClient() {
                     </h2>
 
                     {m.cible_description && (
-                      <p className="text-sm text-gray-500 mb-4">
+                      <p className="text-sm text-muted mb-4">
                         {m.cible_description}
                       </p>
                     )}
 
                     {getRaison(m) && (
                       <div className="bg-cream rounded-2xl p-4 mb-4 border-l-4 border-terracotta">
-                        <div className="text-xs font-bold text-terracotta uppercase tracking-wider mb-2">
+                        <div className="text-xs font-bold text-terracotta mb-2">
                           Raison
                         </div>
                         <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-line">
@@ -230,7 +177,7 @@ export default function MiseEnGardeClient() {
                       </div>
                     )}
 
-                    <div className="flex flex-wrap items-center gap-3 text-xs text-gray-400 mt-auto pt-3 border-t border-emerald/5">
+                    <div className="flex flex-wrap items-center gap-3 text-xs text-muted mt-auto pt-3 border-t border-line">
                       {m.categorie && (
                         <span className="px-3 py-1 rounded-full bg-terracotta/10 text-terracotta font-bold">
                           {m.categorie}

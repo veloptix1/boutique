@@ -14,7 +14,8 @@ export default function ClientLayoutWrapper({ children }: { children: React.Reac
   return (
     <>
       <Navbar />
-      <div className="pt-[72px]">{children}</div>
+      {/* 56px de barre + zone sûre (encoche) */}
+      <div style={{ paddingTop: "calc(56px + var(--safe-top))" }}>{children}</div>
       <AudioPlayerFull />
       <BottomNav />
       <UpdateChecker />

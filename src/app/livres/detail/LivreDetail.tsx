@@ -2,9 +2,11 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
+import { BackLink } from "@/components/ui";
 import { supabase } from "@/lib/supabase";
+import { safeUrl } from "@/lib/security";
 import { useLang } from "@/components/LangProvider";
-import { Bismillah, EndMark } from "@/components/PageHeader";
+import { EndMark } from "@/components/PageHeader";
 import { IconLivre, IconUser, IconDownload, IconBook } from "@/components/icons";
 
 export default function LivreDetail() {
@@ -25,11 +27,11 @@ export default function LivreDetail() {
     })();
   }, [slug]);
 
-  if (loading) return <div className="min-h-screen flex items-center justify-center bg-cream"><p className="text-emerald">Chargement...</p></div>;
+  if (loading) return <div className="min-h-dvh flex items-center justify-center bg-cream"><p className="text-emerald">Chargement...</p></div>;
   if (!livre) return (
-    <main className="px-[6%] pt-32 pb-32 max-w-[1200px] mx-auto text-center">
+    <main className="page text-center">
       <h1 className="font-amiri font-bold text-emerald-dark text-3xl mb-4">Livre introuvable</h1>
-      <Link href="/livres" className="text-emerald hover:underline font-semibold">← Retour aux livres</Link>
+      <BackLink href="/livres" label="Retour aux livres" />
     </main>
   );
 
@@ -38,31 +40,27 @@ export default function LivreDetail() {
   const getDesc = () => lang === "ar" ? livre.description_ar || livre.description_fr : lang === "en" ? livre.description_en || livre.description_fr : livre.description_fr;
 
   // URL encodée pour Google Docs Viewer
-  const googleViewerUrl = `https://docs.google.com/viewer?url=${encodeURIComponent(livre.pdf_url)}&embedded=true`;
+  const pdfUrl = safeUrl(livre.pdf_url) ?? "#";
+  const googleViewerUrl = `https://docs.google.com/viewer?url=${encodeURIComponent(pdfUrl)}&embedded=true`;
 
   return (
-    <main className="px-[6%] pt-24 pb-40 max-w-[1200px] mx-auto min-h-screen">
+    <main className="page">
 
-      <Link href="/livres" className="text-emerald text-sm font-semibold hover:underline">
-        ← Retour aux livres
-      </Link>
+      <BackLink href="/livres" label="Retour aux livres" />
 
-      <div className="mt-8">
-        <Bismillah />
-      </div>
 
       <div className="mb-10 grid md:grid-cols-[280px_1fr] gap-8">
         {/* Couverture */}
-        <div className="bg-gradient-to-br from-emerald to-emerald-dark rounded-[28px]
+        <div className="bg-gradient-to-br from-emerald to-emerald-dark rounded-2xl
                         aspect-[3/4] flex items-center justify-center
-                        overflow-hidden shadow-[0_30px_60px_rgba(13,92,74,0.2)]">
+                        overflow-hidden">
           {livre.couverture_url ? (
-            <img src={livre.couverture_url} alt={getTitre()}
+            <img loading="lazy" decoding="async" src={livre.couverture_url} alt={getTitre()}
               className="w-full h-full object-cover" />
           ) : (
             <div className="text-gold flex flex-col items-center gap-4">
               <IconLivre size={64} />
-              <div className="text-xs font-semibold uppercase tracking-widest opacity-70">
+              <div className="text-xs font-semibold opacity-70">
                 {livre.langue?.toUpperCase()}
               </div>
             </div>
@@ -73,8 +71,7 @@ export default function LivreDetail() {
         <div className="flex flex-col">
           {livre.categorie && (
             <div className="inline-block self-start px-3 py-1 rounded-full
-                            bg-emerald/8 text-emerald text-[0.7rem] font-bold
-                            uppercase tracking-wider mb-3">
+                            bg-emerald/8 text-emerald text-xs font-bold mb-3">
               {livre.categorie}
             </div>
           )}
@@ -90,20 +87,20 @@ export default function LivreDetail() {
           </h1>
 
           {getAuteur() && (
-            <div className="flex items-center gap-2 text-gray-600 mb-6">
+            <div className="flex items-center gap-2 text-ink/80 mb-6">
               <IconUser size={18} />
               <span className="font-semibold">{getAuteur()}</span>
             </div>
           )}
 
-          <div className="flex flex-wrap gap-4 text-xs text-gray-400 mb-6">
+          <div className="flex flex-wrap gap-4 text-xs text-muted mb-6">
             {livre.pages && <span>{livre.pages} pages</span>}
             {livre.annee && <span>{livre.annee}</span>}
             <span>Langue : {livre.langue?.toUpperCase()}</span>
           </div>
 
           {getDesc() && (
-            <p className="text-gray-600 text-sm leading-relaxed whitespace-pre-line mb-8">
+            <p className="text-ink/80 text-sm leading-relaxed whitespace-pre-line mb-8">
               {getDesc()}
             </p>
           )}
@@ -113,19 +110,18 @@ export default function LivreDetail() {
               onClick={() => setShowReader(!showReader)}
               className="inline-flex items-center gap-2 px-7 py-3.5 rounded-2xl
                          bg-emerald text-white font-semibold text-sm
-                         hover:bg-emerald-dark transition-all
-                         shadow-[0_10px_25px_rgba(13,92,74,0.25)]">
+                         hover:bg-emerald-dark transition-all">
               <IconBook size={18} />
               {showReader ? "Fermer la lecture" : "Lire maintenant"}
             </button>
             <a
-              href={livre.pdf_url}
+              href={pdfUrl}
               download
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-7 py-3.5 rounded-2xl
                          bg-white text-emerald-dark font-semibold text-sm
-                         border-2 border-emerald/15
+                         border border-line
                          hover:border-gold hover:text-gold transition-all">
               <IconDownload size={18} />
               Télécharger le PDF
@@ -136,14 +132,13 @@ export default function LivreDetail() {
 
       {/* Lecteur PDF intégré */}
       {showReader && (
-        <div className="bg-white rounded-[28px] overflow-hidden border border-emerald/10
-                        shadow-[0_25px_60px_rgba(13,92,74,0.1)]">
-          <div className="px-6 py-4 border-b border-emerald/10 flex items-center justify-between">
+        <div className="bg-white rounded-2xl overflow-hidden border border-line">
+          <div className="px-6 py-4 border-b border-line flex items-center justify-between">
             <div className="font-bold text-emerald-dark text-sm">
               Lecture en ligne — {getTitre()}
             </div>
             <button onClick={() => setShowReader(false)}
-              className="text-gray-400 hover:text-terracotta text-sm font-semibold">
+              className="text-muted hover:text-terracotta text-sm font-semibold">
               Fermer ✕
             </button>
           </div>
@@ -152,12 +147,13 @@ export default function LivreDetail() {
               src={googleViewerUrl}
               title={getTitre()}
               className="w-full h-full border-0"
-              allow="autoplay"
+              sandbox="allow-scripts allow-same-origin allow-popups"
+              referrerPolicy="no-referrer"
             />
           </div>
-          <div className="px-6 py-3 border-t border-emerald/10 bg-cream text-center">
-            <p className="text-xs text-gray-500">
-              Si le PDF ne s''affiche pas, <a href={livre.pdf_url} target="_blank" rel="noopener noreferrer" className="text-emerald font-semibold hover:underline">cliquez ici pour l''ouvrir dans un nouvel onglet</a>.
+          <div className="px-6 py-3 border-t border-line bg-cream text-center">
+            <p className="text-xs text-muted">
+              Si le PDF ne s'affiche pas, <a href={pdfUrl} target="_blank" rel="noopener noreferrer" className="text-emerald font-semibold hover:underline">cliquez ici pour l'ouvrir dans un nouvel onglet</a>.
             </p>
           </div>
         </div>

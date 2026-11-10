@@ -97,27 +97,27 @@ export default function AdminLivePage() {
           <h1 className="font-amiri font-bold text-emerald-dark text-3xl">
             Vidéos
           </h1>
-          <p className="text-gray-500 text-sm">{list.length} vidéo(s)</p>
+          <p className="text-muted text-sm">{list.length} vidéo(s)</p>
         </div>
         <button onClick={() => setEditing({ ...empty })}
           className="px-6 py-3 rounded-2xl bg-emerald text-white font-semibold text-sm
-                     hover:bg-emerald-dark transition shadow-[0_8px_20px_rgba(13,92,74,0.25)]">
+                     hover:bg-emerald-dark transition">
           + Ajouter une vidéo
         </button>
       </div>
 
       {loading ? (
-        <p className="text-gray-400">Chargement...</p>
+        <p className="text-muted">Chargement...</p>
       ) : list.length === 0 ? (
-        <div className="bg-white rounded-3xl p-16 text-center border border-emerald/5">
-          <p className="text-gray-400">Aucune vidéo</p>
+        <div className="bg-white rounded-2xl p-16 text-center border border-line">
+          <p className="text-muted">Aucune vidéo</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {list.map((v) => (
-            <div key={v.id} className="bg-white rounded-3xl overflow-hidden border border-emerald/5">
+            <div key={v.id} className="bg-white rounded-2xl overflow-hidden border border-line">
               <div className="aspect-video bg-black">
-                <img src={`https://img.youtube.com/vi/${v.youtube_video_id}/hqdefault.jpg`}
+                <img loading="lazy" decoding="async" src={`https://img.youtube.com/vi/${v.youtube_video_id}/hqdefault.jpg`}
                   alt={v.titre}
                   className="w-full h-full object-cover" />
               </div>
@@ -125,10 +125,10 @@ export default function AdminLivePage() {
                 <div className="font-bold text-emerald-dark text-sm mb-1 line-clamp-2">
                   {v.titre}
                 </div>
-                <div className="text-xs text-gray-500 mb-1">{getSavantNom(v.savant_id)}</div>
+                <div className="text-xs text-muted mb-1">{getSavantNom(v.savant_id)}</div>
                 {v.categorie && (
                   <div className="inline-block px-2 py-0.5 rounded-full bg-gold/15
-                                  text-gold text-[0.65rem] font-bold mb-3">
+                                  text-gold-deep text-xs font-bold mb-3">
                     {v.categorie}
                   </div>
                 )}
@@ -153,41 +153,41 @@ export default function AdminLivePage() {
       {editing && (
         <div className="fixed inset-0 z-[1000] bg-black/60 flex items-start justify-center
                         p-4 overflow-y-auto">
-          <div className="bg-white rounded-3xl w-full max-w-3xl my-8">
-            <div className="sticky top-0 bg-white border-b border-emerald/10 px-6 py-4
+          <div className="bg-white rounded-2xl w-full max-w-3xl my-8">
+            <div className="sticky top-0 bg-white border-b border-line px-6 py-4
                             flex items-center justify-between rounded-t-3xl">
               <h2 className="font-bold text-emerald-dark">
                 {editing.id ? "Modifier" : "Ajouter"} une vidéo
               </h2>
               <button onClick={() => setEditing(null)}
-                className="text-gray-400 hover:text-terracotta text-2xl leading-none">×</button>
+                className="text-muted hover:text-terracotta text-2xl leading-none">×</button>
             </div>
 
             <div className="p-6 space-y-5">
               <Field label="Titre *">
                 <input value={editing.titre}
                   onChange={(e) => setEditing({ ...editing, titre: e.target.value })}
-                  className="inp" />
+                  className="field" />
               </Field>
 
               <Field label="URL YouTube *">
                 <input value={editing.youtube_url}
                   onChange={(e) => setEditing({ ...editing, youtube_url: e.target.value })}
-                  className="inp font-mono text-xs"
+                  className="field font-mono"
                   placeholder="https://youtube.com/watch?v=XXXXXXXXXXX" />
               </Field>
 
               <Field label="Description">
                 <textarea rows={3} value={editing.description || ""}
                   onChange={(e) => setEditing({ ...editing, description: e.target.value })}
-                  className="inp" />
+                  className="field" />
               </Field>
 
               <div className="grid grid-cols-2 gap-4">
                 <Field label="Savant">
                   <select value={editing.savant_id || ""}
                     onChange={(e) => setEditing({ ...editing, savant_id: e.target.value || null })}
-                    className="inp">
+                    className="field">
                     <option value="">— Aucun —</option>
                     {savants.map((s) => (
                       <option key={s.id} value={s.id}>{s.nom_fr}</option>
@@ -197,7 +197,7 @@ export default function AdminLivePage() {
                 <Field label="Catégorie">
                   <input value={editing.categorie || ""}
                     onChange={(e) => setEditing({ ...editing, categorie: e.target.value })}
-                    className="inp" placeholder="Croyance, Prière..." />
+                    className="field" placeholder="Croyance, Prière..." />
                 </Field>
               </div>
 
@@ -205,22 +205,22 @@ export default function AdminLivePage() {
                 <Field label="Durée (minutes)">
                   <input type="number" value={editing.duree || ""}
                     onChange={(e) => setEditing({ ...editing, duree: Number(e.target.value) || null })}
-                    className="inp" />
+                    className="field" />
                 </Field>
                 <Field label="Ordre">
                   <input type="number" value={editing.ordre || 0}
                     onChange={(e) => setEditing({ ...editing, ordre: Number(e.target.value) })}
-                    className="inp" />
+                    className="field" />
                 </Field>
               </div>
 
               {editing.youtube_url && extractYouTubeId(editing.youtube_url) && (
                 <div className="bg-cream rounded-2xl p-4">
-                  <div className="text-xs font-bold text-gold uppercase tracking-wider mb-2">
+                  <div className="text-xs font-bold text-gold mb-2">
                     Aperçu
                   </div>
                   <div className="aspect-video bg-black rounded-xl overflow-hidden">
-                    <img src={`https://img.youtube.com/vi/${extractYouTubeId(editing.youtube_url)}/hqdefault.jpg`}
+                    <img loading="lazy" decoding="async" src={`https://img.youtube.com/vi/${extractYouTubeId(editing.youtube_url)}/hqdefault.jpg`}
                       alt="Aperçu"
                       className="w-full h-full object-cover" />
                   </div>
@@ -228,10 +228,10 @@ export default function AdminLivePage() {
               )}
             </div>
 
-            <div className="sticky bottom-0 bg-white border-t border-emerald/10 px-6 py-4
+            <div className="sticky bottom-0 bg-white border-t border-line px-6 py-4
                             flex justify-end gap-3 rounded-b-3xl">
               <button onClick={() => setEditing(null)}
-                className="px-6 py-3 rounded-2xl border-2 border-emerald/15
+                className="px-6 py-3 rounded-2xl border border-line
                            text-emerald-dark font-semibold text-sm">
                 Annuler
               </button>
@@ -261,7 +261,7 @@ export default function AdminLivePage() {
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div>
-      <label className="block text-xs font-semibold text-emerald-dark mb-1.5 uppercase tracking-wider">
+      <label className="block text-xs font-semibold text-emerald-dark mb-1.5">
         {label}
       </label>
       {children}

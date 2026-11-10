@@ -3,7 +3,7 @@ import MiseEnGardeClient from "./MiseEnGardeClient";
 
 export default function Page() {
   return (
-    <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-cream"><p className="text-emerald">Chargement...</p></div>}>
+    <Suspense fallback={<div className="min-h-dvh flex items-center justify-center bg-cream"><p className="text-emerald">Chargement...</p></div>}>
       <MiseEnGardeClient />
     </Suspense>
   );

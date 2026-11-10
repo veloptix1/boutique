@@ -74,7 +74,7 @@ export default function AdminHadithsPage() {
 
   const authColor = (a: string) => {
     if (a === "sahih") return "bg-emerald/10 text-emerald";
-    if (a === "hasan") return "bg-gold/15 text-gold";
+    if (a === "hasan") return "bg-gold/15 text-gold-deep";
     return "bg-terracotta/10 text-terracotta";
   };
 
@@ -87,44 +87,40 @@ export default function AdminHadithsPage() {
     <main className="p-6 lg:p-12 max-w-[1400px] mx-auto">
       <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
         <div>
-          <div className="text-xs font-bold text-gold uppercase tracking-[3px] mb-2">
-            Contenu
-          </div>
           <h1 className="font-amiri font-bold text-emerald-dark text-3xl">Hadiths</h1>
-          <p className="text-gray-500 text-sm">{list.length} hadith(s)</p>
+          <p className="text-muted text-sm">{list.length} hadith(s)</p>
         </div>
         <button onClick={() => setEditing({ ...empty })}
           className="px-6 py-3 rounded-2xl bg-emerald text-white font-semibold text-sm
-                     hover:bg-emerald-dark transition shadow-[0_8px_20px_rgba(13,92,74,0.25)]">
+                     hover:bg-emerald-dark transition">
           + Ajouter un hadith
         </button>
       </div>
 
       <input type="text" placeholder="Rechercher..."
         value={search} onChange={(e) => setSearch(e.target.value)}
-        className="w-full max-w-md px-5 py-3 rounded-2xl border-2 border-emerald/10
-                   focus:border-gold outline-none text-sm mb-6 bg-white" />
+        className="field" />
 
       {loading ? (
-        <p className="text-gray-400">Chargement...</p>
+        <p className="text-muted">Chargement...</p>
       ) : filtered.length === 0 ? (
-        <div className="bg-white rounded-3xl p-16 text-center border border-emerald/5">
+        <div className="bg-white rounded-2xl p-16 text-center border border-line">
           <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-emerald/10 flex items-center justify-center text-emerald">
             <IconParchemin size={28} />
           </div>
-          <p className="text-gray-400">Aucun hadith</p>
+          <p className="text-muted">Aucun hadith</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {filtered.map((h) => (
-            <div key={h.id} className="bg-white rounded-3xl p-6 border border-emerald/5
+            <div key={h.id} className="bg-white rounded-2xl p-6 border border-line
                                        hover:shadow-lg transition">
               <div className="flex items-center justify-between mb-3">
-                <span className={`px-3 py-1 rounded-full text-[0.7rem] font-bold uppercase
+                <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase
                   ${authColor(h.authenticite)}`}>
                   {h.authenticite}
                 </span>
-                <span className="text-xs text-gray-400">{h.source}</span>
+                <span className="text-xs text-muted">{h.source}</span>
               </div>
 
               <div className="font-amiri text-emerald-dark text-lg mb-3 leading-relaxed"
@@ -133,12 +129,12 @@ export default function AdminHadithsPage() {
               </div>
 
               {h.texte_fr && (
-                <p className="text-sm text-gray-600 mb-4 line-clamp-3">
+                <p className="text-sm text-ink/80 mb-4 line-clamp-3">
                   {h.texte_fr}
                 </p>
               )}
 
-              <div className="flex justify-end gap-2 pt-3 border-t border-emerald/5">
+              <div className="flex justify-end gap-2 pt-3 border-t border-line">
                 <button onClick={() => setEditing(h)}
                   className="px-3 py-1.5 rounded-lg bg-emerald/10 text-emerald
                              text-xs font-semibold hover:bg-emerald/20">
@@ -158,57 +154,57 @@ export default function AdminHadithsPage() {
       {editing && (
         <div className="fixed inset-0 z-[1000] bg-black/60 flex items-start justify-center
                         p-4 overflow-y-auto">
-          <div className="bg-white rounded-3xl w-full max-w-3xl my-8">
-            <div className="sticky top-0 bg-white border-b border-emerald/10 px-6 py-4
+          <div className="bg-white rounded-2xl w-full max-w-3xl my-8">
+            <div className="sticky top-0 bg-white border-b border-line px-6 py-4
                             flex items-center justify-between rounded-t-3xl">
               <h2 className="font-bold text-emerald-dark">
                 {editing.id ? "Modifier" : "Ajouter"} un hadith
               </h2>
               <button onClick={() => setEditing(null)}
-                className="text-gray-400 hover:text-terracotta text-2xl leading-none">×</button>
+                className="text-muted hover:text-terracotta text-2xl leading-none">×</button>
             </div>
 
             <div className="p-6 space-y-5">
               <Field label="Texte AR *">
                 <textarea rows={4} dir="rtl" value={editing.texte_ar}
                   onChange={(e) => setEditing({ ...editing, texte_ar: e.target.value })}
-                  className="inp font-amiri text-lg" />
+                  className="field font-amiri" />
               </Field>
 
               <div className="grid grid-cols-2 gap-4">
                 <Field label="Traduction FR">
                   <textarea rows={3} value={editing.texte_fr}
                     onChange={(e) => setEditing({ ...editing, texte_fr: e.target.value })}
-                    className="inp" />
+                    className="field" />
                 </Field>
                 <Field label="Traduction EN">
                   <textarea rows={3} value={editing.texte_en}
                     onChange={(e) => setEditing({ ...editing, texte_en: e.target.value })}
-                    className="inp" />
+                    className="field" />
                 </Field>
               </div>
 
               <Field label="Explication FR">
                 <textarea rows={4} value={editing.explication_fr}
                   onChange={(e) => setEditing({ ...editing, explication_fr: e.target.value })}
-                  className="inp" />
+                  className="field" />
               </Field>
 
               <div className="grid grid-cols-3 gap-4">
                 <Field label="Source">
                   <input value={editing.source}
                     onChange={(e) => setEditing({ ...editing, source: e.target.value })}
-                    className="inp" placeholder="Sahih al-Bukhari" />
+                    className="field" placeholder="Sahih al-Bukhari" />
                 </Field>
                 <Field label="Rapporteur">
                   <input value={editing.rapporteur}
                     onChange={(e) => setEditing({ ...editing, rapporteur: e.target.value })}
-                    className="inp" placeholder="Abu Hurayra" />
+                    className="field" placeholder="Abu Hurayra" />
                 </Field>
                 <Field label="Authenticité">
                   <select value={editing.authenticite}
                     onChange={(e) => setEditing({ ...editing, authenticite: e.target.value })}
-                    className="inp">
+                    className="field">
                     <option value="sahih">Sahih (authentique)</option>
                     <option value="hasan">Hasan (bon)</option>
                     <option value="daif">Da'if (faible)</option>
@@ -220,7 +216,7 @@ export default function AdminHadithsPage() {
                 <Field label="Savant associé">
                   <select value={editing.savant_id || ""}
                     onChange={(e) => setEditing({ ...editing, savant_id: e.target.value || null })}
-                    className="inp">
+                    className="field">
                     <option value="">— Aucun —</option>
                     {savants.map((s) => (
                       <option key={s.id} value={s.id}>{s.nom_fr}</option>
@@ -230,20 +226,20 @@ export default function AdminHadithsPage() {
                 <Field label="Catégorie">
                   <input value={editing.categorie}
                     onChange={(e) => setEditing({ ...editing, categorie: e.target.value })}
-                    className="inp" placeholder="Croyance" />
+                    className="field" placeholder="Croyance" />
                 </Field>
                 <Field label="Ordre">
                   <input type="number" value={editing.ordre}
                     onChange={(e) => setEditing({ ...editing, ordre: Number(e.target.value) })}
-                    className="inp" />
+                    className="field" />
                 </Field>
               </div>
             </div>
 
-            <div className="sticky bottom-0 bg-white border-t border-emerald/10 px-6 py-4
+            <div className="sticky bottom-0 bg-white border-t border-line px-6 py-4
                             flex justify-end gap-3 rounded-b-3xl">
               <button onClick={() => setEditing(null)}
-                className="px-6 py-3 rounded-2xl border-2 border-emerald/15
+                className="px-6 py-3 rounded-2xl border border-line
                            text-emerald-dark font-semibold text-sm">
                 Annuler
               </button>
@@ -273,7 +269,7 @@ export default function AdminHadithsPage() {
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div>
-      <label className="block text-xs font-semibold text-emerald-dark mb-1.5 uppercase tracking-wider">
+      <label className="block text-xs font-semibold text-emerald-dark mb-1.5">
         {label}
       </label>
       {children}

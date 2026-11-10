@@ -2,9 +2,10 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
+import { BackLink } from "@/components/ui";
 import { supabase } from "@/lib/supabase";
 import { useLang } from "@/components/LangProvider";
-import { Bismillah, EndMark } from "@/components/PageHeader";
+import { EndMark } from "@/components/PageHeader";
 
 export default function ActualiteDetail() {
   const searchParams = useSearchParams();
@@ -24,29 +25,24 @@ export default function ActualiteDetail() {
     })();
   }, [slug]);
 
-  if (loading) return <div className="min-h-screen flex items-center justify-center bg-cream"><p className="text-emerald">Chargement...</p></div>;
+  if (loading) return <div className="min-h-dvh flex items-center justify-center bg-cream"><p className="text-emerald">Chargement...</p></div>;
   if (!actu) return (
-    <main className="px-[6%] pt-32 pb-32 max-w-[1200px] mx-auto text-center">
+    <main className="page text-center">
       <h1 className="font-amiri font-bold text-emerald-dark text-3xl mb-4">Actualité introuvable</h1>
-      <Link href="/nouveau" className="text-emerald hover:underline font-semibold">← Retour</Link>
+      <BackLink href="/nouveau" label="Retour" />
     </main>
   );
 
   return (
-    <main className="px-[6%] pt-24 pb-40 max-w-[900px] mx-auto min-h-screen">
+    <main className="page max-w-[900px]">
 
-      <Link href="/nouveau" className="text-emerald text-sm font-semibold hover:underline">
-        ← Retour aux actualités
-      </Link>
+      <BackLink href="/nouveau" label="Retour aux actualités" />
 
-      <div className="mt-8">
-        <Bismillah />
-      </div>
 
       {/* Image */}
       {actu.image_url && (
-        <div className="mb-8 rounded-3xl overflow-hidden bg-cream aspect-video">
-          <img src={actu.image_url} alt={actu.titre}
+        <div className="mb-8 rounded-2xl overflow-hidden bg-cream aspect-video">
+          <img loading="lazy" decoding="async" src={actu.image_url} alt={actu.titre}
             className="w-full h-full object-cover" />
         </div>
       )}
@@ -54,8 +50,8 @@ export default function ActualiteDetail() {
       {/* Infos */}
       <div className="mb-8">
         {actu.categorie && (
-          <div className="inline-block px-3 py-1 rounded-full bg-gold/15 text-gold
-                          text-[0.7rem] font-bold uppercase tracking-wider mb-3">
+          <div className="inline-block px-3 py-1 rounded-full bg-gold/15 text-gold-deep
+                          text-xs font-bold mb-3">
             {actu.categorie}
           </div>
         )}
@@ -64,7 +60,7 @@ export default function ActualiteDetail() {
           {actu.titre}
         </h1>
 
-        <div className="flex flex-wrap items-center gap-3 text-xs text-gray-500">
+        <div className="flex flex-wrap items-center gap-3 text-xs text-muted">
           <span>{new Date(actu.created_at).toLocaleDateString("fr-FR", {
             day: "numeric", month: "long", year: "numeric",
           })}</span>
@@ -93,7 +89,7 @@ export default function ActualiteDetail() {
       )}
 
       {/* Contenu */}
-      <div className="bg-white rounded-3xl p-6 sm:p-8 border border-emerald/5 mb-8">
+      <div className="bg-white rounded-2xl p-6 sm:p-8 border border-line mb-8">
         <p className="text-gray-700 leading-relaxed whitespace-pre-line">
           {actu.contenu}
         </p>

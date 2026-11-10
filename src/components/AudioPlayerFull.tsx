@@ -104,11 +104,11 @@ export default function AudioPlayerFull() {
     return (
       <div
         className="fixed left-0 right-0 z-[940] px-3 pointer-events-none"
-        style={{ bottom: "calc(90px + env(safe-area-inset-bottom))" }}
+        style={{ bottom: "calc(72px + var(--safe-bottom))" }}
       >
         <div
           className="max-w-[600px] mx-auto bg-gradient-to-r from-emerald-dark to-emerald
-                     rounded-2xl shadow-[0_20px_40px_rgba(0,0,0,0.3)]
+                     rounded-2xl
                      overflow-hidden pointer-events-auto cursor-pointer"
           onClick={() => setExpanded(true)}
         >
@@ -142,7 +142,7 @@ export default function AudioPlayerFull() {
               <div className="font-semibold text-white text-xs sm:text-sm truncate">
                 {player.titre}
               </div>
-              <div className="text-[0.68rem] text-gold truncate">
+              <div className="text-xs text-gold truncate">
                 {player.auteur}
               </div>
             </div>
@@ -206,7 +206,7 @@ export default function AudioPlayerFull() {
         </button>
 
         <div className="text-center flex-1 mx-3">
-          <div className="text-[0.65rem] font-bold text-gold uppercase tracking-widest">
+          <div className="text-xs font-bold text-gold">
             En cours de lecture
           </div>
         </div>
@@ -225,18 +225,17 @@ export default function AudioPlayerFull() {
       <div className="relative z-10 flex-1 flex flex-col items-center justify-center px-8 py-4 min-h-0">
         <div className="relative w-full max-w-[280px] aspect-square mb-8">
           {/* Cercle extérieur doré */}
-          <div className="absolute inset-0 rounded-[32px] bg-gradient-to-br from-gold/30 to-gold/5
+          <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-gold/30 to-gold/5
                           blur-2xl" />
 
           {/* Pochette */}
-          <div className="relative w-full h-full rounded-[32px] overflow-hidden
-                          shadow-[0_30px_60px_rgba(0,0,0,0.4)]
+          <div className="relative w-full h-full rounded-2xl overflow-hidden
                           border-4 border-gold/30
                           bg-gradient-to-br from-gold to-gold-light
                           flex items-center justify-center">
             {/* Logo AL BASIRAH */}
             <div className="flex flex-col items-center gap-4">
-              <img
+              <img loading="lazy" decoding="async"
                 src="/logo.png"
                 alt="AL BASIRAH"
                 className="w-32 h-32 object-contain"
@@ -356,7 +355,7 @@ export default function AudioPlayerFull() {
           <button
             onClick={togglePlay}
             className="w-20 h-20 rounded-full bg-gold hover:bg-gold-light
-                       flex items-center justify-center shadow-[0_15px_40px_rgba(212,175,55,0.5)]
+                       flex items-center justify-center
                        transition hover:scale-105 active:scale-95"
             aria-label={playing ? "Pause" : "Play"}
           >
@@ -394,7 +393,7 @@ export default function AudioPlayerFull() {
       <audio
         ref={audioRef}
         src={player.url}
-        src={player.url}
+        preload="metadata"
         onTimeUpdate={(e) => setProgress(e.currentTarget.currentTime)}
         onLoadedMetadata={(e) => setDuration(e.currentTarget.duration)}
         onEnded={() => setPlaying(false)}

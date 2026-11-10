@@ -4,7 +4,7 @@ export async function signUp(email: string, password: string, nom: string) {
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
-    options: { data: { nom } },
+    options: { data: { nom: nom.trim().slice(0, 80) } },
   });
   return { data, error };
 }

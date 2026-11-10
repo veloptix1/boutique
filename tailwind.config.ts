@@ -9,15 +9,20 @@ const config: Config = {
     extend: {
       colors: {
         emerald: { DEFAULT: "#0d5c4a", dark: "#083d31", light: "#1a7a63" },
-        gold: { DEFAULT: "#d4af37", light: "#e8c96a" },
+        // "deep" : or foncé lisible comme texte sur fond crème (contraste AA)
+        gold: { DEFAULT: "#d4af37", light: "#e8c96a", deep: "#7a5f0c" },
         cream: "#faf6ef",
-        terracotta: "#c1502e",
+        terracotta: { DEFAULT: "#c1502e", deep: "#a63d1f" },
         indigo: "#2c3e70",
+        ink: "#1d2926",
+        muted: "#5b6a65",
+        line: "rgba(8, 61, 49, 0.12)",
       },
       fontFamily: {
-        amiri: ["Amiri", "serif"],
-        poppins: ["Poppins", "sans-serif"],
+        amiri: ["var(--font-amiri)", "Amiri", "serif"],
+        poppins: ["var(--font-poppins)", "Poppins", "system-ui", "sans-serif"],
       },
+      borderRadius: { xl: "12px", "2xl": "16px" },
     },
   },
   plugins: [],

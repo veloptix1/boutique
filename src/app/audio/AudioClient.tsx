@@ -1,13 +1,12 @@
 "use client";
-import { Bismillah, EndMark } from "@/components/PageHeader";
+import { EndMark } from "@/components/PageHeader";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { BackLink } from "@/components/ui";
 import { supabase } from "@/lib/supabase";
 import { playAudio } from "@/components/AudioPlayerFull";
 import { useLang } from "@/components/LangProvider";
-import {
-  IconSpeaker, IconBook, IconUser, IconPlay, IconArrowRight, IconSearch,
-} from "@/components/icons";
+import { IconSpeaker, IconBook, IconUser, IconPlay, IconArrowRight, IconSearch } from "@/components/icons";
 
 type Audio = {
   id: string;
@@ -86,12 +85,9 @@ export default function AudioClient() {
   };
 
   return (
-    <main className="px-[6%] pt-24 pb-40 max-w-[1200px] mx-auto">
-      <Bismillah />
+    <main className="page">
 
-      <Link href="/dashboard" className="text-emerald text-sm font-semibold hover:underline">
-        ← Retour
-      </Link>
+      <BackLink href="/dashboard" label="Retour" />
 
       {/* En-tête */}
       <div className="mt-6 mb-12">
@@ -99,14 +95,11 @@ export default function AudioClient() {
           <div className="w-12 h-12 rounded-2xl bg-gold/15 flex items-center justify-center text-gold">
             <IconSpeaker size={24} />
           </div>
-          <div className="text-xs font-bold text-gold uppercase tracking-[3px]">
-            Bibliothèque
-          </div>
         </div>
-        <h1 className="font-amiri font-bold text-emerald-dark text-4xl sm:text-5xl mb-3">
+        <h1 className="font-amiri font-bold text-emerald-dark text-[1.75rem] leading-tight sm:text-4xl mb-3">
           {t.audio.title}
         </h1>
-        <p className="text-gray-500 max-w-2xl">{t.audio.subtitle}</p>
+        <p className="text-muted max-w-2xl">{t.audio.subtitle}</p>
       </div>
 
       {/* Catégories principales */}
@@ -115,17 +108,16 @@ export default function AudioClient() {
           const c = colorMap[color];
           return (
             <Link key={id} href={href}
-              className="bg-white rounded-3xl p-6 flex items-center gap-4
-                         border border-emerald/5 hover:-translate-y-1
-                         hover:shadow-[0_20px_40px_rgba(13,92,74,0.1)]
+              className="bg-white rounded-2xl p-6 flex items-center gap-4
+                         border border-line
                          transition-all no-underline group">
               <div className={`w-14 h-14 rounded-2xl flex items-center justify-center
-                              ${c.bg} ${c.text} group-hover:scale-110 transition`}>
+                              ${c.bg} ${c.text} transition`}>
                 <Icon size={26} />
               </div>
               <div className="flex-1">
                 <div className="font-bold text-emerald-dark text-base">{title}</div>
-                <div className="text-xs text-gray-500 mt-0.5">
+                <div className="text-xs text-muted mt-0.5">
                   {savants.filter(s => s.categorie === id).length} contenu(s)
                 </div>
               </div>
@@ -143,7 +135,7 @@ export default function AudioClient() {
           <h2 className="font-amiri font-bold text-emerald-dark text-2xl">
             Tous les audios
           </h2>
-          <p className="text-gray-500 text-sm">
+          <p className="text-muted text-sm">
             {filtered.length} audio{filtered.length > 1 ? "s" : ""}
           </p>
         </div>
@@ -159,13 +151,11 @@ export default function AudioClient() {
           placeholder="Rechercher un audio ou un savant..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="w-full pl-14 pr-5 py-4 rounded-2xl border-2 border-emerald/10
-                     focus:border-gold outline-none text-sm bg-white
-                     shadow-[0_4px_14px_rgba(13,92,74,0.05)]"
+          className="field"
         />
         {search && (
           <button onClick={() => setSearch("")}
-            className="absolute right-5 top-1/2 -translate-y-1/2 text-gray-400
+            className="absolute right-5 top-1/2 -translate-y-1/2 text-muted
                        hover:text-terracotta transition text-xl leading-none">
             ×
           </button>
@@ -174,13 +164,13 @@ export default function AudioClient() {
 
       {/* Liste des audios */}
       {loading ? (
-        <p className="text-gray-400">Chargement...</p>
+        <p className="text-muted">Chargement...</p>
       ) : filtered.length === 0 ? (
-        <div className="bg-white rounded-3xl p-16 text-center border border-emerald/5">
+        <div className="bg-white rounded-2xl p-16 text-center border border-line">
           <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-emerald/10 flex items-center justify-center text-emerald">
             <IconSpeaker size={28} />
           </div>
-          <p className="text-gray-400 mb-2">Aucun audio pour le moment</p>
+          <p className="text-muted mb-2">Aucun audio pour le moment</p>
           <Link href="/admin/audios"
             className="text-emerald text-sm font-semibold hover:underline">
             + Ajouter un audio (admin)
@@ -192,15 +182,13 @@ export default function AudioClient() {
             const savant = getSavant(a.savant_id);
             return (
               <div key={a.id}
-                className="bg-white rounded-2xl border border-emerald/5
+                className="bg-white rounded-2xl border border-line
                            hover:border-emerald/15
-                           hover:shadow-[0_10px_30px_rgba(13,92,74,0.08)]
                            transition overflow-hidden">
                 <div className="flex items-center gap-4 p-4">
                   <button
                     onClick={() => playAudio({ url: a.audio_url, titre: getTitre(a), auteur: "AL BASIRAH" })}
-                    className="w-12 h-12 rounded-full bg-gold flex items-center justify-center
-                                shadow-[0_4px_14px_rgba(212,175,55,0.35)] shrink-0
+                    className="w-12 h-12 rounded-full bg-gold flex items-center justify-center shrink-0
                                 hover:scale-110 transition">
                     {playingId === a.id ? (
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="#083d31">
@@ -223,7 +211,7 @@ export default function AudioClient() {
                     )}
                   </div>
 
-                  <div className="text-xs text-gray-400 shrink-0 hidden sm:block">
+                  <div className="text-xs text-muted shrink-0 hidden sm:block">
                     {formatDuree(a.duree)}
                   </div>
 
@@ -236,7 +224,7 @@ export default function AudioClient() {
                 </div>
 
                 {playingId === a.id && (
-                  <div className="px-4 pb-4 border-t border-emerald/10 pt-3">
+                  <div className="px-4 pb-4 border-t border-line pt-3">
                     <audio src={a.audio_url} controls autoPlay className="w-full" />
                   </div>
                 )}

@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
+import { prepareUpload } from "@/lib/security";
 import { IconSpeaker, IconCheck, IconPlay } from "@/components/icons";
 
 type Audio = {
@@ -48,18 +49,9 @@ export default function AdminAudiosPage() {
   const uploadMP3 = async (file: File) => {
     setUploading(true);
 
-    // 🔥 Nettoyer le nom du fichier (retire accents, caractères arabes, espaces, etc.)
-    const ext = file.name.split(".").pop()?.toLowerCase() || "mp3";
-    const cleanName = file.name
-      .replace(/\.[^/.]+$/, "")
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
-      .replace(/[^a-zA-Z0-9]/g, "-")
-      .replace(/-+/g, "-")
-      .replace(/^-|-$/g, "")
-      .substring(0, 50);
-
-    const name = `${Date.now()}-${cleanName || "audio"}.${ext}`;
+    let name: string;
+    try { name = prepareUpload(file, "audio"); }
+    catch (e: any) { setUploading(false); alert(e.message); return; }
 
     const { error } = await supabase.storage.from("audios").upload(name, file);
     setUploading(false);
@@ -113,38 +105,34 @@ export default function AdminAudiosPage() {
     <main className="p-6 lg:p-12 max-w-[1400px] mx-auto">
       <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
         <div>
-          <div className="text-xs font-bold text-gold uppercase tracking-[3px] mb-2">
-            Contenu
-          </div>
           <h1 className="font-amiri font-bold text-emerald-dark text-3xl">Audios</h1>
-          <p className="text-gray-500 text-sm">{list.length} audio(s)</p>
+          <p className="text-muted text-sm">{list.length} audio(s)</p>
         </div>
         <button onClick={() => setEditing({ ...empty })}
           className="px-6 py-3 rounded-2xl bg-emerald text-white font-semibold text-sm
-                     hover:bg-emerald-dark transition shadow-[0_8px_20px_rgba(13,92,74,0.25)]">
+                     hover:bg-emerald-dark transition">
           + Ajouter un audio
         </button>
       </div>
 
       <input type="text" placeholder="Rechercher..."
         value={search} onChange={(e) => setSearch(e.target.value)}
-        className="w-full max-w-md px-5 py-3 rounded-2xl border-2 border-emerald/10
-                   focus:border-gold outline-none text-sm mb-6 bg-white" />
+        className="field" />
 
       {loading ? (
-        <p className="text-gray-400">Chargement...</p>
+        <p className="text-muted">Chargement...</p>
       ) : filtered.length === 0 ? (
-        <div className="bg-white rounded-3xl p-16 text-center border border-emerald/5">
+        <div className="bg-white rounded-2xl p-16 text-center border border-line">
           <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-emerald/10 flex items-center justify-center text-emerald">
             <IconSpeaker size={28} />
           </div>
-          <p className="text-gray-400">Aucun audio</p>
+          <p className="text-muted">Aucun audio</p>
         </div>
       ) : (
-        <div className="bg-white rounded-3xl border border-emerald/5 overflow-hidden">
+        <div className="bg-white rounded-2xl border border-line overflow-hidden">
           <table className="w-full">
             <thead className="bg-emerald/5">
-              <tr className="text-left text-xs font-bold text-emerald-dark uppercase tracking-wider">
+              <tr className="text-left text-xs font-bold text-emerald-dark">
                 <th className="px-6 py-4">Titre</th>
                 <th className="px-6 py-4 hidden md:table-cell">Savant</th>
                 <th className="px-6 py-4 hidden lg:table-cell">Durée</th>
@@ -153,7 +141,7 @@ export default function AdminAudiosPage() {
             </thead>
             <tbody>
               {filtered.map((a) => (
-                <tr key={a.id} className="border-t border-emerald/5 hover:bg-cream/50">
+                <tr key={a.id} className="border-t border-line hover:bg-cream/50">
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-full bg-gold flex items-center justify-center shrink-0">
@@ -164,17 +152,17 @@ export default function AdminAudiosPage() {
                           {a.titre_fr}
                         </div>
                         {a.titre_ar && (
-                          <div className="text-xs text-gray-400 truncate font-amiri" dir="rtl">
+                          <div className="text-xs text-muted truncate font-amiri" dir="rtl">
                             {a.titre_ar}
                           </div>
                         )}
                       </div>
                     </div>
                   </td>
-                  <td className="px-6 py-4 text-sm text-gray-600 hidden md:table-cell">
+                  <td className="px-6 py-4 text-sm text-ink/80 hidden md:table-cell">
                     {getSavantNom(a.savant_id)}
                   </td>
-                  <td className="px-6 py-4 text-sm text-gray-600 hidden lg:table-cell">
+                  <td className="px-6 py-4 text-sm text-ink/80 hidden lg:table-cell">
                     {a.duree ? `${Math.floor(a.duree / 60)} min` : "—"}
                   </td>
                   <td className="px-6 py-4 text-right">
@@ -202,47 +190,47 @@ export default function AdminAudiosPage() {
       {editing && (
         <div className="fixed inset-0 z-[1000] bg-black/60 flex items-start justify-center
                         p-4 overflow-y-auto">
-          <div className="bg-white rounded-3xl w-full max-w-3xl my-8">
-            <div className="sticky top-0 bg-white border-b border-emerald/10 px-6 py-4
+          <div className="bg-white rounded-2xl w-full max-w-3xl my-8">
+            <div className="sticky top-0 bg-white border-b border-line px-6 py-4
                             flex items-center justify-between rounded-t-3xl">
               <h2 className="font-bold text-emerald-dark">
                 {editing.id ? "Modifier" : "Ajouter"} un audio
               </h2>
               <button onClick={() => setEditing(null)}
-                className="text-gray-400 hover:text-terracotta text-2xl leading-none">×</button>
+                className="text-muted hover:text-terracotta text-2xl leading-none">×</button>
             </div>
 
             <div className="p-6 space-y-5">
               <Field label="Titre FR *">
                 <input value={editing.titre_fr}
                   onChange={(e) => setEditing({ ...editing, titre_fr: e.target.value })}
-                  className="inp" />
+                  className="field" />
               </Field>
 
               <div className="grid grid-cols-2 gap-4">
                 <Field label="Titre AR">
                   <input dir="rtl" value={editing.titre_ar}
                     onChange={(e) => setEditing({ ...editing, titre_ar: e.target.value })}
-                    className="inp font-amiri" />
+                    className="field font-amiri" />
                 </Field>
                 <Field label="Titre EN">
                   <input value={editing.titre_en}
                     onChange={(e) => setEditing({ ...editing, titre_en: e.target.value })}
-                    className="inp" />
+                    className="field" />
                 </Field>
               </div>
 
               <Field label="Description FR">
                 <textarea rows={3} value={editing.description_fr}
                   onChange={(e) => setEditing({ ...editing, description_fr: e.target.value })}
-                  className="inp" />
+                  className="field" />
               </Field>
 
               <div className="grid grid-cols-2 gap-4">
                 <Field label="Savant">
                   <select value={editing.savant_id || ""}
                     onChange={(e) => setEditing({ ...editing, savant_id: e.target.value || null })}
-                    className="inp">
+                    className="field">
                     <option value="">— Aucun —</option>
                     {savants.map((s) => (
                       <option key={s.id} value={s.id}>
@@ -254,7 +242,7 @@ export default function AdminAudiosPage() {
                 <Field label="Langue">
                   <select value={editing.langue}
                     onChange={(e) => setEditing({ ...editing, langue: e.target.value })}
-                    className="inp">
+                    className="field">
                     <option value="fr">Français</option>
                     <option value="ar">Arabe</option>
                     <option value="en">Anglais</option>
@@ -282,14 +270,14 @@ export default function AdminAudiosPage() {
               <Field label="Ordre d'affichage">
                 <input type="number" value={editing.ordre}
                   onChange={(e) => setEditing({ ...editing, ordre: Number(e.target.value) })}
-                  className="inp" />
+                  className="field" />
               </Field>
             </div>
 
-            <div className="sticky bottom-0 bg-white border-t border-emerald/10 px-6 py-4
+            <div className="sticky bottom-0 bg-white border-t border-line px-6 py-4
                             flex justify-end gap-3 rounded-b-3xl">
               <button onClick={() => setEditing(null)}
-                className="px-6 py-3 rounded-2xl border-2 border-emerald/15
+                className="px-6 py-3 rounded-2xl border border-line
                            text-emerald-dark font-semibold text-sm">
                 Annuler
               </button>
@@ -319,7 +307,7 @@ export default function AdminAudiosPage() {
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div>
-      <label className="block text-xs font-semibold text-emerald-dark mb-1.5 uppercase tracking-wider">
+      <label className="block text-xs font-semibold text-emerald-dark mb-1.5">
         {label}
       </label>
       {children}

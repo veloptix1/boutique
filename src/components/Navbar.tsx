@@ -10,43 +10,26 @@ export default function Navbar() {
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => setConnected(!!data.session));
-    const { data: listener } = supabase.auth.onAuthStateChange((_e, session) =>
-      setConnected(!!session));
+    const { data: listener } = supabase.auth.onAuthStateChange((_e, session) => setConnected(!!session));
     return () => listener.subscription.unsubscribe();
   }, []);
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-[800] px-[6%] py-3
-                       flex justify-between items-center
-                       bg-cream/90 backdrop-blur-md
-                       border-b border-emerald/10">
-      <Link href={connected ? "/dashboard" : "/"} className="flex items-center gap-3 no-underline">
-        <Image
-          src="/logo.png"
-          alt="AL BASIRAH"
-          width={44}
-          height={44}
-          className="w-11 h-11 object-contain"
-          priority
-        />
-        <div className="leading-none">
-          <div className="font-extrabold text-emerald-dark tracking-[2px] text-[1.05rem]">
-            AL BASIRAH
-          </div>
-          <small className="block text-[0.55rem] tracking-[2.5px] text-gold font-medium mt-1">
-            VISION INTÉRIEURE
-          </small>
-        </div>
-      </Link>
-
-      <div className="flex items-center gap-3">
-        <Link
-          href={connected ? "/dashboard" : "/auth"}
-          className="hidden sm:block px-5 py-2 rounded-full bg-emerald text-white text-xs
-                     font-semibold hover:bg-emerald-dark transition">
-          {connected ? "Dashboard" : "Connexion"}
+    <header className="fixed inset-x-0 top-0 z-[800] border-b border-line bg-cream/95 backdrop-blur"
+            style={{ paddingTop: "var(--safe-top)" }}>
+      <div className="mx-auto flex h-14 max-w-[1100px] items-center justify-between px-4 sm:px-6">
+        <Link href={connected ? "/dashboard" : "/"} className="flex items-center gap-2.5 no-underline" aria-label="AL BASIRAH, accueil">
+          <Image src="/logo.png" alt="" width={32} height={32} className="h-8 w-8 object-contain" priority />
+          <span className="text-[0.95rem] font-semibold tracking-wide text-emerald-dark">AL BASIRAH</span>
         </Link>
-        <BurgerMenu />
+
+        <div className="flex items-center gap-1">
+          <Link href={connected ? "/profil" : "/auth"}
+                className="btn-primary btn-sm hidden sm:inline-flex">
+            {connected ? "Mon profil" : "Connexion"}
+          </Link>
+          <BurgerMenu />
+        </div>
       </div>
     </header>
   );

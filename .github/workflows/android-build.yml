@@ -3,6 +3,10 @@ name: Build Android APK
 permissions:
   contents: write
 
+concurrency:
+  group: android-build
+  cancel-in-progress: false
+
 on:
   push:
     branches: [main]
@@ -15,6 +19,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          persist-credentials: false
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -35,7 +41,7 @@ jobs:
           log-accepted-android-sdk-licenses: false
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Build Next.js (static export)
         run: npm run build
@@ -86,13 +92,14 @@ jobs:
           cp android/app/build/outputs/apk/debug/app-debug.apk upload/albasirah-${{ steps.version.outputs.version }}.apk
 
       - name: Upload to Supabase Storage
+        if: github.ref == 'refs/heads/main'
         run: |
           VERSION=${{ steps.version.outputs.version }}
           FILE="upload/albasirah-${VERSION}.apk"
           
-          curl -X POST \
+          curl --fail-with-body -sS -X POST \
             "https://fstvfuolfzhyorituyht.supabase.co/storage/v1/object/apk/albasirah-${VERSION}.apk" \
-            -H "Authorization: Bearer ${{ secrets.SUPABASE_SERVICE_KEY }}" \
+            -H "Authorization: Bearer $SUPABASE_SERVICE_KEY" \
             -H "Content-Type: application/vnd.android.package-archive" \
             --data-binary "@${FILE}"
           
@@ -101,14 +108,15 @@ jobs:
           SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
 
       - name: Update Supabase table
+        if: github.ref == 'refs/heads/main'
         run: |
           VERSION=${{ steps.version.outputs.version }}
           SIZE=$(du -h "upload/albasirah-${VERSION}.apk" | cut -f1)
           
-          curl -X POST \
+          curl --fail-with-body -sS -X POST \
             "https://fstvfuolfzhyorituyht.supabase.co/rest/v1/app_versions" \
-            -H "apikey: ${{ secrets.SUPABASE_SERVICE_KEY }}" \
-            -H "Authorization: Bearer ${{ secrets.SUPABASE_SERVICE_KEY }}" \
+            -H "apikey: $SUPABASE_SERVICE_KEY" \
+            -H "Authorization: Bearer $SUPABASE_SERVICE_KEY" \
             -H "Content-Type: application/json" \
             -H "Prefer: return=representation" \
             -d "{

@@ -2,7 +2,8 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
-import { IconSpeaker, IconCheck, IconSearch, IconPlay } from "@/components/icons";
+import { prepareUpload } from "@/lib/security";
+import { IconSpeaker, IconSearch, IconPlay } from "@/components/icons";
 
 type Sourate = {
   numero: number;
@@ -61,18 +62,11 @@ export default function AdminCoranPage() {
     if (!selectedSourate) return;
     setUploading(true);
 
-    // Nom de fichier propre
-    const ext = file.name.split(".").pop()?.toLowerCase() || "mp3";
-    const cleanName = file.name
-      .replace(/\.[^/.]+$/, "")
-      .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-      .replace(/[^a-zA-Z0-9]/g, "-")
-      .replace(/-+/g, "-").replace(/^-|-$/g, "")
-      .substring(0, 40);
-
     const num = String(selectedSourate.numero).padStart(3, "0");
-    const finalSlug = recitateurSlug || "autre";
-    const fileName = `${num}-${finalSlug}-${Date.now()}.${ext}`;
+    const finalSlug = (recitateurSlug || "autre").replace(/[^a-z0-9-]/gi, "-").slice(0, 40);
+    let fileName: string;
+    try { fileName = prepareUpload(file, "audio", `${num}-${finalSlug}-`); }
+    catch (e: any) { setUploading(false); alert(e.message); return; }
 
     // Upload
     const { error } = await supabase.storage.from("coran").upload(fileName, file);
@@ -137,33 +131,30 @@ export default function AdminCoranPage() {
 
       {/* Header */}
       <div className="mb-8">
-        <div className="text-xs font-bold text-gold uppercase tracking-[3px] mb-2">
-          Contenu
-        </div>
         <h1 className="font-amiri font-bold text-emerald-dark text-3xl sm:text-4xl mb-2">
           Coran
         </h1>
-        <p className="text-gray-500 text-sm">
+        <p className="text-muted text-sm">
           Ajoutez les récitations des 114 sourates, récitateur par récitateur.
         </p>
       </div>
 
       {/* Stats */}
       <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
-        <div className="bg-white rounded-2xl p-5 border border-emerald/5">
-          <div className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">
+        <div className="bg-white rounded-2xl p-5 border border-line">
+          <div className="text-xs font-bold text-muted mb-1">
             Sourates totales
           </div>
           <div className="font-amiri font-bold text-emerald-dark text-3xl">114</div>
         </div>
-        <div className="bg-white rounded-2xl p-5 border border-emerald/5">
-          <div className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">
+        <div className="bg-white rounded-2xl p-5 border border-line">
+          <div className="text-xs font-bold text-muted mb-1">
             Sourates avec audio
           </div>
           <div className="font-amiri font-bold text-emerald-dark text-3xl">{souratesWithAudio}</div>
         </div>
-        <div className="bg-white rounded-2xl p-5 border border-emerald/5 col-span-2 lg:col-span-1">
-          <div className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">
+        <div className="bg-white rounded-2xl p-5 border border-line col-span-2 lg:col-span-1">
+          <div className="text-xs font-bold text-muted mb-1">
             Audios uploadés
           </div>
           <div className="font-amiri font-bold text-emerald-dark text-3xl">{totalAudios}</div>
@@ -180,14 +171,13 @@ export default function AdminCoranPage() {
           placeholder="Rechercher une sourate..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="w-full pl-14 pr-5 py-3 rounded-2xl border-2 border-emerald/10
-                     focus:border-gold outline-none text-sm bg-white"
+          className="field"
         />
       </div>
 
       {/* Liste */}
       {loading ? (
-        <p className="text-gray-400">Chargement...</p>
+        <p className="text-muted">Chargement...</p>
       ) : (
         <div className="grid gap-2">
           {filtered.map((s) => {
@@ -196,7 +186,7 @@ export default function AdminCoranPage() {
 
             return (
               <div key={s.numero}
-                className="bg-white rounded-2xl border border-emerald/5
+                className="bg-white rounded-2xl border border-line
                            hover:border-emerald/15 transition p-4">
                 <div className="flex items-center gap-4">
 
@@ -211,7 +201,7 @@ export default function AdminCoranPage() {
                     <div className="font-semibold text-emerald-dark text-sm truncate">
                       {s.nom_translit} — {s.nom_fr}
                     </div>
-                    <div className="flex items-center gap-2 text-xs text-gray-500">
+                    <div className="flex items-center gap-2 text-xs text-muted">
                       <span className="font-amiri" dir="rtl">{s.nom_ar}</span>
                       <span>·</span>
                       <span>{s.versets} versets</span>
@@ -240,7 +230,7 @@ export default function AdminCoranPage() {
 
                 {/* Audios existants */}
                 {hasAudio && (
-                  <div className="mt-3 pt-3 border-t border-emerald/5 space-y-1.5">
+                  <div className="mt-3 pt-3 border-t border-line space-y-1.5">
                     {audiosSourate.map((a) => (
                       <div key={a.id}
                         className="flex items-center gap-3 px-3 py-2 rounded-xl bg-cream">
@@ -252,7 +242,7 @@ export default function AdminCoranPage() {
                             {a.recitateur_nom}
                           </div>
                           {a.duree && (
-                            <div className="text-[0.65rem] text-gray-500">
+                            <div className="text-xs text-muted">
                               {Math.floor(a.duree / 60)} min {a.duree % 60}s
                             </div>
                           )}
@@ -277,12 +267,12 @@ export default function AdminCoranPage() {
                         justify-center p-0 sm:p-4"
              onClick={() => !uploading && setSelectedSourate(null)}>
           <div onClick={(e) => e.stopPropagation()}
-            className="w-full sm:max-w-lg bg-white rounded-t-3xl sm:rounded-3xl
+            className="w-full sm:max-w-lg bg-white rounded-t-3xl sm:rounded-2xl
                        p-6 max-h-[90vh] overflow-y-auto">
 
             <div className="flex items-center justify-between mb-5">
               <div>
-                <div className="text-xs font-bold text-gold uppercase tracking-wider">
+                <div className="text-xs font-bold text-gold">
                   Ajouter un audio
                 </div>
                 <div className="font-bold text-emerald-dark text-lg mt-1">
@@ -297,8 +287,7 @@ export default function AdminCoranPage() {
 
             {/* Choix récitateur */}
             <div className="mb-5">
-              <label className="block text-xs font-semibold text-emerald-dark mb-2
-                                uppercase tracking-wider">
+              <label className="block text-xs font-semibold text-emerald-dark mb-2">
                 Récitateur *
               </label>
               <div className="grid grid-cols-1 gap-2">
@@ -319,22 +308,20 @@ export default function AdminCoranPage() {
                 <input type="text" placeholder="Nom du récitateur"
                   value={customNom}
                   onChange={(e) => setCustomNom(e.target.value)}
-                  className="w-full mt-2 px-4 py-2.5 rounded-xl border-2 border-emerald/10
-                             focus:border-gold outline-none text-sm" />
+                  className="field" />
               )}
             </div>
 
             {/* Fichier */}
             <div className="mb-5">
-              <label className="block text-xs font-semibold text-emerald-dark mb-2
-                                uppercase tracking-wider">
+              <label className="block text-xs font-semibold text-emerald-dark mb-2">
                 Fichier MP3 *
               </label>
               <input type="file" accept="audio/*"
                 disabled={!recitateurSlug || uploading}
                 onChange={(e) => e.target.files?.[0] && uploadMP3(e.target.files[0])}
-                className="w-full px-4 py-3 rounded-xl border-2 border-emerald/10
-                           focus:border-gold outline-none text-sm
+                className="w-full px-4 py-3 rounded-xl border border-line
+                           focus:border-emerald outline-none text-sm
                            disabled:opacity-50 disabled:cursor-not-allowed" />
               {uploading && (
                 <p className="text-xs text-emerald mt-2 font-semibold">
@@ -343,9 +330,9 @@ export default function AdminCoranPage() {
               )}
             </div>
 
-            <div className="flex justify-end gap-3 pt-4 border-t border-emerald/10">
+            <div className="flex justify-end gap-3 pt-4 border-t border-line">
               <button onClick={() => setSelectedSourate(null)} disabled={uploading}
-                className="px-5 py-2.5 rounded-xl border-2 border-emerald/15
+                className="px-5 py-2.5 rounded-xl border border-line
                            text-emerald-dark font-semibold text-sm disabled:opacity-50">
                 Fermer
               </button>

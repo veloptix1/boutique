@@ -1,29 +1,15 @@
 "use client";
 import Link from "next/link";
-import { Bismillah, EndMark } from "@/components/PageHeader";
+import { BackLink, PageHeader } from "@/components/ui";
+import { EndMark } from "@/components/PageHeader";
 
 export default function ConditionsPage() {
   return (
-    <main className="px-[6%] pt-24 pb-40 max-w-[900px] mx-auto min-h-screen">
-      <Link href="/dashboard" className="text-emerald text-sm font-semibold hover:underline">← Retour</Link>
+    <main className="page max-w-[900px]">
+      <BackLink href="/dashboard" label="Retour" />
 
-      <div className="mt-8">
-        <Bismillah />
-      </div>
 
-      <div className="mb-10">
-        <div className="flex items-center gap-3 mb-3">
-          <div className="w-12 h-12 rounded-2xl bg-emerald/10 flex items-center justify-center text-emerald">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
-              <path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/>
-            </svg>
-          </div>
-          <div className="text-xs font-bold text-gold uppercase tracking-[3px]">Légal</div>
-        </div>
-        <h1 className="font-amiri font-bold text-emerald-dark text-4xl sm:text-5xl mb-3">Conditions d''utilisation</h1>
-        <p className="text-gray-500">Dernière mise à jour : Octobre 2026</p>
-      </div>
+      <PageHeader title="Conditions d''utilisation" subtitle="Dernière mise à jour : Octobre 2026" />
 
       <div className="space-y-6">
         {[
@@ -38,9 +24,9 @@ export default function ConditionsPage() {
           { t: "9. Modification des conditions", c: "Nous nous réservons le droit de modifier ces conditions à tout moment. Les modifications prendront effet dès leur publication dans l''application." },
           { t: "10. Contact", c: "Pour toute question relative à ces conditions, contactez-nous via la page Support de l''application." },
         ].map((s, i) => (
-          <section key={i} className="bg-white rounded-3xl p-6 sm:p-8 border border-emerald/5">
+          <section key={i} className="bg-white rounded-2xl p-6 sm:p-8 border border-line">
             <h2 className="font-amiri font-bold text-emerald-dark text-xl mb-3">{s.t}</h2>
-            <p className="text-sm text-gray-600 leading-relaxed">{s.c}</p>
+            <p className="text-sm text-ink/80 leading-relaxed">{s.c}</p>
           </section>
         ))}
       </div>

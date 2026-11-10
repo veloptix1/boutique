@@ -52,24 +52,23 @@ export default function AdminProphetesPage() {
     <main className="p-6 lg:p-12 max-w-[1400px] mx-auto">
       <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
         <div>
-          <div className="text-xs font-bold text-gold uppercase tracking-[3px] mb-2">Contenu</div>
           <h1 className="font-amiri font-bold text-emerald-dark text-3xl">Prophètes</h1>
-          <p className="text-gray-500 text-sm">{list.length} prophète(s)</p>
+          <p className="text-muted text-sm">{list.length} prophète(s)</p>
         </div>
         <button onClick={() => setEditing({ ...empty })}
           className="px-6 py-3 rounded-2xl bg-emerald text-white font-semibold text-sm
-                     hover:bg-emerald-dark transition shadow-[0_8px_20px_rgba(13,92,74,0.25)]">
+                     hover:bg-emerald-dark transition">
           + Ajouter
         </button>
       </div>
 
       {loading ? (
-        <p className="text-gray-400">Chargement...</p>
+        <p className="text-muted">Chargement...</p>
       ) : (
-        <div className="bg-white rounded-3xl border border-emerald/5 overflow-hidden">
+        <div className="bg-white rounded-2xl border border-line overflow-hidden">
           <table className="w-full">
             <thead className="bg-emerald/5">
-              <tr className="text-left text-xs font-bold text-emerald-dark uppercase tracking-wider">
+              <tr className="text-left text-xs font-bold text-emerald-dark">
                 <th className="px-6 py-4">N°</th>
                 <th className="px-6 py-4">Nom</th>
                 <th className="px-6 py-4 hidden md:table-cell">Surnom</th>
@@ -78,13 +77,13 @@ export default function AdminProphetesPage() {
             </thead>
             <tbody>
               {list.map((p) => (
-                <tr key={p.id} className="border-t border-emerald/5 hover:bg-cream/50">
+                <tr key={p.id} className="border-t border-line hover:bg-cream/50">
                   <td className="px-6 py-4 text-emerald font-bold">{p.ordre}</td>
                   <td className="px-6 py-4">
                     <div className="font-semibold text-emerald-dark text-sm">{p.nom_fr}</div>
-                    <div className="text-xs text-gray-400 font-amiri" dir="rtl">{p.nom_ar}</div>
+                    <div className="text-xs text-muted font-amiri" dir="rtl">{p.nom_ar}</div>
                   </td>
-                  <td className="px-6 py-4 text-sm text-gray-600 hidden md:table-cell">{p.surnom_fr || "—"}</td>
+                  <td className="px-6 py-4 text-sm text-ink/80 hidden md:table-cell">{p.surnom_fr || "—"}</td>
                   <td className="px-6 py-4 text-right">
                     <div className="flex justify-end gap-2">
                       <button onClick={() => setEditing(p)}
@@ -106,10 +105,10 @@ export default function AdminProphetesPage() {
 
       {editing && (
         <div className="fixed inset-0 z-[1000] bg-black/60 flex items-start justify-center p-4 overflow-y-auto">
-          <div className="bg-white rounded-3xl w-full max-w-3xl my-8">
-            <div className="sticky top-0 bg-white border-b border-emerald/10 px-6 py-4 flex items-center justify-between rounded-t-3xl">
+          <div className="bg-white rounded-2xl w-full max-w-3xl my-8">
+            <div className="sticky top-0 bg-white border-b border-line px-6 py-4 flex items-center justify-between rounded-t-3xl">
               <h2 className="font-bold text-emerald-dark">{editing.id ? "Modifier" : "Ajouter"}</h2>
-              <button onClick={() => setEditing(null)} className="text-gray-400 hover:text-terracotta text-2xl">×</button>
+              <button onClick={() => setEditing(null)} className="text-muted hover:text-terracotta text-2xl">×</button>
             </div>
 
             <div className="p-6 space-y-5">
@@ -118,80 +117,80 @@ export default function AdminProphetesPage() {
                   <input value={editing.nom_fr}
                     onChange={(e) => setEditing({ ...editing, nom_fr: e.target.value,
                       slug: editing.id ? editing.slug : e.target.value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") })}
-                    className="inp" />
+                    className="field" />
                 </Field>
                 <Field label="Slug *">
                   <input value={editing.slug}
                     onChange={(e) => setEditing({ ...editing, slug: e.target.value })}
-                    className="inp font-mono text-xs" />
+                    className="field font-mono" />
                 </Field>
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <Field label="Nom AR">
                   <input dir="rtl" value={editing.nom_ar}
                     onChange={(e) => setEditing({ ...editing, nom_ar: e.target.value })}
-                    className="inp font-amiri" />
+                    className="field font-amiri" />
                 </Field>
                 <Field label="Nom EN">
                   <input value={editing.nom_en}
                     onChange={(e) => setEditing({ ...editing, nom_en: e.target.value })}
-                    className="inp" />
+                    className="field" />
                 </Field>
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <Field label="Surnom FR">
                   <input value={editing.surnom_fr}
                     onChange={(e) => setEditing({ ...editing, surnom_fr: e.target.value })}
-                    className="inp" />
+                    className="field" />
                 </Field>
                 <Field label="Surnom AR">
                   <input dir="rtl" value={editing.surnom_ar}
                     onChange={(e) => setEditing({ ...editing, surnom_ar: e.target.value })}
-                    className="inp font-amiri" />
+                    className="field font-amiri" />
                 </Field>
               </div>
               <div className="grid grid-cols-3 gap-4">
                 <Field label="Époque">
                   <input value={editing.epoque}
                     onChange={(e) => setEditing({ ...editing, epoque: e.target.value })}
-                    className="inp" />
+                    className="field" />
                 </Field>
                 <Field label="Lieu">
                   <input value={editing.lieu}
                     onChange={(e) => setEditing({ ...editing, lieu: e.target.value })}
-                    className="inp" />
+                    className="field" />
                 </Field>
                 <Field label="Ordre">
                   <input type="number" value={editing.ordre}
                     onChange={(e) => setEditing({ ...editing, ordre: Number(e.target.value) })}
-                    className="inp" />
+                    className="field" />
                 </Field>
               </div>
               <Field label="Peuple">
                 <input value={editing.peuple}
                   onChange={(e) => setEditing({ ...editing, peuple: e.target.value })}
-                  className="inp" />
+                  className="field" />
               </Field>
               <Field label="Passages Coran (séparés par —)">
                 <textarea rows={3} value={editing.passages_coran}
                   onChange={(e) => setEditing({ ...editing, passages_coran: e.target.value })}
-                  className="inp font-mono text-xs" />
+                  className="field font-mono" />
               </Field>
               <Field label="Hadiths (séparés par —)">
                 <textarea rows={3} value={editing.hadiths}
                   onChange={(e) => setEditing({ ...editing, hadiths: e.target.value })}
-                  className="inp font-mono text-xs" />
+                  className="field font-mono" />
               </Field>
               <Field label="Paroles des savants">
                 <textarea rows={4} value={editing.paroles_savants}
                   onChange={(e) => setEditing({ ...editing, paroles_savants: e.target.value })}
-                  className="inp" />
+                  className="field" />
               </Field>
             </div>
 
-            <div className="sticky bottom-0 bg-white border-t border-emerald/10 px-6 py-4 flex justify-end gap-3 rounded-b-3xl">
+            <div className="sticky bottom-0 bg-white border-t border-line px-6 py-4 flex justify-end gap-3 rounded-b-3xl">
               <button onClick={() => setEditing(null)}
-                className="px-6 py-3 rounded-2xl border-2 border-emerald/15 text-emerald-dark font-semibold text-sm">
+                className="px-6 py-3 rounded-2xl border border-line text-emerald-dark font-semibold text-sm">
                 Annuler
               </button>
               <button onClick={save} disabled={saving}
@@ -214,7 +213,7 @@ export default function AdminProphetesPage() {
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div>
-      <label className="block text-xs font-semibold text-emerald-dark mb-1.5 uppercase tracking-wider">{label}</label>
+      <label className="block text-xs font-semibold text-emerald-dark mb-1.5">{label}</label>
       {children}
     </div>
   );

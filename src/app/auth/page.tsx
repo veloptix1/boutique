@@ -1,8 +1,8 @@
 "use client";
-import { Bismillah, EndMark } from "@/components/PageHeader";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { signIn, signUp } from "@/lib/auth";
+import { authErrorMessage } from "@/lib/security";
 
 export default function AuthPage() {
   const router = useRouter();
@@ -10,117 +10,89 @@ export default function AuthPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [nom, setNom] = useState("");
+  const [showPwd, setShowPwd] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [info, setInfo] = useState("");
+
+  const switchMode = (m: "login" | "signup") => { setMode(m); setError(""); setInfo(""); };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
-    setLoading(true);
+    setError(""); setInfo(""); setLoading(true);
 
-    const { error } =
-      mode === "login"
-        ? await signIn(email, password)
-        : await signUp(email, password, nom);
+    const { error } = mode === "login"
+      ? await signIn(email.trim(), password)
+      : await signUp(email.trim(), password, nom);
 
     setLoading(false);
-
-    if (error) {
-      setError(error.message);
-      return;
-    }
+    if (error) { setError(authErrorMessage(error.message)); return; }
 
     if (mode === "signup") {
-      setError("Vérifie ton email pour confirmer ton compte.");
+      setInfo("Compte créé. Vérifiez votre email pour le confirmer, puis connectez-vous.");
       return;
     }
-
-    // 🔥 REDIRECTION VERS DASHBOARD APRÈS CONNEXION
     router.push("/dashboard");
     router.refresh();
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-[6%] py-24
-                    bg-gradient-to-br from-cream to-[#f0e9d9]">
-      <div className="w-full max-w-md bg-white rounded-[28px] p-8
-                      shadow-[0_30px_60px_rgba(13,92,74,0.15)]
-                      relative overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-1.5
-                        bg-gradient-to-r from-emerald via-gold to-terracotta" />
-
-        <h1 className="font-amiri font-bold text-emerald-dark text-3xl text-center mb-2">
-          AL BASIRAH
+    <main className="page flex min-h-[calc(100dvh-160px)] items-center">
+      <div className="card mx-auto w-full max-w-md p-6 sm:p-8">
+        <h1 className="h-page text-center">
+          {mode === "login" ? "Connexion" : "Créer un compte"}
         </h1>
-        <p className="text-center text-gray-500 text-sm mb-8">
-          {mode === "login" ? "Connexion à votre compte" : "Créer votre compte"}
+        <p className="mb-6 mt-1 text-center text-sm text-muted">
+          {mode === "login" ? "Retrouvez votre espace AL BASIRAH." : "Quelques secondes suffisent."}
         </p>
 
-        <div className="flex bg-emerald/8 p-1 rounded-full mb-6">
-          <button
-            onClick={() => setMode("login")}
-            className={`flex-1 py-2 rounded-full text-sm font-semibold transition
-              ${mode === "login" ? "bg-emerald text-white" : "text-emerald"}`}
-          >
-            Connexion
-          </button>
-          <button
-            onClick={() => setMode("signup")}
-            className={`flex-1 py-2 rounded-full text-sm font-semibold transition
-              ${mode === "signup" ? "bg-emerald text-white" : "text-emerald"}`}
-          >
-            Inscription
-          </button>
+        <div role="tablist" aria-label="Mode" className="mb-6 grid grid-cols-2 rounded-xl bg-emerald/10 p-1">
+          {(["login", "signup"] as const).map((m) => (
+            <button key={m} type="button" role="tab" aria-selected={mode === m} onClick={() => switchMode(m)}
+              className={`h-10 rounded-lg text-sm font-semibold transition-colors
+                          ${mode === m ? "bg-white text-emerald-dark shadow-sm" : "text-emerald"}`}>
+              {m === "login" ? "Connexion" : "Inscription"}
+            </button>
+          ))}
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4" noValidate={false}>
           {mode === "signup" && (
-            <input
-              type="text"
-              placeholder="Nom complet"
-              value={nom}
-              onChange={(e) => setNom(e.target.value)}
-              required
-              className="w-full px-5 py-3.5 rounded-2xl border-2 border-emerald/10
-                         focus:border-gold outline-none text-sm"
-            />
+            <div>
+              <label htmlFor="nom" className="mb-1.5 block text-sm font-medium text-emerald-dark">Nom complet</label>
+              <input id="nom" type="text" autoComplete="name" required maxLength={80}
+                     value={nom} onChange={(e) => setNom(e.target.value)} className="field" />
+            </div>
           )}
 
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            className="w-full px-5 py-3.5 rounded-2xl border-2 border-emerald/10
-                       focus:border-gold outline-none text-sm"
-          />
+          <div>
+            <label htmlFor="email" className="mb-1.5 block text-sm font-medium text-emerald-dark">Email</label>
+            <input id="email" type="email" inputMode="email" autoComplete="email" autoCapitalize="none" required
+                   value={email} onChange={(e) => setEmail(e.target.value)} className="field" />
+          </div>
 
-          <input
-            type="password"
-            placeholder="Mot de passe"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            minLength={6}
-            className="w-full px-5 py-3.5 rounded-2xl border-2 border-emerald/10
-                       focus:border-gold outline-none text-sm"
-          />
+          <div>
+            <label htmlFor="password" className="mb-1.5 block text-sm font-medium text-emerald-dark">Mot de passe</label>
+            <div className="relative">
+              <input id="password" type={showPwd ? "text" : "password"} required minLength={8}
+                     autoComplete={mode === "login" ? "current-password" : "new-password"}
+                     value={password} onChange={(e) => setPassword(e.target.value)} className="field pr-20" />
+              <button type="button" onClick={() => setShowPwd(!showPwd)}
+                      className="absolute right-0 top-0 h-12 px-4 text-sm font-medium text-emerald">
+                {showPwd ? "Masquer" : "Afficher"}
+              </button>
+            </div>
+            {mode === "signup" && <p className="mt-1.5 text-xs text-muted">8 caractères minimum.</p>}
+          </div>
 
-          {error && (
-            <p className="text-sm text-terracotta text-center">{error}</p>
-          )}
+          {error && <p role="alert" className="rounded-xl bg-terracotta/10 px-4 py-3 text-sm text-terracotta-deep">{error}</p>}
+          {info && <p role="status" className="rounded-xl bg-emerald/10 px-4 py-3 text-sm text-emerald-dark">{info}</p>}
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full py-3.5 rounded-2xl bg-emerald text-white font-semibold
-                       hover:bg-emerald-dark transition disabled:opacity-50"
-          >
-            {loading ? "..." : mode === "login" ? "Se connecter" : "S'inscrire"}
+          <button type="submit" disabled={loading} className="btn-primary w-full">
+            {loading ? "Patientez…" : mode === "login" ? "Se connecter" : "Créer mon compte"}
           </button>
         </form>
       </div>
-    </div>
+    </main>
   );
 }

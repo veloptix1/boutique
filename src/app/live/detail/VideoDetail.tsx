@@ -1,9 +1,11 @@
 "use client";
-import { Bismillah, EndMark } from "@/components/PageHeader";
+import { EndMark } from "@/components/PageHeader";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
+import { BackLink } from "@/components/ui";
 import { supabase } from "@/lib/supabase";
+import { safeYoutubeId } from "@/lib/security";
 import { useLang } from "@/components/LangProvider";
 import { IconUser, IconArrowRight } from "@/components/icons";
 
@@ -40,13 +42,12 @@ export default function VideoDetail() {
     })();
   }, [id]);
 
-  if (loading) return <div className="min-h-screen flex items-center justify-center bg-cream"><p className="text-emerald">Chargement...</p></div>;
+  if (loading) return <div className="min-h-dvh flex items-center justify-center bg-cream"><p className="text-emerald">Chargement...</p></div>;
 
   if (!video) return (
-    <main className="px-[6%] pt-32 pb-32 max-w-[1200px] mx-auto text-center">
-      <Bismillah />
+    <main className="page text-center">
       <h1 className="font-amiri font-bold text-emerald-dark text-3xl mb-4">Vidéo introuvable</h1>
-      <Link href="/live" className="text-emerald hover:underline font-semibold">← Retour aux vidéos</Link>
+      <BackLink href="/live" label="Retour aux vidéos" />
     </main>
   );
 
@@ -56,17 +57,15 @@ export default function VideoDetail() {
   };
 
   return (
-    <main className="px-[6%] pt-24 pb-40 max-w-[1200px] mx-auto">
-      <Link href="/live" className="text-emerald text-sm font-semibold hover:underline inline-flex items-center gap-1">
-        ← Retour aux vidéos
-      </Link>
+    <main className="page">
+      <BackLink href="/live" label="Retour aux vidéos" />
 
       {/* Lecteur YouTube */}
-      <div className="mt-6 mb-6 bg-black rounded-3xl overflow-hidden
-                      shadow-[0_30px_60px_rgba(0,0,0,0.3)]">
+      <div className="mt-6 mb-6 bg-black rounded-2xl overflow-hidden">
         <div className="relative" style={{ paddingBottom: "56.25%" }}>
           <iframe
-            src={`https://www.youtube.com/embed/${video.youtube_video_id}?autoplay=1&rel=0`}
+            src={`https://www.youtube-nocookie.com/embed/${safeYoutubeId(video.youtube_video_id) ?? ""}?autoplay=1&rel=0`}
+            referrerPolicy="strict-origin-when-cross-origin"
             title={video.titre}
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
@@ -78,8 +77,8 @@ export default function VideoDetail() {
       {/* Infos */}
       <div className="mb-10">
         {video.categorie && (
-          <div className="inline-block px-3 py-1 rounded-full bg-gold/15 text-gold
-                          text-[0.7rem] font-bold uppercase tracking-wider mb-3">
+          <div className="inline-block px-3 py-1 rounded-full bg-gold/15 text-gold-deep
+                          text-xs font-bold mb-3">
             {video.categorie}
           </div>
         )}
@@ -99,7 +98,7 @@ export default function VideoDetail() {
         )}
 
         {video.description && (
-          <div className="bg-cream rounded-2xl p-5 border border-emerald/5">
+          <div className="bg-cream rounded-2xl p-5 border border-line">
             <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-line">
               {video.description}
             </p>
@@ -119,9 +118,9 @@ export default function VideoDetail() {
                 className="group no-underline">
                 <div className="relative aspect-video bg-black rounded-xl overflow-hidden
                                 mb-2">
-                  <img src={`https://img.youtube.com/vi/${v.youtube_video_id}/hqdefault.jpg`}
+                  <img loading="lazy" decoding="async" src={`https://img.youtube.com/vi/${v.youtube_video_id}/hqdefault.jpg`}
                     alt={v.titre}
-                    className="w-full h-full object-cover group-hover:scale-105 transition" />
+                    className="w-full h-full object-cover transition" />
                 </div>
                 <div className="text-xs font-semibold text-emerald-dark line-clamp-2">
                   {v.titre}

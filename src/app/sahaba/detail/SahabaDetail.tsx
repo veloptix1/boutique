@@ -1,8 +1,9 @@
 "use client";
-import { Bismillah, EndMark } from "@/components/PageHeader";
+import { EndMark } from "@/components/PageHeader";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
+import { BackLink } from "@/components/ui";
 import { supabase } from "@/lib/supabase";
 import { useLang } from "@/components/LangProvider";
 import { IconBook } from "@/components/icons";
@@ -24,12 +25,11 @@ export default function SahabaDetail() {
     })();
   }, [slug]);
 
-  if (loading) return <div className="min-h-screen flex items-center justify-center bg-cream"><p className="text-emerald">Chargement...</p></div>;
+  if (loading) return <div className="min-h-dvh flex items-center justify-center bg-cream"><p className="text-emerald">Chargement...</p></div>;
   if (!sahaba) return (
-    <main className="px-[6%] pt-32 pb-32 max-w-[1200px] mx-auto text-center">
-      <Bismillah />
+    <main className="page text-center">
       <h1 className="font-amiri font-bold text-emerald-dark text-3xl mb-4">Sahaba introuvable</h1>
-      <Link href="/sahaba" className="text-emerald hover:underline font-semibold">← Retour</Link>
+      <BackLink href="/sahaba" label="Retour" />
     </main>
   );
 
@@ -60,17 +60,14 @@ export default function SahabaDetail() {
   };
 
   return (
-    <main className="px-[6%] pt-24 pb-40 max-w-[900px] mx-auto min-h-screen">
+    <main className="page max-w-[900px]">
 
-      <Link href="/sahaba" className="text-emerald text-sm font-semibold hover:underline">
-        ← Retour aux Sahaba
-      </Link>
+      <BackLink href="/sahaba" label="Retour aux Sahaba" />
 
       {/* En-tête */}
       <div className="mt-8 mb-10 text-center">
         <div className="w-24 h-24 mx-auto rounded-full bg-gradient-to-br from-emerald to-emerald-dark
-                        flex items-center justify-center text-gold font-amiri font-bold text-4xl
-                        shadow-[0_15px_35px_rgba(13,92,74,0.3)] mb-5">
+                        flex items-center justify-center text-gold font-amiri font-bold text-4xl mb-5">
           {sahaba.ordre}
         </div>
 
@@ -80,13 +77,13 @@ export default function SahabaDetail() {
           </div>
         )}
 
-        <h1 className="font-amiri font-bold text-emerald-dark text-4xl sm:text-5xl mb-3">
+        <h1 className="font-amiri font-bold text-emerald-dark text-[1.75rem] leading-tight sm:text-4xl mb-3">
           {getName()}
         </h1>
 
         {getTitre() && (
           <div className="inline-block px-4 py-1.5 rounded-full bg-emerald/10 text-emerald
-                          text-sm font-bold uppercase tracking-wider">
+                          text-sm font-bold">
             {getTitre()}
           </div>
         )}
@@ -95,14 +92,14 @@ export default function SahabaDetail() {
       {/* Infos */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10">
         {sahaba.famille && (
-          <div className="bg-white rounded-2xl p-4 border border-emerald/5">
-            <div className="text-xs font-bold text-gold uppercase tracking-wider mb-1">Famille</div>
+          <div className="bg-white rounded-2xl p-4 border border-line">
+            <div className="text-xs font-bold text-gold mb-1">Famille</div>
             <div className="text-sm text-emerald-dark">{sahaba.famille}</div>
           </div>
         )}
         {sahaba.epoque && (
-          <div className="bg-white rounded-2xl p-4 border border-emerald/5">
-            <div className="text-xs font-bold text-gold uppercase tracking-wider mb-1">Époque</div>
+          <div className="bg-white rounded-2xl p-4 border border-line">
+            <div className="text-xs font-bold text-gold mb-1">Époque</div>
             <div className="text-sm text-emerald-dark">{sahaba.epoque}</div>
           </div>
         )}
@@ -110,7 +107,7 @@ export default function SahabaDetail() {
 
       {/* Histoire */}
       {sahaba.histoire_fr && (
-        <div className="bg-white rounded-3xl p-6 sm:p-8 border-2 border-emerald/10 mb-6">
+        <div className="bg-white rounded-2xl p-6 sm:p-8 border border-line mb-6">
           <div className="flex items-center gap-3 mb-5">
             <div className="w-11 h-11 rounded-2xl bg-emerald/10 flex items-center justify-center text-emerald">
               <IconBook size={22} />
@@ -131,7 +128,7 @@ export default function SahabaDetail() {
           if (section.lines.length === 0) return null;
           const c = colorMap[section.color];
           return (
-            <div key={i} className={`bg-white rounded-3xl p-6 sm:p-8 border-2 ${c.border}`}>
+            <div key={i} className={`bg-white rounded-2xl p-6 sm:p-8 border ${c.border}`}>
               <div className="flex items-center gap-3 mb-5">
                 <div className={`w-11 h-11 rounded-2xl flex items-center justify-center text-2xl ${c.bg}`}>
                   {section.icon}
@@ -154,9 +151,7 @@ export default function SahabaDetail() {
       </div>
 
       <div className="mt-12 text-center">
-        <Link href="/sahaba" className="text-emerald font-semibold hover:underline">
-          ← Retour aux Sahaba
-        </Link>
+        <BackLink href="/sahaba" label="Retour aux Sahaba" />
       </div>
       <EndMark />
     </main>

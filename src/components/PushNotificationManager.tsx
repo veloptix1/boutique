@@ -111,7 +111,11 @@ export default function PushNotificationManager() {
       const sub = await reg.pushManager.getSubscription();
       if (sub) {
         await sub.unsubscribe();
-        await supabase.from("push_subscriptions").delete().eq("endpoint", sub.endpoint);
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user) {
+          await supabase.from("push_subscriptions").delete()
+            .eq("endpoint", sub.endpoint).eq("user_id", user.id);
+        }
       }
       setSubscribed(false);
     } catch (e) {
@@ -133,7 +137,7 @@ export default function PushNotificationManager() {
   }
 
   return (
-    <div className="bg-white rounded-3xl p-6 border border-emerald/5">
+    <div className="bg-white rounded-2xl p-6 border border-line">
       <div className="flex items-center gap-3 mb-3">
         <div className="w-10 h-10 rounded-2xl bg-gold/15 flex items-center justify-center text-gold">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
@@ -146,7 +150,7 @@ export default function PushNotificationManager() {
           <div className="font-bold text-emerald-dark text-sm">
             Notifications
           </div>
-          <div className="text-xs text-gray-500">
+          <div className="text-xs text-muted">
             Soyez informé des nouveaux contenus
           </div>
         </div>
@@ -157,7 +161,7 @@ export default function PushNotificationManager() {
         disabled={loading}
         className={`w-full py-3 rounded-2xl font-semibold text-sm transition
           ${subscribed
-            ? "bg-white text-terracotta border-2 border-terracotta/20 hover:bg-terracotta/5"
+            ? "bg-white text-terracotta border border-terracotta/20 hover:bg-terracotta/5"
             : "bg-emerald text-white hover:bg-emerald-dark"}`}>
         {loading ? "..." : subscribed ? "Désactiver les notifications" : "Activer les notifications"}
       </button>

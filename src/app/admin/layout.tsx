@@ -3,10 +3,7 @@ import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
-import {
-  IconMosque, IconSpeaker, IconLivre, IconBook, IconCrown,
-  IconUser, IconHome, IconArrowRight, IconParchemin, IconStar,
-} from "@/components/icons";
+import { IconMosque, IconSpeaker, IconLivre, IconBook, IconCrown, IconUser, IconHome, IconArrowRight, IconParchemin, IconStar } from "@/components/icons";
 
 const menu = [
   { href: "/admin",              label: "Tableau de bord", Icon: IconHome },
@@ -37,9 +34,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     (async () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) { router.push("/auth"); return; }
-      const { data: profile } = await supabase
+      const { data: profile, error } = await supabase
         .from("profiles").select("role").eq("id", user.id).single();
-      if (profile?.role !== "admin") { router.push("/dashboard"); return; }
+      if (error || profile?.role !== "admin") { router.replace("/dashboard"); return; }
       setAuthorized(true);
       setLoading(false);
     })();
@@ -49,8 +46,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-cream">
-        <p className="text-emerald">Vérification des droits...</p>
+      <div className="min-h-dvh flex items-center justify-center bg-cream">
+        <p className="text-emerald">Vérification des droits…</p>
       </div>
     );
   }
@@ -58,11 +55,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   if (!authorized) return null;
 
   return (
-    <div className="min-h-screen bg-cream flex">
+    <div className="min-h-dvh bg-cream flex">
 
       {/* Sidebar Desktop */}
       <aside className="hidden lg:flex flex-col w-64 bg-emerald-dark text-white
-                        fixed top-0 left-0 h-screen z-[900]">
+                        fixed top-0 left-0 h-dvh z-[900]">
         <div className="p-6 border-b border-white/10">
           <Link href="/admin" className="flex items-center gap-3 no-underline">
             <div className="w-10 h-10 rounded-xl bg-gold/20 flex items-center justify-center">
@@ -70,7 +67,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             </div>
             <div>
               <div className="font-extrabold tracking-wider text-sm">ADMIN</div>
-              <div className="text-[0.6rem] text-gold tracking-widest">AL BASIRAH</div>
+              <div className="text-xs text-gold tracking-widest">AL BASIRAH</div>
             </div>
           </Link>
         </div>
@@ -106,7 +103,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
       {/* Top bar mobile */}
       <div className="lg:hidden fixed top-0 left-0 right-0 z-[900] bg-emerald-dark text-white
-                      px-4 py-3 flex items-center justify-between shadow-lg">
+                      px-4 h-14 flex items-center justify-between"
+           style={{ paddingTop: "var(--safe-top)", height: "calc(56px + var(--safe-top))" }}>
         <Link href="/admin" className="flex items-center gap-2 no-underline text-white">
           <div className="w-8 h-8 rounded-lg bg-gold/20 flex items-center justify-center">
             <IconMosque size={16} color="#d4af37" />
@@ -114,15 +112,17 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <span className="font-bold text-sm tracking-wider">ADMIN</span>
         </Link>
         <button onClick={() => setMenuOpen(!menuOpen)}
-          className="w-9 h-9 rounded-lg bg-white/10 flex items-center justify-center">
-          <span className="text-gold text-xl leading-none">{menuOpen ? "×" : "☰"}</span>
+          aria-label={menuOpen ? "Fermer le menu" : "Ouvrir le menu"} aria-expanded={menuOpen}
+          className="w-11 h-11 rounded-xl flex items-center justify-center text-gold active:bg-white/10">
+          <span className="text-2xl leading-none">{menuOpen ? "×" : "≡"}</span>
         </button>
       </div>
 
       {/* Menu mobile */}
       {menuOpen && (
-        <div className="lg:hidden fixed top-[56px] left-0 right-0 z-[900] bg-emerald-dark
-                        text-white p-4 space-y-1 max-h-[calc(100vh-56px)] overflow-y-auto">
+        <div className="lg:hidden fixed left-0 right-0 z-[900] bg-emerald-dark
+                        text-white p-3 space-y-1 overflow-y-auto"
+             style={{ top: "calc(56px + var(--safe-top))", maxHeight: "calc(100dvh - 56px - var(--safe-top))" }}>
           {menu.map(({ href, label, Icon }) => {
             const active = pathname === href ||
               (href !== "/admin" && pathname.startsWith(href));
@@ -149,7 +149,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       )}
 
       {/* Contenu */}
-      <div className="flex-1 lg:ml-64 pt-[56px] lg:pt-0 w-full">
+      <div className="flex-1 lg:ml-64 lg:pt-0 w-full min-w-0" style={{ paddingTop: "calc(var(--safe-top) + 56px)" }}>
         {children}
       </div>
     </div>

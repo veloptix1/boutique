@@ -62,9 +62,8 @@ export default function AudioPlayer() {
 
   return (
     <div className="fixed left-0 right-0 z-[940] px-3 pointer-events-none"
-         style={{ bottom: "calc(90px + env(safe-area-inset-bottom))" }}>
-      <div className="max-w-[600px] mx-auto bg-emerald-dark rounded-3xl
-                      shadow-[0_20px_40px_rgba(0,0,0,0.3)]
+         style={{ bottom: "calc(72px + var(--safe-bottom))" }}>
+      <div className="max-w-[600px] mx-auto bg-emerald-dark rounded-2xl
                       overflow-hidden pointer-events-auto">
         <div className="h-1 bg-white/10">
           <div className="h-full bg-gold transition-all"
@@ -86,11 +85,11 @@ export default function AudioPlayer() {
             <div className="font-semibold text-white text-xs sm:text-sm truncate">
               {player.titre}
             </div>
-            <div className="text-[0.65rem] sm:text-xs text-gold truncate">
+            <div className="text-xs sm:text-xs text-gold truncate">
               {player.auteur}
             </div>
           </div>
-          <div className="text-[0.65rem] text-white/60 hidden sm:block shrink-0">
+          <div className="text-xs text-white/60 hidden sm:block shrink-0">
             {formatTime(progress)} / {formatTime(duration)}
           </div>
           <button onClick={close}
