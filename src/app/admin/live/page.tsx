@@ -94,7 +94,7 @@ export default function AdminLivePage() {
           <div className="text-xs font-bold text-terracotta uppercase tracking-[3px] mb-2">
             Contenu
           </div>
-          <h1 className="font-amiri font-bold text-emerald-dark text-3xl">
+          <h1 className="font-amiri font-bold text-heading text-3xl">
             Vidéos
           </h1>
           <p className="text-muted text-sm">{list.length} vidéo(s)</p>
@@ -109,20 +109,20 @@ export default function AdminLivePage() {
       {loading ? (
         <p className="text-muted">Chargement...</p>
       ) : list.length === 0 ? (
-        <div className="bg-white rounded-2xl p-16 text-center border border-line">
+        <div className="bg-surface rounded-2xl p-16 text-center border border-line">
           <p className="text-muted">Aucune vidéo</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {list.map((v) => (
-            <div key={v.id} className="bg-white rounded-2xl overflow-hidden border border-line">
+            <div key={v.id} className="bg-surface rounded-2xl overflow-hidden border border-line">
               <div className="aspect-video bg-black">
                 <img loading="lazy" decoding="async" src={`https://img.youtube.com/vi/${v.youtube_video_id}/hqdefault.jpg`}
                   alt={v.titre}
                   className="w-full h-full object-cover" />
               </div>
               <div className="p-4">
-                <div className="font-bold text-emerald-dark text-sm mb-1 line-clamp-2">
+                <div className="font-bold text-heading text-sm mb-1 line-clamp-2">
                   {v.titre}
                 </div>
                 <div className="text-xs text-muted mb-1">{getSavantNom(v.savant_id)}</div>
@@ -134,7 +134,7 @@ export default function AdminLivePage() {
                 )}
                 <div className="flex gap-2 mt-3">
                   <button onClick={() => setEditing(v)}
-                    className="flex-1 px-3 py-2 rounded-lg bg-emerald/10 text-emerald
+                    className="flex-1 px-3 py-2 rounded-lg bg-emerald/10 text-link
                                text-xs font-semibold hover:bg-emerald/20">
                     Modifier
                   </button>
@@ -153,10 +153,10 @@ export default function AdminLivePage() {
       {editing && (
         <div className="fixed inset-0 z-[1000] bg-black/60 flex items-start justify-center
                         p-4 overflow-y-auto">
-          <div className="bg-white rounded-2xl w-full max-w-3xl my-8">
-            <div className="sticky top-0 bg-white border-b border-line px-6 py-4
+          <div className="bg-surface rounded-2xl w-full max-w-3xl my-8">
+            <div className="sticky top-0 bg-surface border-b border-line px-6 py-4
                             flex items-center justify-between rounded-t-3xl">
-              <h2 className="font-bold text-emerald-dark">
+              <h2 className="font-bold text-heading">
                 {editing.id ? "Modifier" : "Ajouter"} une vidéo
               </h2>
               <button onClick={() => setEditing(null)}
@@ -228,11 +228,11 @@ export default function AdminLivePage() {
               )}
             </div>
 
-            <div className="sticky bottom-0 bg-white border-t border-line px-6 py-4
+            <div className="sticky bottom-0 bg-surface border-t border-line px-6 py-4
                             flex justify-end gap-3 rounded-b-3xl">
               <button onClick={() => setEditing(null)}
                 className="px-6 py-3 rounded-2xl border border-line
-                           text-emerald-dark font-semibold text-sm">
+                           text-heading font-semibold text-sm">
                 Annuler
               </button>
               <button onClick={save} disabled={saving}
@@ -249,8 +249,8 @@ export default function AdminLivePage() {
       <style jsx global>{`
         .inp {
           width: 100%; padding: 12px 16px; border-radius: 14px;
-          border: 2px solid rgba(13,92,74,0.1); outline: none;
-          font-size: 14px; font-family: inherit; background: white;
+          border: 1px solid rgb(var(--line) / 0.25); outline: none;
+          font-size: 14px; font-family: inherit; background: rgb(var(--surface)); color: rgb(var(--ink));
         }
         .inp:focus { border-color: #d4af37; }
       `}</style>
@@ -261,7 +261,7 @@ export default function AdminLivePage() {
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div>
-      <label className="block text-xs font-semibold text-emerald-dark mb-1.5">
+      <label className="block text-xs font-semibold text-heading mb-1.5">
         {label}
       </label>
       {children}

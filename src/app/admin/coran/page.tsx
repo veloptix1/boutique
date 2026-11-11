@@ -131,7 +131,7 @@ export default function AdminCoranPage() {
 
       {/* Header */}
       <div className="mb-8">
-        <h1 className="font-amiri font-bold text-emerald-dark text-3xl sm:text-4xl mb-2">
+        <h1 className="font-amiri font-bold text-heading text-3xl sm:text-4xl mb-2">
           Coran
         </h1>
         <p className="text-muted text-sm">
@@ -141,29 +141,29 @@ export default function AdminCoranPage() {
 
       {/* Stats */}
       <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
-        <div className="bg-white rounded-2xl p-5 border border-line">
+        <div className="bg-surface rounded-2xl p-5 border border-line">
           <div className="text-xs font-bold text-muted mb-1">
             Sourates totales
           </div>
-          <div className="font-amiri font-bold text-emerald-dark text-3xl">114</div>
+          <div className="font-amiri font-bold text-heading text-3xl">114</div>
         </div>
-        <div className="bg-white rounded-2xl p-5 border border-line">
+        <div className="bg-surface rounded-2xl p-5 border border-line">
           <div className="text-xs font-bold text-muted mb-1">
             Sourates avec audio
           </div>
-          <div className="font-amiri font-bold text-emerald-dark text-3xl">{souratesWithAudio}</div>
+          <div className="font-amiri font-bold text-heading text-3xl">{souratesWithAudio}</div>
         </div>
-        <div className="bg-white rounded-2xl p-5 border border-line col-span-2 lg:col-span-1">
+        <div className="bg-surface rounded-2xl p-5 border border-line col-span-2 lg:col-span-1">
           <div className="text-xs font-bold text-muted mb-1">
             Audios uploadés
           </div>
-          <div className="font-amiri font-bold text-emerald-dark text-3xl">{totalAudios}</div>
+          <div className="font-amiri font-bold text-heading text-3xl">{totalAudios}</div>
         </div>
       </div>
 
       {/* Recherche */}
       <div className="relative mb-6">
-        <div className="absolute left-5 top-1/2 -translate-y-1/2 text-emerald/50 pointer-events-none">
+        <div className="absolute left-5 top-1/2 -translate-y-1/2 text-link/50 pointer-events-none">
           <IconSearch size={18} />
         </div>
         <input
@@ -186,19 +186,19 @@ export default function AdminCoranPage() {
 
             return (
               <div key={s.numero}
-                className="bg-white rounded-2xl border border-line
+                className="bg-surface rounded-2xl border border-line
                            hover:border-emerald/15 transition p-4">
                 <div className="flex items-center gap-4">
 
                   {/* Numéro */}
                   <div className="w-11 h-11 rounded-xl bg-emerald/8 flex items-center justify-center
-                                  text-emerald font-bold text-sm shrink-0">
+                                  text-link font-bold text-sm shrink-0">
                     {s.numero}
                   </div>
 
                   {/* Nom */}
                   <div className="flex-1 min-w-0">
-                    <div className="font-semibold text-emerald-dark text-sm truncate">
+                    <div className="font-semibold text-heading text-sm truncate">
                       {s.nom_translit} — {s.nom_fr}
                     </div>
                     <div className="flex items-center gap-2 text-xs text-muted">
@@ -213,7 +213,7 @@ export default function AdminCoranPage() {
                   {/* Badge audio */}
                   {hasAudio && (
                     <span className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1
-                                     rounded-full bg-emerald/10 text-emerald text-xs font-bold">
+                                     rounded-full bg-emerald/10 text-link text-xs font-bold">
                       <IconSpeaker size={12} />
                       {audiosSourate.length}
                     </span>
@@ -238,7 +238,7 @@ export default function AdminCoranPage() {
                           <IconPlay size={10} />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <div className="text-xs font-semibold text-emerald-dark truncate">
+                          <div className="text-xs font-semibold text-heading truncate">
                             {a.recitateur_nom}
                           </div>
                           {a.duree && (
@@ -267,7 +267,7 @@ export default function AdminCoranPage() {
                         justify-center p-0 sm:p-4"
              onClick={() => !uploading && setSelectedSourate(null)}>
           <div onClick={(e) => e.stopPropagation()}
-            className="w-full sm:max-w-lg bg-white rounded-t-3xl sm:rounded-2xl
+            className="w-full sm:max-w-lg bg-surface rounded-t-3xl sm:rounded-2xl
                        p-6 max-h-[90vh] overflow-y-auto">
 
             <div className="flex items-center justify-between mb-5">
@@ -275,19 +275,19 @@ export default function AdminCoranPage() {
                 <div className="text-xs font-bold text-gold">
                   Ajouter un audio
                 </div>
-                <div className="font-bold text-emerald-dark text-lg mt-1">
+                <div className="font-bold text-heading text-lg mt-1">
                   Sourate {selectedSourate.numero} — {selectedSourate.nom_translit}
                 </div>
               </div>
               <button onClick={() => !uploading && setSelectedSourate(null)}
-                className="w-9 h-9 rounded-full bg-emerald/8 text-emerald
+                className="w-9 h-9 rounded-full bg-emerald/8 text-link
                            hover:bg-emerald/15 flex items-center justify-center
                            text-xl leading-none">×</button>
             </div>
 
             {/* Choix récitateur */}
             <div className="mb-5">
-              <label className="block text-xs font-semibold text-emerald-dark mb-2">
+              <label className="block text-xs font-semibold text-heading mb-2">
                 Récitateur *
               </label>
               <div className="grid grid-cols-1 gap-2">
@@ -298,7 +298,7 @@ export default function AdminCoranPage() {
                                 transition
                       ${recitateurSlug === r.slug
                         ? "bg-emerald text-white"
-                        : "bg-cream text-emerald-dark hover:bg-emerald/10"}`}>
+                        : "bg-cream text-heading hover:bg-emerald/10"}`}>
                     {r.nom}
                   </button>
                 ))}
@@ -314,7 +314,7 @@ export default function AdminCoranPage() {
 
             {/* Fichier */}
             <div className="mb-5">
-              <label className="block text-xs font-semibold text-emerald-dark mb-2">
+              <label className="block text-xs font-semibold text-heading mb-2">
                 Fichier MP3 *
               </label>
               <input type="file" accept="audio/*"
@@ -324,7 +324,7 @@ export default function AdminCoranPage() {
                            focus:border-emerald outline-none text-sm
                            disabled:opacity-50 disabled:cursor-not-allowed" />
               {uploading && (
-                <p className="text-xs text-emerald mt-2 font-semibold">
+                <p className="text-xs text-link mt-2 font-semibold">
                   Upload en cours... Veuillez patienter
                 </p>
               )}
@@ -333,7 +333,7 @@ export default function AdminCoranPage() {
             <div className="flex justify-end gap-3 pt-4 border-t border-line">
               <button onClick={() => setSelectedSourate(null)} disabled={uploading}
                 className="px-5 py-2.5 rounded-xl border border-line
-                           text-emerald-dark font-semibold text-sm disabled:opacity-50">
+                           text-heading font-semibold text-sm disabled:opacity-50">
                 Fermer
               </button>
             </div>

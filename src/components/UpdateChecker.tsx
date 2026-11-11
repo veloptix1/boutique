@@ -52,7 +52,7 @@ export default function UpdateChecker() {
   return (
     <div className="fixed inset-0 z-[9999] bg-black/70 backdrop-blur-sm
                     flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl w-full max-w-md p-6 sm:p-8 relative">
+      <div className="bg-surface rounded-2xl w-full max-w-md p-6 sm:p-8 relative">
 
         <div className="w-16 h-16 mx-auto mb-5 rounded-2xl
                         bg-gradient-to-br from-emerald to-emerald-dark
@@ -64,7 +64,7 @@ export default function UpdateChecker() {
           </svg>
         </div>
 
-        <h2 className="font-amiri font-bold text-emerald-dark text-2xl text-center mb-2">
+        <h2 className="font-amiri font-bold text-heading text-2xl text-center mb-2">
           Nouvelle version disponible
         </h2>
 
@@ -104,7 +104,7 @@ export default function UpdateChecker() {
           {!update.obligatoire && (
             <button onClick={handleDismiss}
               className="w-full py-3 rounded-2xl border border-line
-                         text-emerald-dark font-semibold text-sm
+                         text-heading font-semibold text-sm
                          hover:border-terracotta hover:text-terracotta transition">
               Plus tard
             </button>

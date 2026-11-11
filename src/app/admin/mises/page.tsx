@@ -90,7 +90,7 @@ export default function AdminMisesPage() {
           <div className="text-xs font-bold text-terracotta uppercase tracking-[3px] mb-2">
             Contenu
           </div>
-          <h1 className="font-amiri font-bold text-emerald-dark text-3xl">
+          <h1 className="font-amiri font-bold text-heading text-3xl">
             Mises en garde
           </h1>
           <p className="text-muted text-sm">{list.length} mise(s) en garde</p>
@@ -105,14 +105,14 @@ export default function AdminMisesPage() {
       {loading ? (
         <p className="text-muted">Chargement...</p>
       ) : list.length === 0 ? (
-        <div className="bg-white rounded-2xl p-16 text-center border border-line">
+        <div className="bg-surface rounded-2xl p-16 text-center border border-line">
           <p className="text-muted">Aucune mise en garde</p>
         </div>
       ) : (
-        <div className="bg-white rounded-2xl border border-line overflow-hidden">
+        <div className="bg-surface rounded-2xl border border-line overflow-hidden">
           <table className="w-full">
             <thead className="bg-emerald/5">
-              <tr className="text-left text-xs font-bold text-emerald-dark">
+              <tr className="text-left text-xs font-bold text-heading">
                 <th className="px-6 py-4">Cible</th>
                 <th className="px-6 py-4 hidden md:table-cell">Par</th>
                 <th className="px-6 py-4 hidden lg:table-cell">Catégorie</th>
@@ -132,7 +132,7 @@ export default function AdminMisesPage() {
                           <span className="text-xs font-bold">{m.cible_nom?.charAt(0)}</span>
                         )}
                       </div>
-                      <div className="font-semibold text-emerald-dark text-sm truncate">
+                      <div className="font-semibold text-heading text-sm truncate">
                         {m.cible_nom}
                       </div>
                     </div>
@@ -151,7 +151,7 @@ export default function AdminMisesPage() {
                   <td className="px-6 py-4 text-right">
                     <div className="flex justify-end gap-2">
                       <button onClick={() => setEditing(m)}
-                        className="px-3 py-1.5 rounded-lg bg-emerald/10 text-emerald
+                        className="px-3 py-1.5 rounded-lg bg-emerald/10 text-link
                                    text-xs font-semibold hover:bg-emerald/20">
                         Modifier
                       </button>
@@ -172,10 +172,10 @@ export default function AdminMisesPage() {
       {editing && (
         <div className="fixed inset-0 z-[1000] bg-black/60 flex items-start justify-center
                         p-4 overflow-y-auto">
-          <div className="bg-white rounded-2xl w-full max-w-3xl my-8">
-            <div className="sticky top-0 bg-white border-b border-line px-6 py-4
+          <div className="bg-surface rounded-2xl w-full max-w-3xl my-8">
+            <div className="sticky top-0 bg-surface border-b border-line px-6 py-4
                             flex items-center justify-between rounded-t-3xl">
-              <h2 className="font-bold text-emerald-dark">
+              <h2 className="font-bold text-heading">
                 {editing.id ? "Modifier" : "Ajouter"} une mise en garde
               </h2>
               <button onClick={() => setEditing(null)}
@@ -246,11 +246,11 @@ export default function AdminMisesPage() {
               </Field>
             </div>
 
-            <div className="sticky bottom-0 bg-white border-t border-line px-6 py-4
+            <div className="sticky bottom-0 bg-surface border-t border-line px-6 py-4
                             flex justify-end gap-3 rounded-b-3xl">
               <button onClick={() => setEditing(null)}
                 className="px-6 py-3 rounded-2xl border border-line
-                           text-emerald-dark font-semibold text-sm">
+                           text-heading font-semibold text-sm">
                 Annuler
               </button>
               <button onClick={save} disabled={saving || uploading}
@@ -267,8 +267,8 @@ export default function AdminMisesPage() {
       <style jsx global>{`
         .inp {
           width: 100%; padding: 12px 16px; border-radius: 14px;
-          border: 2px solid rgba(13,92,74,0.1); outline: none;
-          font-size: 14px; font-family: inherit; background: white;
+          border: 1px solid rgb(var(--line) / 0.25); outline: none;
+          font-size: 14px; font-family: inherit; background: rgb(var(--surface)); color: rgb(var(--ink));
         }
         .inp:focus { border-color: #d4af37; }
       `}</style>
@@ -279,7 +279,7 @@ export default function AdminMisesPage() {
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div>
-      <label className="block text-xs font-semibold text-emerald-dark mb-1.5">
+      <label className="block text-xs font-semibold text-heading mb-1.5">
         {label}
       </label>
       {children}

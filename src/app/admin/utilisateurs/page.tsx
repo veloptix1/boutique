@@ -36,7 +36,7 @@ export default function AdminUsersPage() {
   return (
     <main className="p-6 lg:p-12 max-w-[1400px] mx-auto">
       <div className="mb-8">
-        <h1 className="font-amiri font-bold text-emerald-dark text-3xl">
+        <h1 className="font-amiri font-bold text-heading text-3xl">
           Utilisateurs
         </h1>
         <p className="text-muted text-sm">{users.length} inscrit(s)</p>
@@ -52,11 +52,11 @@ export default function AdminUsersPage() {
               <li key={u.id} className="card p-4">
                 <div className="flex items-start justify-between gap-3">
                   <div className="min-w-0">
-                    <p className="truncate font-semibold text-emerald-dark">{u.nom || "Sans nom"}</p>
+                    <p className="truncate font-semibold text-heading">{u.nom || "Sans nom"}</p>
                     <p className="truncate text-sm text-muted">{u.email}</p>
                     <p className="mt-1 text-xs text-muted">Inscrit le {new Date(u.created_at).toLocaleDateString("fr-FR")}</p>
                   </div>
-                  <span className={`badge shrink-0 ${u.role === "admin" ? "bg-gold/25 text-gold-deep" : "bg-emerald/10 text-emerald"}`}>
+                  <span className={`badge shrink-0 ${u.role === "admin" ? "bg-gold/25 text-gold-deep" : "bg-emerald/10 text-link"}`}>
                     {u.role === "admin" ? "Admin" : "Membre"}
                   </span>
                 </div>
@@ -71,7 +71,7 @@ export default function AdminUsersPage() {
           <div className="card hidden overflow-hidden md:block">
             <table className="w-full">
               <thead className="bg-emerald/5">
-                <tr className="text-left text-sm font-semibold text-emerald-dark">
+                <tr className="text-left text-sm font-semibold text-heading">
                   <th className="px-6 py-4">Utilisateur</th>
                   <th className="px-6 py-4">Inscrit le</th>
                   <th className="px-6 py-4">Rôle</th>
@@ -82,12 +82,12 @@ export default function AdminUsersPage() {
                 {users.map((u) => (
                   <tr key={u.id} className="border-t border-line">
                     <td className="px-6 py-4">
-                      <div className="font-semibold text-emerald-dark text-sm">{u.nom || "Sans nom"}</div>
+                      <div className="font-semibold text-heading text-sm">{u.nom || "Sans nom"}</div>
                       <div className="text-xs text-muted">{u.email}</div>
                     </td>
                     <td className="px-6 py-4 text-sm text-ink/80">{new Date(u.created_at).toLocaleDateString("fr-FR")}</td>
                     <td className="px-6 py-4">
-                      <span className={`badge ${u.role === "admin" ? "bg-gold/25 text-gold-deep" : "bg-emerald/10 text-emerald"}`}>
+                      <span className={`badge ${u.role === "admin" ? "bg-gold/25 text-gold-deep" : "bg-emerald/10 text-link"}`}>
                         {u.role === "admin" ? "Admin" : "Membre"}
                       </span>
                     </td>

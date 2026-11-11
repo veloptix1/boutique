@@ -31,7 +31,7 @@ export default function BottomNav() {
 
   return (
     <nav aria-label="Navigation principale"
-         className="fixed inset-x-0 bottom-0 z-[950] border-t border-line bg-white/95 backdrop-blur"
+         className="fixed inset-x-0 bottom-0 z-[950] border-t border-line bg-surface/95 backdrop-blur"
          style={{ paddingBottom: "var(--safe-bottom)" }}>
       <ul className="mx-auto flex max-w-[600px] items-stretch">
         {items.map(({ label, Icon, href, match }) => {
@@ -40,7 +40,7 @@ export default function BottomNav() {
             <li key={label} className="flex-1">
               <Link href={href} aria-current={active ? "page" : undefined}
                     className={`relative flex h-16 flex-col items-center justify-center gap-1 no-underline transition-colors
-                                ${active ? "text-emerald" : "text-muted"}`}>
+                                ${active ? "text-link" : "text-muted"}`}>
                 {active && <span className="absolute inset-x-6 top-0 h-[3px] rounded-b bg-gold" />}
                 <Icon size={22} />
                 <span className="text-[0.7rem] font-medium">{label}</span>

@@ -10,7 +10,7 @@ const Chevron = () => (
 /** Lien de retour avec zone tactile de 40 px. */
 export function BackLink({ href, label = "Retour" }: { href: string; label?: string }) {
   return (
-    <Link href={href} className="-ml-2 mb-1 inline-flex h-10 items-center gap-0.5 rounded-lg px-2 text-sm font-medium text-emerald no-underline">
+    <Link href={href} className="-ml-2 mb-1 inline-flex h-10 items-center gap-0.5 rounded-lg px-2 text-sm font-medium text-link no-underline">
       <Chevron /> {label}
     </Link>
   );
@@ -21,7 +21,7 @@ export function PageHeader({ title, subtitle, back, backLabel }: { title: string
   return (
     <header className="mb-5">
       {back && (
-        <Link href={back} className="-ml-2 mb-1 inline-flex h-10 items-center gap-0.5 rounded-lg px-2 text-sm font-medium text-emerald no-underline">
+        <Link href={back} className="-ml-2 mb-1 inline-flex h-10 items-center gap-0.5 rounded-lg px-2 text-sm font-medium text-link no-underline">
           <Chevron /> {backLabel || "Retour"}
         </Link>
       )}
@@ -35,7 +35,7 @@ export function PageHeader({ title, subtitle, back, backLabel }: { title: string
 export function SearchField({ value, onChange, placeholder }: { value: string; onChange: (v: string) => void; placeholder: string }) {
   return (
     <div className="relative mb-3">
-      <svg className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-emerald/60" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
+      <svg className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-link/60" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
         <circle cx="11" cy="11" r="7" /><path d="M20 20l-3.5-3.5" />
       </svg>
       <input
@@ -75,7 +75,7 @@ export function FilterChips({ options, value, onChange }: { options: { value: st
 export function EmptyState({ title, hint }: { title: string; hint?: string }) {
   return (
     <div className="card px-6 py-10 text-center">
-      <p className="font-amiri text-xl font-bold text-emerald-dark">{title}</p>
+      <p className="font-amiri text-xl font-bold text-heading">{title}</p>
       {hint && <p className="mx-auto mt-1 max-w-xs text-sm text-muted">{hint}</p>}
     </div>
   );

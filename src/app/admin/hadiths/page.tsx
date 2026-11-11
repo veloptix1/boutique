@@ -73,7 +73,7 @@ export default function AdminHadithsPage() {
   };
 
   const authColor = (a: string) => {
-    if (a === "sahih") return "bg-emerald/10 text-emerald";
+    if (a === "sahih") return "bg-emerald/10 text-link";
     if (a === "hasan") return "bg-gold/15 text-gold-deep";
     return "bg-terracotta/10 text-terracotta";
   };
@@ -87,7 +87,7 @@ export default function AdminHadithsPage() {
     <main className="p-6 lg:p-12 max-w-[1400px] mx-auto">
       <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
         <div>
-          <h1 className="font-amiri font-bold text-emerald-dark text-3xl">Hadiths</h1>
+          <h1 className="font-amiri font-bold text-heading text-3xl">Hadiths</h1>
           <p className="text-muted text-sm">{list.length} hadith(s)</p>
         </div>
         <button onClick={() => setEditing({ ...empty })}
@@ -104,8 +104,8 @@ export default function AdminHadithsPage() {
       {loading ? (
         <p className="text-muted">Chargement...</p>
       ) : filtered.length === 0 ? (
-        <div className="bg-white rounded-2xl p-16 text-center border border-line">
-          <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-emerald/10 flex items-center justify-center text-emerald">
+        <div className="bg-surface rounded-2xl p-16 text-center border border-line">
+          <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-emerald/10 flex items-center justify-center text-link">
             <IconParchemin size={28} />
           </div>
           <p className="text-muted">Aucun hadith</p>
@@ -113,7 +113,7 @@ export default function AdminHadithsPage() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {filtered.map((h) => (
-            <div key={h.id} className="bg-white rounded-2xl p-6 border border-line
+            <div key={h.id} className="bg-surface rounded-2xl p-6 border border-line
                                        hover:shadow-lg transition">
               <div className="flex items-center justify-between mb-3">
                 <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase
@@ -123,7 +123,7 @@ export default function AdminHadithsPage() {
                 <span className="text-xs text-muted">{h.source}</span>
               </div>
 
-              <div className="font-amiri text-emerald-dark text-lg mb-3 leading-relaxed"
+              <div className="font-amiri text-heading text-lg mb-3 leading-relaxed"
                    dir="rtl">
                 {h.texte_ar.substring(0, 120)}...
               </div>
@@ -136,7 +136,7 @@ export default function AdminHadithsPage() {
 
               <div className="flex justify-end gap-2 pt-3 border-t border-line">
                 <button onClick={() => setEditing(h)}
-                  className="px-3 py-1.5 rounded-lg bg-emerald/10 text-emerald
+                  className="px-3 py-1.5 rounded-lg bg-emerald/10 text-link
                              text-xs font-semibold hover:bg-emerald/20">
                   Modifier
                 </button>
@@ -154,10 +154,10 @@ export default function AdminHadithsPage() {
       {editing && (
         <div className="fixed inset-0 z-[1000] bg-black/60 flex items-start justify-center
                         p-4 overflow-y-auto">
-          <div className="bg-white rounded-2xl w-full max-w-3xl my-8">
-            <div className="sticky top-0 bg-white border-b border-line px-6 py-4
+          <div className="bg-surface rounded-2xl w-full max-w-3xl my-8">
+            <div className="sticky top-0 bg-surface border-b border-line px-6 py-4
                             flex items-center justify-between rounded-t-3xl">
-              <h2 className="font-bold text-emerald-dark">
+              <h2 className="font-bold text-heading">
                 {editing.id ? "Modifier" : "Ajouter"} un hadith
               </h2>
               <button onClick={() => setEditing(null)}
@@ -236,11 +236,11 @@ export default function AdminHadithsPage() {
               </div>
             </div>
 
-            <div className="sticky bottom-0 bg-white border-t border-line px-6 py-4
+            <div className="sticky bottom-0 bg-surface border-t border-line px-6 py-4
                             flex justify-end gap-3 rounded-b-3xl">
               <button onClick={() => setEditing(null)}
                 className="px-6 py-3 rounded-2xl border border-line
-                           text-emerald-dark font-semibold text-sm">
+                           text-heading font-semibold text-sm">
                 Annuler
               </button>
               <button onClick={save} disabled={saving}
@@ -257,8 +257,8 @@ export default function AdminHadithsPage() {
       <style jsx global>{`
         .inp {
           width: 100%; padding: 12px 16px; border-radius: 14px;
-          border: 2px solid rgba(13,92,74,0.1); outline: none;
-          font-size: 14px; font-family: inherit; background: white;
+          border: 1px solid rgb(var(--line) / 0.25); outline: none;
+          font-size: 14px; font-family: inherit; background: rgb(var(--surface)); color: rgb(var(--ink));
         }
         .inp:focus { border-color: #d4af37; }
       `}</style>
@@ -269,7 +269,7 @@ export default function AdminHadithsPage() {
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div>
-      <label className="block text-xs font-semibold text-emerald-dark mb-1.5">
+      <label className="block text-xs font-semibold text-heading mb-1.5">
         {label}
       </label>
       {children}

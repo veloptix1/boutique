@@ -33,9 +33,9 @@ export default function AdminSupportPage() {
   };
 
   const statutBadge = (s: string) => {
-    if (s === "resolu") return "bg-emerald/10 text-emerald";
+    if (s === "resolu") return "bg-emerald/10 text-link";
     if (s === "en_cours") return "bg-gold/15 text-gold-deep";
-    if (s === "ferme") return "bg-gray-200 text-muted";
+    if (s === "ferme") return "bg-emerald/15 text-muted";
     return "bg-terracotta/10 text-terracotta";
   };
 
@@ -49,7 +49,7 @@ export default function AdminSupportPage() {
   return (
     <main className="p-6 lg:p-12 max-w-[1400px] mx-auto">
       <div className="mb-8">
-        <h1 className="font-amiri font-bold text-emerald-dark text-3xl">
+        <h1 className="font-amiri font-bold text-heading text-3xl">
           Tickets de support
         </h1>
         <p className="text-muted text-sm">{tickets.length} ticket(s)</p>
@@ -57,38 +57,38 @@ export default function AdminSupportPage() {
 
       {/* Stats */}
       <div className="grid grid-cols-4 gap-4 mb-8">
-        <div className="bg-white rounded-2xl p-4 border border-line">
+        <div className="bg-surface rounded-2xl p-4 border border-line">
           <div className="text-xs font-bold text-muted uppercase mb-1">Total</div>
-          <div className="font-amiri font-bold text-emerald-dark text-2xl">{stats.total}</div>
+          <div className="font-amiri font-bold text-heading text-2xl">{stats.total}</div>
         </div>
-        <div className="bg-white rounded-2xl p-4 border border-line">
+        <div className="bg-surface rounded-2xl p-4 border border-line">
           <div className="text-xs font-bold text-terracotta uppercase mb-1">Ouverts</div>
           <div className="font-amiri font-bold text-terracotta text-2xl">{stats.ouvert}</div>
         </div>
-        <div className="bg-white rounded-2xl p-4 border border-line">
+        <div className="bg-surface rounded-2xl p-4 border border-line">
           <div className="text-xs font-bold text-gold uppercase mb-1">En cours</div>
           <div className="font-amiri font-bold text-gold text-2xl">{stats.en_cours}</div>
         </div>
-        <div className="bg-white rounded-2xl p-4 border border-line">
-          <div className="text-xs font-bold text-emerald uppercase mb-1">Résolus</div>
-          <div className="font-amiri font-bold text-emerald text-2xl">{stats.resolu}</div>
+        <div className="bg-surface rounded-2xl p-4 border border-line">
+          <div className="text-xs font-bold text-link uppercase mb-1">Résolus</div>
+          <div className="font-amiri font-bold text-link text-2xl">{stats.resolu}</div>
         </div>
       </div>
 
       {loading ? (
         <p className="text-muted">Chargement...</p>
       ) : tickets.length === 0 ? (
-        <div className="bg-white rounded-2xl p-16 text-center border border-line">
+        <div className="bg-surface rounded-2xl p-16 text-center border border-line">
           <p className="text-muted">Aucun ticket</p>
         </div>
       ) : (
         <div className="grid gap-4">
           {tickets.map((t) => (
-            <div key={t.id} className="bg-white rounded-2xl p-6 border border-line
+            <div key={t.id} className="bg-surface rounded-2xl p-6 border border-line
                                        hover:border-emerald/15 transition">
               <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
                 <div>
-                  <div className="font-bold text-emerald-dark text-base">{t.sujet}</div>
+                  <div className="font-bold text-heading text-base">{t.sujet}</div>
                   <div className="text-xs text-muted mt-0.5">
                     {t.user_nom} — {t.user_email}
                   </div>
@@ -120,7 +120,7 @@ export default function AdminSupportPage() {
                   <div className="text-xs font-bold text-gold mb-2">
                     Votre réponse
                   </div>
-                  <p className="text-sm text-gray-700">{t.reponse_admin}</p>
+                  <p className="text-sm text-ink">{t.reponse_admin}</p>
                 </div>
               )}
             </div>
@@ -131,9 +131,9 @@ export default function AdminSupportPage() {
       {editing && (
         <div className="fixed inset-0 z-[1000] bg-black/60 flex items-start justify-center
                         p-4 overflow-y-auto">
-          <div className="bg-white rounded-2xl w-full max-w-2xl my-8">
+          <div className="bg-surface rounded-2xl w-full max-w-2xl my-8">
             <div className="px-6 py-4 border-b border-line flex items-center justify-between">
-              <h2 className="font-bold text-emerald-dark">Répondre au ticket</h2>
+              <h2 className="font-bold text-heading">Répondre au ticket</h2>
               <button onClick={() => setEditing(null)}
                 className="text-muted hover:text-terracotta text-2xl leading-none">×</button>
             </div>
@@ -143,7 +143,7 @@ export default function AdminSupportPage() {
                 <div className="text-xs font-bold text-gold mb-2">
                   Message de l'utilisateur
                 </div>
-                <div className="font-bold text-emerald-dark text-sm mb-1">{editing.sujet}</div>
+                <div className="font-bold text-heading text-sm mb-1">{editing.sujet}</div>
                 <p className="text-sm text-ink/80">{editing.message}</p>
               </div>
 
@@ -168,7 +168,7 @@ export default function AdminSupportPage() {
             <div className="px-6 py-4 border-t border-line flex justify-end gap-3">
               <button onClick={() => setEditing(null)}
                 className="px-6 py-3 rounded-2xl border border-line
-                           text-emerald-dark font-semibold text-sm">
+                           text-heading font-semibold text-sm">
                 Annuler
               </button>
               <button onClick={repondre}
@@ -185,8 +185,8 @@ export default function AdminSupportPage() {
       <style jsx global>{`
         .inp {
           width: 100%; padding: 12px 16px; border-radius: 14px;
-          border: 2px solid rgba(13,92,74,0.1); outline: none;
-          font-size: 14px; font-family: inherit; background: white;
+          border: 1px solid rgb(var(--line) / 0.25); outline: none;
+          font-size: 14px; font-family: inherit; background: rgb(var(--surface)); color: rgb(var(--ink));
         }
         .inp:focus { border-color: #d4af37; }
       `}</style>
@@ -197,7 +197,7 @@ export default function AdminSupportPage() {
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div>
-      <label className="block text-xs font-semibold text-emerald-dark mb-1.5">
+      <label className="block text-xs font-semibold text-heading mb-1.5">
         {label}
       </label>
       {children}

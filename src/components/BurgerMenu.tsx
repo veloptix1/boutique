@@ -59,7 +59,7 @@ export default function BurgerMenu() {
         onClick={() => setOpen(true)}
         aria-label="Ouvrir le menu"
         aria-expanded={open}
-        className="flex h-11 w-11 items-center justify-center rounded-xl text-emerald-dark active:bg-emerald/10"
+        className="flex h-11 w-11 items-center justify-center rounded-xl text-heading active:bg-emerald/10"
       >
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
           <path d="M4 7h16M4 12h16M4 17h10" />

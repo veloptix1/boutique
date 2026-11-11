@@ -103,7 +103,7 @@ export default function AdminLivresPage() {
     <main className="p-6 lg:p-12 max-w-[1400px] mx-auto">
       <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
         <div>
-          <h1 className="font-amiri font-bold text-emerald-dark text-3xl">
+          <h1 className="font-amiri font-bold text-heading text-3xl">
             Livres
           </h1>
           <p className="text-muted text-sm">{list.length} livre(s)</p>
@@ -118,7 +118,7 @@ export default function AdminLivresPage() {
       {loading ? (
         <p className="text-muted">Chargement...</p>
       ) : list.length === 0 ? (
-        <div className="bg-white rounded-2xl p-16 text-center border border-line">
+        <div className="bg-surface rounded-2xl p-16 text-center border border-line">
           <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gold/15 flex items-center justify-center text-gold">
             <IconLivre size={28} />
           </div>
@@ -127,7 +127,7 @@ export default function AdminLivresPage() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {list.map((l) => (
-            <div key={l.id} className="bg-white rounded-2xl overflow-hidden
+            <div key={l.id} className="bg-surface rounded-2xl overflow-hidden
                                        border border-line hover:shadow-lg transition">
               <div className="aspect-[3/4] bg-gradient-to-br from-emerald to-emerald-dark
                               flex items-center justify-center overflow-hidden">
@@ -138,13 +138,13 @@ export default function AdminLivresPage() {
                 )}
               </div>
               <div className="p-4">
-                <div className="font-bold text-emerald-dark text-sm mb-1 truncate">
+                <div className="font-bold text-heading text-sm mb-1 truncate">
                   {l.titre_fr}
                 </div>
                 <div className="text-xs text-muted mb-3 truncate">{l.auteur_fr}</div>
                 <div className="flex gap-2">
                   <button onClick={() => setEditing(l)}
-                    className="flex-1 px-3 py-2 rounded-lg bg-emerald/10 text-emerald
+                    className="flex-1 px-3 py-2 rounded-lg bg-emerald/10 text-link
                                text-xs font-semibold hover:bg-emerald/20">
                     Modifier
                   </button>
@@ -167,10 +167,10 @@ export default function AdminLivresPage() {
       {editing && (
         <div className="fixed inset-0 z-[1000] bg-black/60 flex items-start justify-center
                         p-4 overflow-y-auto">
-          <div className="bg-white rounded-2xl w-full max-w-3xl my-8">
-            <div className="sticky top-0 bg-white border-b border-line px-6 py-4
+          <div className="bg-surface rounded-2xl w-full max-w-3xl my-8">
+            <div className="sticky top-0 bg-surface border-b border-line px-6 py-4
                             flex items-center justify-between rounded-t-3xl">
-              <h2 className="font-bold text-emerald-dark">
+              <h2 className="font-bold text-heading">
                 {editing.id ? "Modifier" : "Ajouter"} un livre
               </h2>
               <button onClick={() => setEditing(null)}
@@ -239,7 +239,7 @@ export default function AdminLivresPage() {
                     onChange={(e) => e.target.files?.[0] && uploadPDF(e.target.files[0])}
                     className="inp text-xs" />
                   {editing.pdf_url && (
-                    <p className="text-xs text-emerald mt-1 truncate">✓ {editing.pdf_url}</p>
+                    <p className="text-xs text-link mt-1 truncate">✓ {editing.pdf_url}</p>
                   )}
                 </Field>
                 <Field label="Couverture (image)">
@@ -247,7 +247,7 @@ export default function AdminLivresPage() {
                     onChange={(e) => e.target.files?.[0] && uploadCover(e.target.files[0])}
                     className="inp text-xs" />
                   {editing.couverture_url && (
-                    <p className="text-xs text-emerald mt-1 truncate">✓ {editing.couverture_url}</p>
+                    <p className="text-xs text-link mt-1 truncate">✓ {editing.couverture_url}</p>
                   )}
                 </Field>
               </div>
@@ -280,11 +280,11 @@ export default function AdminLivresPage() {
               </div>
             </div>
 
-            <div className="sticky bottom-0 bg-white border-t border-line px-6 py-4
+            <div className="sticky bottom-0 bg-surface border-t border-line px-6 py-4
                             flex justify-end gap-3 rounded-b-3xl">
               <button onClick={() => setEditing(null)}
                 className="px-6 py-3 rounded-2xl border border-line
-                           text-emerald-dark font-semibold text-sm">
+                           text-heading font-semibold text-sm">
                 Annuler
               </button>
               <button onClick={save} disabled={saving || uploading}
@@ -301,8 +301,8 @@ export default function AdminLivresPage() {
       <style jsx global>{`
         .inp {
           width: 100%; padding: 12px 16px; border-radius: 14px;
-          border: 2px solid rgba(13,92,74,0.1); outline: none;
-          font-size: 14px; font-family: inherit; background: white;
+          border: 1px solid rgb(var(--line) / 0.25); outline: none;
+          font-size: 14px; font-family: inherit; background: rgb(var(--surface)); color: rgb(var(--ink));
         }
         .inp:focus { border-color: #d4af37; }
       `}</style>
@@ -313,7 +313,7 @@ export default function AdminLivresPage() {
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div>
-      <label className="block text-xs font-semibold text-emerald-dark mb-1.5">
+      <label className="block text-xs font-semibold text-heading mb-1.5">
         {label}
       </label>
       {children}

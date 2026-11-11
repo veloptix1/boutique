@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
+import StatusPage from "@/components/StatusPage";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 import { IconMosque, IconSpeaker, IconLivre, IconBook, IconCrown, IconUser, IconHome, IconArrowRight, IconParchemin, IconStar } from "@/components/icons";
@@ -28,6 +29,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const pathname = usePathname();
   const [loading, setLoading] = useState(true);
   const [authorized, setAuthorized] = useState(false);
+  const [forbidden, setForbidden] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
@@ -36,7 +38,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       if (!user) { router.push("/auth"); return; }
       const { data: profile, error } = await supabase
         .from("profiles").select("role").eq("id", user.id).single();
-      if (error || profile?.role !== "admin") { router.replace("/dashboard"); return; }
+      if (error || profile?.role !== "admin") { setForbidden(true); setLoading(false); return; }
       setAuthorized(true);
       setLoading(false);
     })();
@@ -47,7 +49,17 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   if (loading) {
     return (
       <div className="min-h-dvh flex items-center justify-center bg-cream">
-        <p className="text-emerald">Vérification des droits…</p>
+        <p className="text-link">Vérification des droits…</p>
+      </div>
+    );
+  }
+
+  if (forbidden) {
+    return (
+      <div className="min-h-dvh bg-cream">
+        <StatusPage code="403" title="Accès refusé" text="Cet espace est réservé aux administrateurs.">
+          <Link href="/dashboard" className="btn-primary">Retour à l'accueil</Link>
+        </StatusPage>
       </div>
     );
   }

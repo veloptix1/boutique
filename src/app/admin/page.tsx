@@ -40,7 +40,7 @@ export default function AdminDashboard() {
   ];
 
   const colorMap: Record<string, string> = {
-    emerald: "bg-emerald/10 text-emerald",
+    emerald: "bg-emerald/10 text-link",
     gold: "bg-gold/15 text-gold-deep",
     terracotta: "bg-terracotta/10 text-terracotta",
     indigo: "bg-indigo/10 text-indigo",
@@ -49,7 +49,7 @@ export default function AdminDashboard() {
   return (
     <main className="p-6 lg:p-12 max-w-[1400px] mx-auto">
       <div className="mb-10">
-        <h1 className="font-amiri font-bold text-emerald-dark text-3xl sm:text-4xl">
+        <h1 className="font-amiri font-bold text-heading text-3xl sm:text-4xl">
           Tableau de bord
         </h1>
         <p className="text-muted mt-2">
@@ -63,13 +63,13 @@ export default function AdminDashboard() {
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-5">
           {cards.map(({ label, value, Icon, href, color }) => (
             <Link key={href} href={href}
-              className="bg-white rounded-2xl p-6 border border-line
+              className="bg-surface rounded-2xl p-6 border border-line
                          transition-all no-underline group">
               <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-4
                               ${colorMap[color]} transition`}>
                 <Icon size={22} />
               </div>
-              <div className="font-amiri font-bold text-emerald-dark text-3xl mb-1">
+              <div className="font-amiri font-bold text-heading text-3xl mb-1">
                 {value}
               </div>
               <div className="flex items-center justify-between text-sm text-muted">
@@ -81,8 +81,8 @@ export default function AdminDashboard() {
         </div>
       )}
 
-      <div className="mt-12 bg-white rounded-2xl p-8 border border-line">
-        <h2 className="font-bold text-emerald-dark text-xl mb-3">
+      <div className="mt-12 bg-surface rounded-2xl p-8 border border-line">
+        <h2 className="font-bold text-heading text-xl mb-3">
           Par où commencer ?
         </h2>
         <ul className="space-y-2 text-sm text-ink/80">

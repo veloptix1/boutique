@@ -243,7 +243,7 @@ export default function AudioPlayerFull() {
                   e.currentTarget.style.display = "none";
                 }}
               />
-              <div className="font-amiri text-emerald-dark text-2xl font-bold">
+              <div className="font-amiri text-heading text-2xl font-bold">
                 ﷽
               </div>
             </div>

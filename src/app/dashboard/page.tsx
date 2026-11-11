@@ -30,7 +30,8 @@ export default function DashboardPage() {
   useEffect(() => {
     (async () => {
       try {
-        const { data: { user } } = await supabase.auth.getUser();
+        const { data: { session } } = await supabase.auth.getSession();
+        const user = session?.user;
         if (!user) { router.push("/auth"); return; }
         const { data } = await supabase.from("profiles").select("nom").eq("id", user.id).single();
         setNom(data?.nom || "");
@@ -54,10 +55,10 @@ export default function DashboardPage() {
       <section aria-label="Accès rapide" className="mb-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
         {principal.map(({ Icon, label, href }) => (
           <Link key={href} href={href} className="card-link flex min-h-[96px] flex-col justify-between p-4">
-            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald/10 text-emerald">
+            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald/10 text-link">
               <Icon size={22} />
             </span>
-            <span className="font-semibold text-emerald-dark">{label}</span>
+            <span className="font-semibold text-heading">{label}</span>
           </Link>
         ))}
       </section>
@@ -72,7 +73,7 @@ export default function DashboardPage() {
                   <Icon size={20} />
                 </span>
                 <span className="min-w-0 flex-1">
-                  <span className="block font-semibold text-emerald-dark">{label}</span>
+                  <span className="block font-semibold text-heading">{label}</span>
                   <span className="block truncate text-sm text-muted">{desc}</span>
                 </span>
                 <span className="shrink-0 text-muted"><IconArrowRight size={16} /></span>

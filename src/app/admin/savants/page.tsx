@@ -88,7 +88,7 @@ export default function AdminSavantsPage() {
     if (cat === "classique")
       return { label: "Classique", class: "bg-gold/15 text-gold-deep", Icon: IconCrown };
     if (cat === "contemporain")
-      return { label: "Contemporain", class: "bg-emerald/10 text-emerald", Icon: IconStarFull };
+      return { label: "Contemporain", class: "bg-emerald/10 text-link", Icon: IconStarFull };
     return { label: "Oustaz", class: "bg-terracotta/10 text-terracotta", Icon: IconDiploma };
   };
 
@@ -104,7 +104,7 @@ export default function AdminSavantsPage() {
     <main className="p-6 lg:p-12 max-w-[1400px] mx-auto">
       <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
         <div>
-          <h1 className="font-amiri font-bold text-emerald-dark text-3xl">
+          <h1 className="font-amiri font-bold text-heading text-3xl">
             Savants & Oustaz
           </h1>
           <p className="text-muted text-sm">
@@ -124,28 +124,28 @@ export default function AdminSavantsPage() {
           className={`px-5 py-2.5 rounded-full text-sm font-semibold whitespace-nowrap transition
             ${filter === "tous"
               ? "bg-emerald text-white"
-              : "bg-white text-emerald-dark border border-line"}`}>
+              : "bg-surface text-heading border border-line"}`}>
           Tous ({stats.tous})
         </button>
         <button onClick={() => setFilter("classique")}
           className={`px-5 py-2.5 rounded-full text-sm font-semibold whitespace-nowrap transition
             ${filter === "classique"
               ? "bg-gold text-emerald-dark"
-              : "bg-white text-emerald-dark border border-line"}`}>
+              : "bg-surface text-heading border border-line"}`}>
           Classiques ({stats.classique})
         </button>
         <button onClick={() => setFilter("contemporain")}
           className={`px-5 py-2.5 rounded-full text-sm font-semibold whitespace-nowrap transition
             ${filter === "contemporain"
               ? "bg-emerald text-white"
-              : "bg-white text-emerald-dark border border-line"}`}>
+              : "bg-surface text-heading border border-line"}`}>
           Contemporains ({stats.contemporain})
         </button>
         <button onClick={() => setFilter("oustaz")}
           className={`px-5 py-2.5 rounded-full text-sm font-semibold whitespace-nowrap transition
             ${filter === "oustaz"
               ? "bg-terracotta text-white"
-              : "bg-white text-emerald-dark border border-line"}`}>
+              : "bg-surface text-heading border border-line"}`}>
           Oustaz ({stats.oustaz})
         </button>
       </div>
@@ -157,17 +157,17 @@ export default function AdminSavantsPage() {
       {loading ? (
         <p className="text-muted">Chargement...</p>
       ) : filtered.length === 0 ? (
-        <div className="bg-white rounded-2xl p-16 text-center border border-line">
-          <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-emerald/10 flex items-center justify-center text-emerald">
+        <div className="bg-surface rounded-2xl p-16 text-center border border-line">
+          <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-emerald/10 flex items-center justify-center text-link">
             <IconUser size={28} />
           </div>
           <p className="text-muted">Aucun élément dans cette catégorie</p>
         </div>
       ) : (
-        <div className="bg-white rounded-2xl border border-line overflow-hidden">
+        <div className="bg-surface rounded-2xl border border-line overflow-hidden">
           <table className="w-full">
             <thead className="bg-emerald/5">
-              <tr className="text-left text-xs font-bold text-emerald-dark">
+              <tr className="text-left text-xs font-bold text-heading">
                 <th className="px-6 py-4">Nom</th>
                 <th className="px-6 py-4 hidden md:table-cell">Titre</th>
                 <th className="px-6 py-4 hidden lg:table-cell">Catégorie</th>
@@ -184,7 +184,7 @@ export default function AdminSavantsPage() {
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-full bg-emerald/10 flex items-center justify-center
-                                        text-emerald overflow-hidden shrink-0">
+                                        text-link overflow-hidden shrink-0">
                           {s.photo_url ? (
                             <img loading="lazy" decoding="async" src={s.photo_url} alt="" className="w-full h-full object-cover" />
                           ) : (
@@ -192,7 +192,7 @@ export default function AdminSavantsPage() {
                           )}
                         </div>
                         <div className="min-w-0">
-                          <div className="font-semibold text-emerald-dark text-sm truncate">
+                          <div className="font-semibold text-heading text-sm truncate">
                             {s.nom_fr}
                           </div>
                           <div className="text-xs text-muted truncate">{s.nom_ar}</div>
@@ -215,7 +215,7 @@ export default function AdminSavantsPage() {
                     <td className="px-6 py-4 text-right">
                       <div className="flex justify-end gap-2">
                         <button onClick={() => setEditing(s)}
-                          className="px-3 py-1.5 rounded-lg bg-emerald/10 text-emerald
+                          className="px-3 py-1.5 rounded-lg bg-emerald/10 text-link
                                      text-xs font-semibold hover:bg-emerald/20">
                           Modifier
                         </button>
@@ -238,10 +238,10 @@ export default function AdminSavantsPage() {
       {editing && (
         <div className="fixed inset-0 z-[1000] bg-black/60 flex items-start justify-center
                         p-4 overflow-y-auto">
-          <div className="bg-white rounded-2xl w-full max-w-3xl my-8">
-            <div className="sticky top-0 bg-white border-b border-line px-6 py-4
+          <div className="bg-surface rounded-2xl w-full max-w-3xl my-8">
+            <div className="sticky top-0 bg-surface border-b border-line px-6 py-4
                             flex items-center justify-between rounded-t-3xl">
-              <h2 className="font-bold text-emerald-dark">
+              <h2 className="font-bold text-heading">
                 {editing.id ? "Modifier" : "Ajouter"}
               </h2>
               <button onClick={() => setEditing(null)}
@@ -252,7 +252,7 @@ export default function AdminSavantsPage() {
 
               {/* CATÉGORIE EN PREMIER */}
               <div>
-                <label className="block text-xs font-semibold text-emerald-dark mb-2">
+                <label className="block text-xs font-semibold text-heading mb-2">
                   Type *
                 </label>
                 <div className="grid grid-cols-3 gap-2">
@@ -272,7 +272,7 @@ export default function AdminSavantsPage() {
                         onClick={() => setEditing({ ...editing, categorie: value })}
                         className={`px-4 py-3 rounded-xl border text-sm font-semibold
                                     flex flex-col items-center gap-1.5 transition
-                          ${active ? activeClass : "bg-white text-muted border-line hover:border-emerald/30"}`}>
+                          ${active ? activeClass : "bg-surface text-muted border-line hover:border-emerald/30"}`}>
                         <Icon size={18} />
                         {label}
                       </button>
@@ -379,11 +379,11 @@ export default function AdminSavantsPage() {
               </div>
             </div>
 
-            <div className="sticky bottom-0 bg-white border-t border-line px-6 py-4
+            <div className="sticky bottom-0 bg-surface border-t border-line px-6 py-4
                             flex justify-end gap-3 rounded-b-3xl">
               <button onClick={() => setEditing(null)}
                 className="px-6 py-3 rounded-2xl border border-line
-                           text-emerald-dark font-semibold text-sm">
+                           text-heading font-semibold text-sm">
                 Annuler
               </button>
               <button onClick={save} disabled={saving}
@@ -400,8 +400,8 @@ export default function AdminSavantsPage() {
       <style jsx global>{`
         .inp {
           width: 100%; padding: 12px 16px; border-radius: 14px;
-          border: 2px solid rgba(13,92,74,0.1); outline: none;
-          font-size: 14px; font-family: inherit; background: white;
+          border: 1px solid rgb(var(--line) / 0.25); outline: none;
+          font-size: 14px; font-family: inherit; background: rgb(var(--surface)); color: rgb(var(--ink));
         }
         .inp:focus { border-color: #d4af37; }
       `}</style>
@@ -412,7 +412,7 @@ export default function AdminSavantsPage() {
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div>
-      <label className="block text-xs font-semibold text-emerald-dark mb-1.5">
+      <label className="block text-xs font-semibold text-heading mb-1.5">
         {label}
       </label>
       {children}

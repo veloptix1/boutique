@@ -49,8 +49,8 @@ export default function AdminRapporteursPage() {
     <main className="p-6 lg:p-12 max-w-[1400px] mx-auto">
       <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
         <div>
-          <div className="text-xs font-bold text-emerald uppercase tracking-[3px] mb-2">Contenu</div>
-          <h1 className="font-amiri font-bold text-emerald-dark text-3xl">Rapporteurs de Hadiths</h1>
+          <div className="text-xs font-bold text-link uppercase tracking-[3px] mb-2">Contenu</div>
+          <h1 className="font-amiri font-bold text-heading text-3xl">Rapporteurs de Hadiths</h1>
           <p className="text-muted text-sm">{list.length} rapporteur(s)</p>
         </div>
         <button onClick={() => setEditing({ ...empty })}
@@ -63,10 +63,10 @@ export default function AdminRapporteursPage() {
       {loading ? (
         <p className="text-muted">Chargement...</p>
       ) : (
-        <div className="bg-white rounded-2xl border border-line overflow-hidden">
+        <div className="bg-surface rounded-2xl border border-line overflow-hidden">
           <table className="w-full">
             <thead className="bg-emerald/5">
-              <tr className="text-left text-xs font-bold text-emerald-dark">
+              <tr className="text-left text-xs font-bold text-heading">
                 <th className="px-6 py-4">N°</th>
                 <th className="px-6 py-4">Nom</th>
                 <th className="px-6 py-4 hidden md:table-cell">Hadiths</th>
@@ -76,16 +76,16 @@ export default function AdminRapporteursPage() {
             <tbody>
               {list.map((r) => (
                 <tr key={r.id} className="border-t border-line hover:bg-cream/50">
-                  <td className="px-6 py-4 text-emerald font-bold">{r.ordre}</td>
+                  <td className="px-6 py-4 text-link font-bold">{r.ordre}</td>
                   <td className="px-6 py-4">
-                    <div className="font-semibold text-emerald-dark text-sm">{r.nom_fr}</div>
+                    <div className="font-semibold text-heading text-sm">{r.nom_fr}</div>
                     <div className="text-xs text-muted font-amiri" dir="rtl">{r.nom_ar}</div>
                   </td>
                   <td className="px-6 py-4 text-sm text-ink/80 hidden md:table-cell">{r.nombre_hadiths || "—"}</td>
                   <td className="px-6 py-4 text-right">
                     <div className="flex justify-end gap-2">
                       <button onClick={() => setEditing(r)}
-                        className="px-3 py-1.5 rounded-lg bg-emerald/10 text-emerald text-xs font-semibold hover:bg-emerald/20">
+                        className="px-3 py-1.5 rounded-lg bg-emerald/10 text-link text-xs font-semibold hover:bg-emerald/20">
                         Modifier
                       </button>
                       <button onClick={() => remove(r.id)}
@@ -103,9 +103,9 @@ export default function AdminRapporteursPage() {
 
       {editing && (
         <div className="fixed inset-0 z-[1000] bg-black/60 flex items-start justify-center p-4 overflow-y-auto">
-          <div className="bg-white rounded-2xl w-full max-w-3xl my-8">
-            <div className="sticky top-0 bg-white border-b border-line px-6 py-4 flex items-center justify-between rounded-t-3xl">
-              <h2 className="font-bold text-emerald-dark">{editing.id ? "Modifier" : "Ajouter"}</h2>
+          <div className="bg-surface rounded-2xl w-full max-w-3xl my-8">
+            <div className="sticky top-0 bg-surface border-b border-line px-6 py-4 flex items-center justify-between rounded-t-3xl">
+              <h2 className="font-bold text-heading">{editing.id ? "Modifier" : "Ajouter"}</h2>
               <button onClick={() => setEditing(null)} className="text-muted hover:text-terracotta text-2xl">×</button>
             </div>
 
@@ -186,9 +186,9 @@ export default function AdminRapporteursPage() {
               </Field>
             </div>
 
-            <div className="sticky bottom-0 bg-white border-t border-line px-6 py-4 flex justify-end gap-3 rounded-b-3xl">
+            <div className="sticky bottom-0 bg-surface border-t border-line px-6 py-4 flex justify-end gap-3 rounded-b-3xl">
               <button onClick={() => setEditing(null)}
-                className="px-6 py-3 rounded-2xl border border-line text-emerald-dark font-semibold text-sm">
+                className="px-6 py-3 rounded-2xl border border-line text-heading font-semibold text-sm">
                 Annuler
               </button>
               <button onClick={save} disabled={saving}
@@ -201,7 +201,7 @@ export default function AdminRapporteursPage() {
       )}
 
       <style jsx global>{`
-        .inp { width: 100%; padding: 12px 16px; border-radius: 14px; border: 2px solid rgba(13,92,74,0.1); outline: none; font-size: 14px; font-family: inherit; background: white; }
+        .inp { width: 100%; padding: 12px 16px; border-radius: 14px; border: 1px solid rgb(var(--line) / 0.25); outline: none; font-size: 14px; font-family: inherit; background: rgb(var(--surface)); color: rgb(var(--ink)); }
         .inp:focus { border-color: #d4af37; }
       `}</style>
     </main>
@@ -211,7 +211,7 @@ export default function AdminRapporteursPage() {
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div>
-      <label className="block text-xs font-semibold text-emerald-dark mb-1.5">{label}</label>
+      <label className="block text-xs font-semibold text-heading mb-1.5">{label}</label>
       {children}
     </div>
   );

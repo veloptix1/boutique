@@ -24,8 +24,8 @@ export default function ConditionsPage() {
           { t: "9. Modification des conditions", c: "Nous nous réservons le droit de modifier ces conditions à tout moment. Les modifications prendront effet dès leur publication dans l''application." },
           { t: "10. Contact", c: "Pour toute question relative à ces conditions, contactez-nous via la page Support de l''application." },
         ].map((s, i) => (
-          <section key={i} className="bg-white rounded-2xl p-6 sm:p-8 border border-line">
-            <h2 className="font-amiri font-bold text-emerald-dark text-xl mb-3">{s.t}</h2>
+          <section key={i} className="bg-surface rounded-2xl p-6 sm:p-8 border border-line">
+            <h2 className="font-amiri font-bold text-heading text-xl mb-3">{s.t}</h2>
             <p className="text-sm text-ink/80 leading-relaxed">{s.c}</p>
           </section>
         ))}

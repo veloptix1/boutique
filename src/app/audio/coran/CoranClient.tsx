@@ -126,7 +126,7 @@ export default function CoranClient() {
               <option key={o.id} value={o.id}>{o.label}</option>
             ))}
           </select>
-          <span className="absolute right-3 top-1/2 -translate-y-1/2 text-emerald pointer-events-none">
+          <span className="absolute right-3 top-1/2 -translate-y-1/2 text-link pointer-events-none">
             ▼
           </span>
         </div>
@@ -140,27 +140,27 @@ export default function CoranClient() {
       {loading ? (
         <ListSkeleton />
       ) : sorted.length === 0 ? (
-        <div className="bg-white rounded-2xl p-8 text-center border border-line">
+        <div className="bg-surface rounded-2xl p-8 text-center border border-line">
           <p className="text-muted">Aucune sourate trouvée</p>
         </div>
       ) : (
         <div className="grid gap-3">
           {sorted.map((s) => (
             <div key={s.numero}
-              className="bg-white rounded-2xl border border-line
+              className="bg-surface rounded-2xl border border-line
                          hover:border-emerald/15 transition-all">
               <div className="flex items-center gap-3 p-3 sm:p-4">
 
                 <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-emerald/8
-                                flex items-center justify-center text-emerald font-bold
+                                flex items-center justify-center text-link font-bold
                                 text-xs sm:text-sm shrink-0">
                   {s.numero}
                 </div>
 
                 <Link href={`/audio/coran/sourate?numero=${s.numero}`}
                   className="flex-1 min-w-0 no-underline group">
-                  <div className="font-semibold text-emerald-dark text-xs sm:text-sm
-                                  truncate group-hover:text-emerald transition">
+                  <div className="font-semibold text-heading text-xs sm:text-sm
+                                  truncate group-hover:text-link transition">
                     {s.nom_translit} — {s.nom_fr}
                   </div>
                   <div className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-xs
@@ -188,7 +188,7 @@ export default function CoranClient() {
                   <span className="absolute -top-1.5 -right-1.5 min-w-[1.1rem] h-[1.1rem]
                                    px-1 rounded-full bg-gold text-emerald-dark
                                    text-xs font-bold flex items-center justify-center
-                                   border border-white leading-none">
+                                   border border-surface leading-none">
                     {RECITATEURS.length}
                   </span>
                 </button>
@@ -207,7 +207,7 @@ export default function CoranClient() {
         >
           <div
             onClick={(e) => e.stopPropagation()}
-            className="w-full sm:max-w-md bg-white rounded-t-3xl sm:rounded-2xl
+            className="w-full sm:max-w-md bg-surface rounded-t-3xl sm:rounded-2xl
                        max-h-[80vh] overflow-hidden flex flex-col"
           >
             <div className="px-5 py-4 border-b border-line flex items-center justify-between shrink-0">
@@ -215,13 +215,13 @@ export default function CoranClient() {
                 <div className="text-xs font-bold text-gold">
                   Récitateurs disponibles
                 </div>
-                <div className="text-sm font-semibold text-emerald-dark mt-1">
+                <div className="text-sm font-semibold text-heading mt-1">
                   Sourate {openMenuFor} — {sourates.find((s) => s.numero === openMenuFor)?.nom_translit}
                 </div>
               </div>
               <button
                 onClick={() => setOpenMenuFor(null)}
-                className="w-9 h-9 rounded-full bg-emerald/8 text-emerald
+                className="w-9 h-9 rounded-full bg-emerald/8 text-link
                            hover:bg-emerald/15 flex items-center justify-center
                            text-xl leading-none shrink-0">
                 ×
@@ -247,7 +247,7 @@ export default function CoranClient() {
                       <IconPlay size={12} />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <div className="text-sm font-bold text-emerald-dark leading-tight">
+                      <div className="text-sm font-bold text-heading leading-tight">
                         {r.nom}
                       </div>
                       <div className="text-xs text-muted mt-0.5">{r.pays}</div>

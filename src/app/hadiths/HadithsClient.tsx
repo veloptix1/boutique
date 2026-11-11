@@ -73,7 +73,7 @@ export default function HadithsClient() {
   ];
 
   const authBadge: Record<string, string> = {
-    sahih: "bg-emerald/10 text-emerald",
+    sahih: "bg-emerald/10 text-link",
     hasan: "bg-gold/15 text-gold-deep",
     daif:  "bg-terracotta/10 text-terracotta",
   };
@@ -110,14 +110,14 @@ export default function HadithsClient() {
       {loading ? (
         <ListSkeleton />
       ) : filtered.length === 0 ? (
-        <div className="bg-white rounded-2xl p-8 text-center border border-line">
-          <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-emerald/10 flex items-center justify-center text-emerald">
+        <div className="bg-surface rounded-2xl p-8 text-center border border-line">
+          <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-emerald/10 flex items-center justify-center text-link">
             <IconParchemin size={28} />
           </div>
           <p className="text-muted mb-2">Aucun hadith</p>
           {(search || filter !== "tous") && (
             <button onClick={() => { setSearch(""); setFilter("tous"); }}
-              className="text-emerald text-sm font-semibold hover:underline">
+              className="text-link text-sm font-semibold hover:underline">
               Réinitialiser
             </button>
           )}
@@ -128,7 +128,7 @@ export default function HadithsClient() {
             const isOpen = expanded === h.id;
             return (
               <div key={h.id}
-                className="bg-white rounded-2xl p-6 sm:p-8 border border-line
+                className="bg-surface rounded-2xl p-6 sm:p-8 border border-line
                            hover:border-emerald/15 transition-all">
                 {/* Bandeau */}
                 <div className="flex items-center gap-3 mb-5 flex-wrap">
@@ -152,7 +152,7 @@ export default function HadithsClient() {
                 </div>
 
                 {/* Texte arabe */}
-                <div className="font-amiri text-emerald-dark text-xl sm:text-2xl leading-loose
+                <div className="font-amiri text-heading text-xl sm:text-2xl leading-loose
                                 mb-5 text-right" dir="rtl">
                   {h.texte_ar}
                 </div>
@@ -168,7 +168,7 @@ export default function HadithsClient() {
                 {h.explication_fr && (
                   <>
                     <button onClick={() => setExpanded(isOpen ? null : h.id)}
-                      className="text-sm font-semibold text-emerald hover:text-gold
+                      className="text-sm font-semibold text-link hover:text-gold
                                  transition inline-flex items-center gap-1">
                       {isOpen ? "Masquer" : "Voir"} l'explication
                       <svg width="12" height="12" viewBox="0 0 24 24" fill="none"

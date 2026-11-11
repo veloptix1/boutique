@@ -79,7 +79,7 @@ export default function AudioClient() {
   ] as const;
 
   const colorMap: Record<string, { bg: string; text: string }> = {
-    emerald:    { bg: "bg-emerald/10",    text: "text-emerald" },
+    emerald:    { bg: "bg-emerald/10",    text: "text-link" },
     gold:       { bg: "bg-gold/15",       text: "text-gold" },
     terracotta: { bg: "bg-terracotta/10", text: "text-terracotta" },
   };
@@ -96,7 +96,7 @@ export default function AudioClient() {
             <IconSpeaker size={24} />
           </div>
         </div>
-        <h1 className="font-amiri font-bold text-emerald-dark text-[1.75rem] leading-tight sm:text-4xl mb-3">
+        <h1 className="font-amiri font-bold text-heading text-[1.75rem] leading-tight sm:text-4xl mb-3">
           {t.audio.title}
         </h1>
         <p className="text-muted max-w-2xl">{t.audio.subtitle}</p>
@@ -108,7 +108,7 @@ export default function AudioClient() {
           const c = colorMap[color];
           return (
             <Link key={id} href={href}
-              className="bg-white rounded-2xl p-6 flex items-center gap-4
+              className="bg-surface rounded-2xl p-6 flex items-center gap-4
                          border border-line
                          transition-all no-underline group">
               <div className={`w-14 h-14 rounded-2xl flex items-center justify-center
@@ -116,12 +116,12 @@ export default function AudioClient() {
                 <Icon size={26} />
               </div>
               <div className="flex-1">
-                <div className="font-bold text-emerald-dark text-base">{title}</div>
+                <div className="font-bold text-heading text-base">{title}</div>
                 <div className="text-xs text-muted mt-0.5">
                   {savants.filter(s => s.categorie === id).length} contenu(s)
                 </div>
               </div>
-              <span className="text-gray-300 group-hover:text-emerald transition">
+              <span className="text-muted group-hover:text-link transition">
                 <IconArrowRight size={18} />
               </span>
             </Link>
@@ -132,7 +132,7 @@ export default function AudioClient() {
       {/* Titre section audios */}
       <div className="flex items-center justify-between flex-wrap gap-3 mb-6">
         <div>
-          <h2 className="font-amiri font-bold text-emerald-dark text-2xl">
+          <h2 className="font-amiri font-bold text-heading text-2xl">
             Tous les audios
           </h2>
           <p className="text-muted text-sm">
@@ -143,7 +143,7 @@ export default function AudioClient() {
 
       {/* Recherche */}
       <div className="relative mb-6">
-        <div className="absolute left-5 top-1/2 -translate-y-1/2 text-emerald/50 pointer-events-none">
+        <div className="absolute left-5 top-1/2 -translate-y-1/2 text-link/50 pointer-events-none">
           <IconSearch size={18} />
         </div>
         <input
@@ -166,13 +166,13 @@ export default function AudioClient() {
       {loading ? (
         <p className="text-muted">Chargement...</p>
       ) : filtered.length === 0 ? (
-        <div className="bg-white rounded-2xl p-16 text-center border border-line">
-          <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-emerald/10 flex items-center justify-center text-emerald">
+        <div className="bg-surface rounded-2xl p-16 text-center border border-line">
+          <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-emerald/10 flex items-center justify-center text-link">
             <IconSpeaker size={28} />
           </div>
           <p className="text-muted mb-2">Aucun audio pour le moment</p>
           <Link href="/admin/audios"
-            className="text-emerald text-sm font-semibold hover:underline">
+            className="text-link text-sm font-semibold hover:underline">
             + Ajouter un audio (admin)
           </Link>
         </div>
@@ -182,7 +182,7 @@ export default function AudioClient() {
             const savant = getSavant(a.savant_id);
             return (
               <div key={a.id}
-                className="bg-white rounded-2xl border border-line
+                className="bg-surface rounded-2xl border border-line
                            hover:border-emerald/15
                            transition overflow-hidden">
                 <div className="flex items-center gap-4 p-4">
@@ -200,7 +200,7 @@ export default function AudioClient() {
                   </button>
 
                   <div className="flex-1 min-w-0">
-                    <div className="font-semibold text-emerald-dark text-sm truncate">
+                    <div className="font-semibold text-heading text-sm truncate">
                       {getTitre(a)}
                     </div>
                     {savant && (
@@ -217,7 +217,7 @@ export default function AudioClient() {
 
                   {savant && (
                     <Link href={`/audio/savants/detail?slug=${savant.slug}`}
-                      className="text-gray-300 hover:text-emerald transition shrink-0 hidden sm:block">
+                      className="text-muted hover:text-link transition shrink-0 hidden sm:block">
                       <IconArrowRight size={16} />
                     </Link>
                   )}

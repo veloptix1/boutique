@@ -42,11 +42,11 @@ export default function VideoDetail() {
     })();
   }, [id]);
 
-  if (loading) return <div className="min-h-dvh flex items-center justify-center bg-cream"><p className="text-emerald">Chargement...</p></div>;
+  if (loading) return <div className="min-h-dvh flex items-center justify-center bg-cream"><p className="text-link">Chargement...</p></div>;
 
   if (!video) return (
     <main className="page text-center">
-      <h1 className="font-amiri font-bold text-emerald-dark text-3xl mb-4">Vidéo introuvable</h1>
+      <h1 className="font-amiri font-bold text-heading text-3xl mb-4">Vidéo introuvable</h1>
       <BackLink href="/live" label="Retour aux vidéos" />
     </main>
   );
@@ -83,13 +83,13 @@ export default function VideoDetail() {
           </div>
         )}
 
-        <h1 className="font-amiri font-bold text-emerald-dark text-2xl sm:text-3xl mb-3">
+        <h1 className="font-amiri font-bold text-heading text-2xl sm:text-3xl mb-3">
           {video.titre}
         </h1>
 
         {savant && (
           <Link href={`/audio/savants/detail?slug=${savant.slug}`}
-            className="inline-flex items-center gap-2 text-emerald hover:text-gold
+            className="inline-flex items-center gap-2 text-link hover:text-gold
                        transition mb-4 text-sm font-semibold">
             <IconUser size={16} />
             {getNomSavant()}
@@ -99,7 +99,7 @@ export default function VideoDetail() {
 
         {video.description && (
           <div className="bg-cream rounded-2xl p-5 border border-line">
-            <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-line">
+            <p className="text-sm text-ink leading-relaxed whitespace-pre-line">
               {video.description}
             </p>
           </div>
@@ -109,7 +109,7 @@ export default function VideoDetail() {
       {/* Autres vidéos du savant */}
       {otherVideos.length > 0 && (
         <>
-          <h2 className="font-amiri font-bold text-emerald-dark text-xl mb-4">
+          <h2 className="font-amiri font-bold text-heading text-xl mb-4">
             Autres vidéos de {getNomSavant()}
           </h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
@@ -122,7 +122,7 @@ export default function VideoDetail() {
                     alt={v.titre}
                     className="w-full h-full object-cover transition" />
                 </div>
-                <div className="text-xs font-semibold text-emerald-dark line-clamp-2">
+                <div className="text-xs font-semibold text-heading line-clamp-2">
                   {v.titre}
                 </div>
               </Link>

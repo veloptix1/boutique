@@ -67,14 +67,14 @@ export default function ProphetesClient() {
       {loading ? (
         <ListSkeleton />
       ) : filtered.length === 0 ? (
-        <div className="bg-white rounded-2xl p-8 text-center border border-line">
+        <div className="bg-surface rounded-2xl p-8 text-center border border-line">
           <p className="text-muted">Aucun prophète trouvé</p>
         </div>
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
           {filtered.map((p) => (
             <Link key={p.id} href={`/prophetes/detail?slug=${p.slug}`}
-              className="group bg-white rounded-2xl overflow-hidden
+              className="group bg-surface rounded-2xl overflow-hidden
                          border border-line
                          hover:border-gold/30 transition-all no-underline
                          flex flex-col p-5">
@@ -89,7 +89,7 @@ export default function ProphetesClient() {
                   {p.nom_ar}
                 </div>
               )}
-              <h3 className="font-bold text-emerald-dark text-base text-center leading-tight mb-1">
+              <h3 className="font-bold text-heading text-base text-center leading-tight mb-1">
                 {getName(p)}
               </h3>
               {getSurnom(p) && (

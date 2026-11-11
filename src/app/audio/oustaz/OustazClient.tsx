@@ -81,7 +81,7 @@ export default function OustazClient() {
       {loading ? (
         <ListSkeleton />
       ) : filtered.length === 0 ? (
-        <div className="bg-white rounded-2xl p-8 text-center border border-line">
+        <div className="bg-surface rounded-2xl p-8 text-center border border-line">
           <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-terracotta/10 flex items-center justify-center text-terracotta">
             <IconDiploma size={28} />
           </div>
@@ -90,7 +90,7 @@ export default function OustazClient() {
           </p>
           {oustaz.length === 0 && (
             <Link href="/admin/savants"
-              className="text-emerald text-sm font-semibold hover:underline">
+              className="text-link text-sm font-semibold hover:underline">
               + Ajouter un oustaz (admin)
             </Link>
           )}
@@ -101,7 +101,7 @@ export default function OustazClient() {
             <Link
               key={o.id}
               href={`/audio/oustaz/detail?slug=${o.slug}`}
-              className="group bg-white rounded-2xl overflow-hidden
+              className="group bg-surface rounded-2xl overflow-hidden
                          border border-line
                          hover:border-terracotta/30 transition-all no-underline
                          flex flex-col"
@@ -131,7 +131,7 @@ export default function OustazClient() {
                     {o.nom_ar}
                   </div>
                 )}
-                <h3 className="font-bold text-emerald-dark text-sm leading-tight mb-1
+                <h3 className="font-bold text-heading text-sm leading-tight mb-1
                                line-clamp-2 min-h-[2.3em]">
                   {getName(o)}
                 </h3>

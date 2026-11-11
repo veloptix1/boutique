@@ -102,13 +102,13 @@ export default function MiseEnGardeClient() {
       {loading ? (
         <ListSkeleton />
       ) : filtered.length === 0 ? (
-        <div className="bg-white rounded-2xl p-8 text-center border border-line">
+        <div className="bg-surface rounded-2xl p-8 text-center border border-line">
           <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-terracotta/10 flex items-center justify-center text-terracotta">
             <IconUser size={28} />
           </div>
           <p className="text-muted mb-2">Aucune mise en garde pour le moment</p>
           <Link href="/admin/mises"
-            className="text-emerald text-sm font-semibold hover:underline">
+            className="text-link text-sm font-semibold hover:underline">
             + Ajouter une mise en garde (admin)
           </Link>
         </div>
@@ -118,7 +118,7 @@ export default function MiseEnGardeClient() {
             const savant = getSavant(m.savant_id);
             return (
               <div key={m.id}
-                className="bg-white rounded-2xl overflow-hidden border border-line
+                className="bg-surface rounded-2xl overflow-hidden border border-line
                            hover:border-terracotta/20
                            transition-all">
                 <div className="grid md:grid-cols-[200px_1fr]">
@@ -156,7 +156,7 @@ export default function MiseEnGardeClient() {
                       </Link>
                     )}
 
-                    <h2 className="font-amiri font-bold text-emerald-dark text-2xl mb-2">
+                    <h2 className="font-amiri font-bold text-heading text-2xl mb-2">
                       {m.cible_nom}
                     </h2>
 
@@ -171,7 +171,7 @@ export default function MiseEnGardeClient() {
                         <div className="text-xs font-bold text-terracotta mb-2">
                           Raison
                         </div>
-                        <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-line">
+                        <p className="text-sm text-ink leading-relaxed whitespace-pre-line">
                           {getRaison(m)}
                         </p>
                       </div>

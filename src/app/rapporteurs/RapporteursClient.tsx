@@ -67,14 +67,14 @@ export default function RapporteursClient() {
       {loading ? (
         <ListSkeleton />
       ) : filtered.length === 0 ? (
-        <div className="bg-white rounded-2xl p-8 text-center border border-line">
+        <div className="bg-surface rounded-2xl p-8 text-center border border-line">
           <p className="text-muted">Aucun rapporteur trouvé</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {filtered.map((r) => (
             <Link key={r.id} href={`/rapporteurs/detail?slug=${r.slug}`}
-              className="group bg-white rounded-2xl overflow-hidden
+              className="group bg-surface rounded-2xl overflow-hidden
                          border border-line
                          hover:border-emerald/30 transition-all no-underline
                          flex flex-col p-6">
@@ -88,7 +88,7 @@ export default function RapporteursClient() {
                 <div className="font-amiri text-gold text-xl mb-1" dir="rtl">{r.nom_ar}</div>
               )}
 
-              <h3 className="font-bold text-emerald-dark text-lg leading-tight mb-2">
+              <h3 className="font-bold text-heading text-lg leading-tight mb-2">
                 {getName(r)}
               </h3>
 
@@ -103,7 +103,7 @@ export default function RapporteursClient() {
                 </div>
               )}
 
-              <div className="flex items-center gap-1.5 text-xs font-semibold text-emerald
+              <div className="flex items-center gap-1.5 text-xs font-semibold text-link
                               group-hover:gap-2.5 transition-all mt-auto pt-3 border-t border-line">
                 Voir sa biographie
                 <IconArrowRight size={12} />

@@ -114,9 +114,9 @@ export default function SupportClient() {
   };
 
   const statutBadge = (s: string) => {
-    if (s === "resolu") return "bg-emerald/10 text-emerald";
+    if (s === "resolu") return "bg-emerald/10 text-link";
     if (s === "en_cours") return "bg-gold/15 text-gold-deep";
-    if (s === "ferme") return "bg-gray-200 text-muted";
+    if (s === "ferme") return "bg-emerald/15 text-muted";
     return "bg-terracotta/10 text-terracotta";
   };
 
@@ -136,18 +136,18 @@ export default function SupportClient() {
       <PageHeader title="Support" subtitle="Suivez-nous sur nos réseaux et contactez-nous pour toute question." />
 
       <div className="mb-12">
-        <h2 className="font-amiri font-bold text-emerald-dark text-2xl mb-5">Suivez-nous</h2>
+        <h2 className="font-amiri font-bold text-heading text-2xl mb-5">Suivez-nous</h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {reseaux.map((r) => (
             <a key={r.nom} href={r.url} target="_blank" rel="noopener noreferrer"
-              className="bg-white rounded-2xl p-6 flex flex-col items-center
+              className="bg-surface rounded-2xl p-6 flex flex-col items-center
                          border border-line
                          transition-all no-underline group">
               <div className="w-14 h-14 rounded-2xl flex items-center justify-center mb-4 transition"
                    style={{ backgroundColor: r.color, color: "#fff" }}>
                 {r.icon}
               </div>
-              <div className="font-bold text-emerald-dark text-sm">{r.nom}</div>
+              <div className="font-bold text-heading text-sm">{r.nom}</div>
               <div className="text-xs text-muted mt-1 truncate max-w-full">
                 {r.url.replace(/^https?:\/\//, "")}
               </div>
@@ -157,12 +157,12 @@ export default function SupportClient() {
       </div>
 
       <div className="mb-12">
-        <h2 className="font-amiri font-bold text-emerald-dark text-2xl mb-5">
+        <h2 className="font-amiri font-bold text-heading text-2xl mb-5">
           Contacter le support
         </h2>
 
         {!user ? (
-          <div className="bg-white rounded-2xl p-8 text-center border border-line">
+          <div className="bg-surface rounded-2xl p-8 text-center border border-line">
             <p className="text-muted mb-4">Connectez-vous pour nous envoyer un message.</p>
             <Link href="/auth"
               className="inline-block px-6 py-3 rounded-2xl bg-emerald text-white
@@ -172,9 +172,9 @@ export default function SupportClient() {
           </div>
         ) : !showForm ? (
           <button onClick={() => setShowForm(true)}
-            className="w-full bg-white rounded-2xl p-6 border border-dashed border-emerald/20
+            className="w-full bg-surface rounded-2xl p-6 border border-dashed border-emerald/20
                        hover:border-emerald/40 transition flex items-center justify-center gap-3
-                       text-emerald-dark font-semibold">
+                       text-heading font-semibold">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
                  stroke="currentColor" strokeWidth="2" strokeLinecap="round">
               <path d="M12 5v14M5 12h14"/>
@@ -183,22 +183,22 @@ export default function SupportClient() {
           </button>
         ) : (
           <form onSubmit={envoyerTicket}
-            className="bg-white rounded-2xl p-6 sm:p-8 border border-line">
+            className="bg-surface rounded-2xl p-6 sm:p-8 border border-line">
             <div className="mb-4">
-              <label className="block text-xs font-semibold text-emerald-dark mb-2">Sujet *</label>
+              <label className="block text-xs font-semibold text-heading mb-2">Sujet *</label>
               <input type="text" value={sujet} onChange={(e) => setSujet(e.target.value)}
                 placeholder="Ex : Problème d'audio, Question..." required
                 className="field" />
             </div>
             <div className="mb-5">
-              <label className="block text-xs font-semibold text-emerald-dark mb-2">Message *</label>
+              <label className="block text-xs font-semibold text-heading mb-2">Message *</label>
               <textarea value={message} onChange={(e) => setMessage(e.target.value)} rows={5}
                 placeholder="Décrivez votre demande..." required
                 className="field resize-none" />
             </div>
             <div className="flex gap-3">
               <button type="button" onClick={() => setShowForm(false)}
-                className="px-6 py-3 rounded-2xl border border-line text-emerald-dark font-semibold text-sm">Annuler</button>
+                className="px-6 py-3 rounded-2xl border border-line text-heading font-semibold text-sm">Annuler</button>
               <button type="submit" disabled={sending}
                 className="flex-1 px-6 py-3 rounded-2xl bg-emerald text-white font-semibold text-sm hover:bg-emerald-dark transition disabled:opacity-50 inline-flex items-center justify-center gap-2">
                 <IconCheck size={16} />{sending ? "Envoi..." : "Envoyer le ticket"}
@@ -208,7 +208,7 @@ export default function SupportClient() {
         )}
 
         {success && (
-          <div className="mt-4 p-4 rounded-2xl bg-emerald/10 border border-emerald/20 text-emerald-dark text-sm font-semibold text-center">
+          <div className="mt-4 p-4 rounded-2xl bg-emerald/10 border border-emerald/20 text-heading text-sm font-semibold text-center">
             ✅ Votre ticket a été envoyé. Nous vous répondrons bientôt.
           </div>
         )}
@@ -216,14 +216,14 @@ export default function SupportClient() {
 
       {user && tickets.length > 0 && (
         <div>
-          <h2 className="font-amiri font-bold text-emerald-dark text-2xl mb-5">
+          <h2 className="font-amiri font-bold text-heading text-2xl mb-5">
             Mes tickets ({tickets.length})
           </h2>
           <div className="grid gap-4">
             {tickets.map((t) => (
-              <div key={t.id} className="bg-white rounded-2xl p-6 border border-line">
+              <div key={t.id} className="bg-surface rounded-2xl p-6 border border-line">
                 <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
-                  <div className="font-bold text-emerald-dark text-sm">{t.sujet}</div>
+                  <div className="font-bold text-heading text-sm">{t.sujet}</div>
                   <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase ${statutBadge(t.statut)}`}>
                     {statutLabel(t.statut)}
                   </span>
@@ -235,7 +235,7 @@ export default function SupportClient() {
                 {t.reponse_admin && (
                   <div className="mt-4 pt-4 border-t border-line">
                     <div className="text-xs font-bold text-gold mb-2">Réponse du support</div>
-                    <p className="text-sm text-gray-700 bg-cream p-3 rounded-xl">{t.reponse_admin}</p>
+                    <p className="text-sm text-ink bg-cream p-3 rounded-xl">{t.reponse_admin}</p>
                   </div>
                 )}
               </div>

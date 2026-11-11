@@ -100,7 +100,7 @@ export default function NouveauClient() {
       {loading ? (
         <ListSkeleton />
       ) : filtered.length === 0 ? (
-        <div className="bg-white rounded-2xl p-8 text-center border border-line">
+        <div className="bg-surface rounded-2xl p-8 text-center border border-line">
           <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gold/15 flex items-center justify-center text-gold">
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none"
                  stroke="currentColor" strokeWidth="2">
@@ -109,7 +109,7 @@ export default function NouveauClient() {
           </div>
           <p className="text-muted mb-2">Aucune actualité pour le moment</p>
           <Link href="/admin/actualites"
-            className="text-emerald text-sm font-semibold hover:underline">
+            className="text-link text-sm font-semibold hover:underline">
             + Ajouter une actualité (admin)
           </Link>
         </div>
@@ -117,7 +117,7 @@ export default function NouveauClient() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {filtered.map((a) => (
             <Link key={a.id} href={`/nouveau/detail?slug=${a.slug}`}
-              className="group bg-white rounded-2xl overflow-hidden
+              className="group bg-surface rounded-2xl overflow-hidden
                          border border-line
                          hover:border-gold/30 transition-all no-underline
                          flex flex-col">
@@ -129,7 +129,7 @@ export default function NouveauClient() {
                   <img loading="lazy" decoding="async" src={a.image_url} alt={a.titre}
                     className="w-full h-full object-cover transition-transform duration-500" />
                 ) : (
-                  <div className="w-full h-full flex items-center justify-center text-emerald/30">
+                  <div className="w-full h-full flex items-center justify-center text-link/30">
                     <svg width="48" height="48" viewBox="0 0 24 24" fill="none"
                          stroke="currentColor" strokeWidth="1.5">
                       <rect x="3" y="3" width="18" height="18" rx="3"/>
@@ -153,7 +153,7 @@ export default function NouveauClient() {
                 {/* Catégorie */}
                 {a.categorie && (
                   <div className="absolute bottom-2 left-2 px-2.5 py-1 rounded-full
-                                  bg-white/95 text-emerald-dark text-xs font-bold">
+                                  bg-surface/95 text-heading text-xs font-bold">
                     {a.categorie}
                   </div>
                 )}
@@ -171,7 +171,7 @@ export default function NouveauClient() {
                   )}
                 </div>
 
-                <h3 className="font-bold text-emerald-dark text-base leading-tight mb-2
+                <h3 className="font-bold text-heading text-base leading-tight mb-2
                                line-clamp-2">
                   {a.titre}
                 </h3>
@@ -182,7 +182,7 @@ export default function NouveauClient() {
                   </p>
                 )}
 
-                <div className="flex items-center gap-1.5 text-xs font-semibold text-emerald
+                <div className="flex items-center gap-1.5 text-xs font-semibold text-link
                                 group-hover:gap-2.5 transition-all mt-auto pt-3
                                 border-t border-line">
                   Lire la suite

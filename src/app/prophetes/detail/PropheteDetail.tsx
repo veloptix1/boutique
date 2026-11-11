@@ -28,7 +28,7 @@ export default function PropheteDetail() {
   if (loading) {
     return (
       <div className="min-h-dvh flex items-center justify-center bg-cream">
-        <p className="text-emerald">Chargement...</p>
+        <p className="text-link">Chargement...</p>
       </div>
     );
   }
@@ -36,7 +36,7 @@ export default function PropheteDetail() {
   if (!prophete) {
     return (
       <main className="page text-center">
-        <h1 className="font-amiri font-bold text-emerald-dark text-3xl mb-4">
+        <h1 className="font-amiri font-bold text-heading text-3xl mb-4">
           Prophète introuvable
         </h1>
         <BackLink href="/prophetes" label="Retour aux prophètes" />
@@ -80,7 +80,7 @@ export default function PropheteDetail() {
   ];
 
   const colorMap: Record<string, { bg: string; text: string; border: string }> = {
-    emerald: { bg: "bg-emerald/10", text: "text-emerald", border: "border-emerald/20" },
+    emerald: { bg: "bg-emerald/10", text: "text-link", border: "border-emerald/20" },
     gold: { bg: "bg-gold/15", text: "text-gold", border: "border-gold/30" },
     terracotta: { bg: "bg-terracotta/10", text: "text-terracotta", border: "border-terracotta/20" },
   };
@@ -93,7 +93,7 @@ export default function PropheteDetail() {
       {/* En-tête */}
       <div className="mt-8 mb-10 text-center">
         <div className="w-24 h-24 mx-auto rounded-full bg-gradient-to-br from-gold to-gold-light
-                        flex items-center justify-center text-emerald-dark font-amiri font-bold text-4xl mb-5">
+                        flex items-center justify-center text-heading font-amiri font-bold text-4xl mb-5">
           {prophete.ordre}
         </div>
 
@@ -103,7 +103,7 @@ export default function PropheteDetail() {
           </div>
         )}
 
-        <h1 className="font-amiri font-bold text-emerald-dark text-[1.75rem] leading-tight sm:text-4xl mb-3">
+        <h1 className="font-amiri font-bold text-heading text-[1.75rem] leading-tight sm:text-4xl mb-3">
           {getName()}
         </h1>
 
@@ -118,27 +118,27 @@ export default function PropheteDetail() {
       {/* Infos */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-10">
         {prophete.epoque && (
-          <div className="bg-white rounded-2xl p-4 border border-line text-center">
+          <div className="bg-surface rounded-2xl p-4 border border-line text-center">
             <div className="text-xs font-bold text-gold mb-2">
               Époque
             </div>
-            <div className="text-sm text-emerald-dark font-semibold">{prophete.epoque}</div>
+            <div className="text-sm text-heading font-semibold">{prophete.epoque}</div>
           </div>
         )}
         {prophete.lieu && (
-          <div className="bg-white rounded-2xl p-4 border border-line text-center">
+          <div className="bg-surface rounded-2xl p-4 border border-line text-center">
             <div className="text-xs font-bold text-gold mb-2">
               Lieu
             </div>
-            <div className="text-sm text-emerald-dark font-semibold">{prophete.lieu}</div>
+            <div className="text-sm text-heading font-semibold">{prophete.lieu}</div>
           </div>
         )}
         {prophete.peuple && (
-          <div className="bg-white rounded-2xl p-4 border border-line text-center">
+          <div className="bg-surface rounded-2xl p-4 border border-line text-center">
             <div className="text-xs font-bold text-gold mb-2">
               Peuple
             </div>
-            <div className="text-sm text-emerald-dark font-semibold">{prophete.peuple}</div>
+            <div className="text-sm text-heading font-semibold">{prophete.peuple}</div>
           </div>
         )}
       </div>
@@ -149,7 +149,7 @@ export default function PropheteDetail() {
           if (section.lines.length === 0) return null;
           const c = colorMap[section.color];
           return (
-            <div key={i} className={`bg-white rounded-2xl p-6 sm:p-8 border ${c.border}`}>
+            <div key={i} className={`bg-surface rounded-2xl p-6 sm:p-8 border ${c.border}`}>
               <div className="flex items-center gap-3 mb-5">
                 <div className={`w-11 h-11 rounded-2xl flex items-center justify-center text-2xl ${c.bg}`}>
                   {section.icon}
@@ -161,7 +161,7 @@ export default function PropheteDetail() {
 
               <ul className="space-y-3">
                 {section.lines.map((line, j) => (
-                  <li key={j} className="flex items-start gap-3 text-sm text-gray-700 leading-relaxed">
+                  <li key={j} className="flex items-start gap-3 text-sm text-ink leading-relaxed">
                     <span className={`mt-1.5 shrink-0 w-2 h-2 rounded-full ${c.text.replace("text-", "bg-")}`} />
                     <span>{line}</span>
                   </li>

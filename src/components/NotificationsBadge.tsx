@@ -34,7 +34,7 @@ export default function NotificationsBadge() {
   return (
     <span className="absolute -top-1.5 -right-1.5 min-w-[1.1rem] h-[1.1rem]
                      px-1 rounded-full bg-terracotta text-white text-xs
-                     font-bold flex items-center justify-center border border-white">
+                     font-bold flex items-center justify-center border border-surface">
       {count > 9 ? "9+" : count}
     </span>
   );

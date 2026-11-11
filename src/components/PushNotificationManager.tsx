@@ -137,7 +137,7 @@ export default function PushNotificationManager() {
   }
 
   return (
-    <div className="bg-white rounded-2xl p-6 border border-line">
+    <div className="bg-surface rounded-2xl p-6 border border-line">
       <div className="flex items-center gap-3 mb-3">
         <div className="w-10 h-10 rounded-2xl bg-gold/15 flex items-center justify-center text-gold">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
@@ -147,7 +147,7 @@ export default function PushNotificationManager() {
           </svg>
         </div>
         <div className="flex-1">
-          <div className="font-bold text-emerald-dark text-sm">
+          <div className="font-bold text-heading text-sm">
             Notifications
           </div>
           <div className="text-xs text-muted">
@@ -161,13 +161,13 @@ export default function PushNotificationManager() {
         disabled={loading}
         className={`w-full py-3 rounded-2xl font-semibold text-sm transition
           ${subscribed
-            ? "bg-white text-terracotta border border-terracotta/20 hover:bg-terracotta/5"
+            ? "bg-surface text-terracotta border border-terracotta/20 hover:bg-terracotta/5"
             : "bg-emerald text-white hover:bg-emerald-dark"}`}>
         {loading ? "..." : subscribed ? "Désactiver les notifications" : "Activer les notifications"}
       </button>
 
       {subscribed && (
-        <p className="text-xs text-emerald text-center mt-3">
+        <p className="text-xs text-link text-center mt-3">
           ✅ Notifications activées
         </p>
       )}

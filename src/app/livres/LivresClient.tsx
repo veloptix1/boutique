@@ -107,14 +107,14 @@ export default function LivresClient() {
       {loading ? (
         <ListSkeleton />
       ) : filtered.length === 0 ? (
-        <div className="bg-white rounded-2xl p-8 text-center border border-line">
+        <div className="bg-surface rounded-2xl p-8 text-center border border-line">
           <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gold/15 flex items-center justify-center text-gold">
             <IconLivre size={28} />
           </div>
           <p className="text-muted mb-2">Aucun livre trouvé</p>
           {(search || filter !== "tous") && (
             <button onClick={() => { setSearch(""); setFilter("tous"); }}
-              className="text-emerald text-sm font-semibold hover:underline">
+              className="text-link text-sm font-semibold hover:underline">
               Réinitialiser
             </button>
           )}
@@ -125,7 +125,7 @@ export default function LivresClient() {
             <Link
               key={l.id}
               href={`/livres/detail?slug=${l.slug}`}
-              className="group bg-white rounded-2xl overflow-hidden
+              className="group bg-surface rounded-2xl overflow-hidden
                          border border-line
                          hover:border-gold/30 transition-all no-underline
                          flex flex-col"
@@ -142,14 +142,14 @@ export default function LivresClient() {
                 )}
 
                 <div className="absolute top-2 right-2 px-2 py-0.5 rounded-full
-                                bg-white/95 text-emerald-dark
+                                bg-surface/95 text-heading
                                 text-xs font-bold">
                   {l.langue?.toUpperCase() || "FR"}
                 </div>
 
                 {l.categorie && (
                   <div className="absolute top-2 left-2 px-2 py-0.5 rounded-full
-                                  bg-gold/90 text-emerald-dark
+                                  bg-gold/90 text-heading
                                   text-xs font-bold">
                     {l.categorie}
                   </div>
@@ -164,7 +164,7 @@ export default function LivresClient() {
                   </div>
                 )}
 
-                <h3 className="font-bold text-emerald-dark text-sm leading-tight mb-1
+                <h3 className="font-bold text-heading text-sm leading-tight mb-1
                                line-clamp-2 min-h-[2.3em]">
                   {getTitre(l)}
                 </h3>

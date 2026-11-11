@@ -93,7 +93,7 @@ export default function AdminActualitesPage() {
     <main className="p-6 lg:p-12 max-w-[1400px] mx-auto">
       <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
         <div>
-          <h1 className="font-amiri font-bold text-emerald-dark text-3xl">
+          <h1 className="font-amiri font-bold text-heading text-3xl">
             Actualités
           </h1>
           <p className="text-muted text-sm">{list.length} actualité(s)</p>
@@ -108,18 +108,18 @@ export default function AdminActualitesPage() {
       {loading ? (
         <p className="text-muted">Chargement...</p>
       ) : list.length === 0 ? (
-        <div className="bg-white rounded-2xl p-16 text-center border border-line">
+        <div className="bg-surface rounded-2xl p-16 text-center border border-line">
           <p className="text-muted">Aucune actualité</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {list.map((a) => (
-            <div key={a.id} className="bg-white rounded-2xl overflow-hidden border border-line">
+            <div key={a.id} className="bg-surface rounded-2xl overflow-hidden border border-line">
               <div className="aspect-video bg-cream relative">
                 {a.image_url ? (
                   <img loading="lazy" decoding="async" src={a.image_url} alt={a.titre} className="w-full h-full object-cover" />
                 ) : (
-                  <div className="flex items-center justify-center h-full text-gray-300">
+                  <div className="flex items-center justify-center h-full text-muted">
                     Pas d''image
                   </div>
                 )}
@@ -131,7 +131,7 @@ export default function AdminActualitesPage() {
                 )}
               </div>
               <div className="p-4">
-                <div className="font-bold text-emerald-dark text-sm mb-1 line-clamp-2">
+                <div className="font-bold text-heading text-sm mb-1 line-clamp-2">
                   {a.titre}
                 </div>
                 <div className="flex items-center gap-2 text-xs text-muted mb-3">
@@ -143,19 +143,19 @@ export default function AdminActualitesPage() {
                 <div className="flex flex-wrap gap-2 mb-3">
                   <button onClick={() => togglePublie(a)}
                     className={`px-2.5 py-1 rounded-full text-xs font-bold
-                      ${a.publie ? "bg-emerald/10 text-emerald" : "bg-gray-200 text-muted"}`}>
+                      ${a.publie ? "bg-emerald/10 text-link" : "bg-emerald/15 text-muted"}`}>
                     {a.publie ? "Publié" : "Brouillon"}
                   </button>
                   <button onClick={() => toggleEpingle(a)}
                     className={`px-2.5 py-1 rounded-full text-xs font-bold
-                      ${a.epingle ? "bg-gold/20 text-gold" : "bg-gray-100 text-muted"}`}>
+                      ${a.epingle ? "bg-gold/20 text-gold" : "bg-emerald/10 text-muted"}`}>
                     {a.epingle ? "Épinglé" : "Non épinglé"}
                   </button>
                 </div>
 
                 <div className="flex gap-2">
                   <button onClick={() => setEditing(a)}
-                    className="flex-1 px-3 py-2 rounded-lg bg-emerald/10 text-emerald
+                    className="flex-1 px-3 py-2 rounded-lg bg-emerald/10 text-link
                                text-xs font-semibold hover:bg-emerald/20">
                     Modifier
                   </button>
@@ -174,10 +174,10 @@ export default function AdminActualitesPage() {
       {editing && (
         <div className="fixed inset-0 z-[1000] bg-black/60 flex items-start justify-center
                         p-4 overflow-y-auto">
-          <div className="bg-white rounded-2xl w-full max-w-3xl my-8">
-            <div className="sticky top-0 bg-white border-b border-line px-6 py-4
+          <div className="bg-surface rounded-2xl w-full max-w-3xl my-8">
+            <div className="sticky top-0 bg-surface border-b border-line px-6 py-4
                             flex items-center justify-between rounded-t-3xl">
-              <h2 className="font-bold text-emerald-dark">
+              <h2 className="font-bold text-heading">
                 {editing.id ? "Modifier" : "Nouvelle"} actualité
               </h2>
               <button onClick={() => setEditing(null)}
@@ -208,7 +208,7 @@ export default function AdminActualitesPage() {
                 <input type="file" accept="image/*"
                   onChange={(e) => e.target.files?.[0] && uploadImage(e.target.files[0])}
                   className="inp text-xs" />
-                {uploading && <p className="text-xs text-emerald mt-2">Upload...</p>}
+                {uploading && <p className="text-xs text-link mt-2">Upload...</p>}
                 {editing.image_url && (
                   <img loading="lazy" decoding="async" src={editing.image_url} alt="" className="mt-3 w-full max-h-48 object-cover rounded-xl" />
                 )}
@@ -239,7 +239,7 @@ export default function AdminActualitesPage() {
                     className={`w-full px-4 py-3 rounded-xl border text-sm font-semibold transition
                       ${editing.publie
                         ? "bg-emerald text-white border-emerald"
-                        : "bg-white text-muted border-line"}`}>
+                        : "bg-surface text-muted border-line"}`}>
                     {editing.publie ? "Oui" : "Non"}
                   </button>
                 </Field>
@@ -249,18 +249,18 @@ export default function AdminActualitesPage() {
                     className={`w-full px-4 py-3 rounded-xl border text-sm font-semibold transition
                       ${editing.epingle
                         ? "bg-gold text-emerald-dark border-gold"
-                        : "bg-white text-muted border-line"}`}>
+                        : "bg-surface text-muted border-line"}`}>
                     {editing.epingle ? "Oui" : "Non"}
                   </button>
                 </Field>
               </div>
             </div>
 
-            <div className="sticky bottom-0 bg-white border-t border-line px-6 py-4
+            <div className="sticky bottom-0 bg-surface border-t border-line px-6 py-4
                             flex justify-end gap-3 rounded-b-3xl">
               <button onClick={() => setEditing(null)}
                 className="px-6 py-3 rounded-2xl border border-line
-                           text-emerald-dark font-semibold text-sm">
+                           text-heading font-semibold text-sm">
                 Annuler
               </button>
               <button onClick={save} disabled={saving || uploading}
@@ -277,8 +277,8 @@ export default function AdminActualitesPage() {
       <style jsx global>{`
         .inp {
           width: 100%; padding: 12px 16px; border-radius: 14px;
-          border: 2px solid rgba(13,92,74,0.1); outline: none;
-          font-size: 14px; font-family: inherit; background: white;
+          border: 1px solid rgb(var(--line) / 0.25); outline: none;
+          font-size: 14px; font-family: inherit; background: rgb(var(--surface)); color: rgb(var(--ink));
         }
         .inp:focus { border-color: #d4af37; }
       `}</style>
@@ -289,7 +289,7 @@ export default function AdminActualitesPage() {
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div>
-      <label className="block text-xs font-semibold text-emerald-dark mb-1.5">
+      <label className="block text-xs font-semibold text-heading mb-1.5">
         {label}
       </label>
       {children}

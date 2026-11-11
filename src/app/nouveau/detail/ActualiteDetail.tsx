@@ -25,10 +25,10 @@ export default function ActualiteDetail() {
     })();
   }, [slug]);
 
-  if (loading) return <div className="min-h-dvh flex items-center justify-center bg-cream"><p className="text-emerald">Chargement...</p></div>;
+  if (loading) return <div className="min-h-dvh flex items-center justify-center bg-cream"><p className="text-link">Chargement...</p></div>;
   if (!actu) return (
     <main className="page text-center">
-      <h1 className="font-amiri font-bold text-emerald-dark text-3xl mb-4">Actualité introuvable</h1>
+      <h1 className="font-amiri font-bold text-heading text-3xl mb-4">Actualité introuvable</h1>
       <BackLink href="/nouveau" label="Retour" />
     </main>
   );
@@ -56,7 +56,7 @@ export default function ActualiteDetail() {
           </div>
         )}
 
-        <h1 className="font-amiri font-bold text-emerald-dark text-3xl sm:text-4xl leading-tight mb-4">
+        <h1 className="font-amiri font-bold text-heading text-3xl sm:text-4xl leading-tight mb-4">
           {actu.titre}
         </h1>
 
@@ -82,15 +82,15 @@ export default function ActualiteDetail() {
       {/* Résumé */}
       {actu.resume && (
         <div className="bg-cream rounded-2xl p-5 border-l-4 border-gold mb-8">
-          <p className="text-sm text-gray-700 leading-relaxed italic">
+          <p className="text-sm text-ink leading-relaxed italic">
             {actu.resume}
           </p>
         </div>
       )}
 
       {/* Contenu */}
-      <div className="bg-white rounded-2xl p-6 sm:p-8 border border-line mb-8">
-        <p className="text-gray-700 leading-relaxed whitespace-pre-line">
+      <div className="bg-surface rounded-2xl p-6 sm:p-8 border border-line mb-8">
+        <p className="text-ink leading-relaxed whitespace-pre-line">
           {actu.contenu}
         </p>
       </div>

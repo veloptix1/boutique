@@ -1,6 +1,9 @@
 import type { Config } from "tailwindcss";
 
+const v = (n: string) => `rgb(var(--${n}) / <alpha-value>)`;
+
 const config: Config = {
+  darkMode: "class",
   content: [
     "./src/app/**/*.{ts,tsx}",
     "./src/components/**/*.{ts,tsx}",
@@ -8,15 +11,18 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        emerald: { DEFAULT: "#0d5c4a", dark: "#083d31", light: "#1a7a63" },
+        emerald: { DEFAULT: v("emerald"), dark: "#083d31", light: "#1a7a63" },
         // "deep" : or foncé lisible comme texte sur fond crème (contraste AA)
-        gold: { DEFAULT: "#d4af37", light: "#e8c96a", deep: "#7a5f0c" },
-        cream: "#faf6ef",
+        gold: { DEFAULT: "#d4af37", light: "#e8c96a", deep: v("gold-deep") },
+        cream: v("cream"),
+        surface: v("surface"),
+        heading: v("heading"),
+        link: v("link"),
         terracotta: { DEFAULT: "#c1502e", deep: "#a63d1f" },
         indigo: "#2c3e70",
-        ink: "#1d2926",
-        muted: "#5b6a65",
-        line: "rgba(8, 61, 49, 0.12)",
+        ink: v("ink"),
+        muted: v("muted"),
+        line: "rgb(var(--line) / 0.14)",
       },
       fontFamily: {
         amiri: ["var(--font-amiri)", "Amiri", "serif"],

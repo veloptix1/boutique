@@ -27,10 +27,10 @@ export default function LivreDetail() {
     })();
   }, [slug]);
 
-  if (loading) return <div className="min-h-dvh flex items-center justify-center bg-cream"><p className="text-emerald">Chargement...</p></div>;
+  if (loading) return <div className="min-h-dvh flex items-center justify-center bg-cream"><p className="text-link">Chargement...</p></div>;
   if (!livre) return (
     <main className="page text-center">
-      <h1 className="font-amiri font-bold text-emerald-dark text-3xl mb-4">Livre introuvable</h1>
+      <h1 className="font-amiri font-bold text-heading text-3xl mb-4">Livre introuvable</h1>
       <BackLink href="/livres" label="Retour aux livres" />
     </main>
   );
@@ -71,7 +71,7 @@ export default function LivreDetail() {
         <div className="flex flex-col">
           {livre.categorie && (
             <div className="inline-block self-start px-3 py-1 rounded-full
-                            bg-emerald/8 text-emerald text-xs font-bold mb-3">
+                            bg-emerald/8 text-link text-xs font-bold mb-3">
               {livre.categorie}
             </div>
           )}
@@ -82,7 +82,7 @@ export default function LivreDetail() {
             </div>
           )}
 
-          <h1 className="font-amiri font-bold text-emerald-dark text-3xl sm:text-4xl leading-tight mb-4">
+          <h1 className="font-amiri font-bold text-heading text-3xl sm:text-4xl leading-tight mb-4">
             {getTitre()}
           </h1>
 
@@ -120,7 +120,7 @@ export default function LivreDetail() {
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-7 py-3.5 rounded-2xl
-                         bg-white text-emerald-dark font-semibold text-sm
+                         bg-surface text-heading font-semibold text-sm
                          border border-line
                          hover:border-gold hover:text-gold transition-all">
               <IconDownload size={18} />
@@ -132,9 +132,9 @@ export default function LivreDetail() {
 
       {/* Lecteur PDF intégré */}
       {showReader && (
-        <div className="bg-white rounded-2xl overflow-hidden border border-line">
+        <div className="bg-surface rounded-2xl overflow-hidden border border-line">
           <div className="px-6 py-4 border-b border-line flex items-center justify-between">
-            <div className="font-bold text-emerald-dark text-sm">
+            <div className="font-bold text-heading text-sm">
               Lecture en ligne — {getTitre()}
             </div>
             <button onClick={() => setShowReader(false)}
@@ -142,7 +142,7 @@ export default function LivreDetail() {
               Fermer ✕
             </button>
           </div>
-          <div className="bg-gray-100" style={{ height: "85vh" }}>
+          <div className="bg-emerald/10" style={{ height: "85vh" }}>
             <iframe
               src={googleViewerUrl}
               title={getTitre()}
@@ -153,7 +153,7 @@ export default function LivreDetail() {
           </div>
           <div className="px-6 py-3 border-t border-line bg-cream text-center">
             <p className="text-xs text-muted">
-              Si le PDF ne s'affiche pas, <a href={pdfUrl} target="_blank" rel="noopener noreferrer" className="text-emerald font-semibold hover:underline">cliquez ici pour l'ouvrir dans un nouvel onglet</a>.
+              Si le PDF ne s'affiche pas, <a href={pdfUrl} target="_blank" rel="noopener noreferrer" className="text-link font-semibold hover:underline">cliquez ici pour l'ouvrir dans un nouvel onglet</a>.
             </p>
           </div>
         </div>

@@ -31,10 +31,10 @@ export default function FAQPage() {
         {faqs.map((faq, i) => {
           const isOpen = open === i;
           return (
-            <div key={i} className="bg-white rounded-2xl border border-line hover:border-emerald/15 transition-all overflow-hidden">
+            <div key={i} className="bg-surface rounded-2xl border border-line hover:border-emerald/15 transition-all overflow-hidden">
               <button onClick={() => setOpen(isOpen ? null : i)}
                 className="w-full px-6 py-5 flex items-center justify-between gap-4 text-left">
-                <span className="font-bold text-emerald-dark text-sm sm:text-base">{faq.q}</span>
+                <span className="font-bold text-heading text-sm sm:text-base">{faq.q}</span>
                 <span aria-pressed={isOpen} className="chip">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
                     <path d="M12 5v14M5 12h14"/>
@@ -52,7 +52,7 @@ export default function FAQPage() {
       </div>
 
       <div className="mt-12 bg-emerald/5 rounded-2xl p-8 text-center border border-line">
-        <h2 className="font-amiri font-bold text-emerald-dark text-xl mb-2">Vous n''avez pas trouvé votre réponse ?</h2>
+        <h2 className="font-amiri font-bold text-heading text-xl mb-2">Vous n''avez pas trouvé votre réponse ?</h2>
         <p className="text-sm text-ink/80 mb-4">Ouvrez un ticket auprès de notre équipe support.</p>
         <Link href="/support" className="inline-block px-6 py-3 rounded-2xl bg-emerald text-white font-semibold text-sm hover:bg-emerald-dark transition">
           Contacter le support

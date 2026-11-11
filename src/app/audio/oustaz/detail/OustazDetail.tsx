@@ -34,11 +34,11 @@ export default function OustazDetail() {
     })();
   }, [slug]);
 
-  if (loading) return <div className="min-h-dvh flex items-center justify-center bg-cream"><p className="text-emerald">Chargement...</p></div>;
+  if (loading) return <div className="min-h-dvh flex items-center justify-center bg-cream"><p className="text-link">Chargement...</p></div>;
 
   if (!savant) return (
     <main className="page text-center">
-      <h1 className="font-amiri font-bold text-emerald-dark text-3xl mb-4">Savant introuvable</h1>
+      <h1 className="font-amiri font-bold text-heading text-3xl mb-4">Savant introuvable</h1>
       <BackLink href="/audio/oustaz" label="Retour aux oustaz" />
     </main>
   );
@@ -53,26 +53,26 @@ export default function OustazDetail() {
     <main className="page">
       <BackLink href="/audio/oustaz" label="Retour aux oustaz" />
 
-      <div className="mt-6 mb-12 bg-white rounded-2xl overflow-hidden border border-line">
+      <div className="mt-6 mb-12 bg-surface rounded-2xl overflow-hidden border border-line">
         <div className="relative">
           <div className={`h-32 sm:h-40 bg-gradient-to-br ${isClassique ? "from-gold via-gold-light to-gold" : "from-emerald-dark via-emerald to-emerald-light"}`} />
           <div className="px-6 sm:px-10 pb-8 -mt-16 relative z-10">
             <div className="flex flex-col sm:flex-row gap-6 items-center sm:items-end">
-              <div className={`w-32 h-32 rounded-2xl shrink-0 overflow-hidden border-4 border-white flex items-center justify-center ${isClassique ? "bg-gold" : "bg-gradient-to-br from-emerald to-emerald-dark"}`}>
-                {savant.photo_url ? <img loading="lazy" decoding="async" src={savant.photo_url} alt={getName()} className="w-full h-full object-cover" /> : <span className={isClassique ? "text-emerald-dark" : "text-gold"}><IconUser size={48} /></span>}
+              <div className={`w-32 h-32 rounded-2xl shrink-0 overflow-hidden border-4 border-surface flex items-center justify-center ${isClassique ? "bg-gold" : "bg-gradient-to-br from-emerald to-emerald-dark"}`}>
+                {savant.photo_url ? <img loading="lazy" decoding="async" src={savant.photo_url} alt={getName()} className="w-full h-full object-cover" /> : <span className={isClassique ? "text-heading" : "text-gold"}><IconUser size={48} /></span>}
               </div>
               <div className="flex-1 text-center sm:text-left pb-2">
                 {savant.nom_ar && lang !== "ar" && <div className="font-amiri text-gold text-xl mb-1" dir="rtl">{savant.nom_ar}</div>}
-                <h1 className="font-amiri font-bold text-emerald-dark text-3xl sm:text-4xl mb-2">{getName()}</h1>
-                {getTitre() && <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold ${isClassique ? "bg-gold/15 text-gold-deep" : "bg-emerald/10 text-emerald"}`}>
+                <h1 className="font-amiri font-bold text-heading text-3xl sm:text-4xl mb-2">{getName()}</h1>
+                {getTitre() && <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold ${isClassique ? "bg-gold/15 text-gold-deep" : "bg-emerald/10 text-link"}`}>
                   {isClassique ? <IconCrown size={12} /> : <IconStarFull size={12} />}
                   {getTitre()}
                 </div>}
               </div>
             </div>
             <div className="flex flex-wrap gap-4 sm:gap-6 text-sm text-muted mt-6 pt-6 border-t border-line justify-center sm:justify-start">
-              {savant.pays && <span className="inline-flex items-center gap-1.5"><span className="text-emerald"><IconLocation size={14} /></span>{savant.pays}</span>}
-              {(savant.naissance || savant.deces) && <span className="inline-flex items-center gap-1.5"><span className="text-emerald"><IconCalendar size={14} /></span>{savant.naissance}{savant.deces && ` — ${savant.deces}`}</span>}
+              {savant.pays && <span className="inline-flex items-center gap-1.5"><span className="text-link"><IconLocation size={14} /></span>{savant.pays}</span>}
+              {(savant.naissance || savant.deces) && <span className="inline-flex items-center gap-1.5"><span className="text-link"><IconCalendar size={14} /></span>{savant.naissance}{savant.deces && ` — ${savant.deces}`}</span>}
             </div>
           </div>
         </div>
@@ -90,14 +90,14 @@ export default function OustazDetail() {
       <div className="mb-6 flex items-center gap-3">
         <div className="w-11 h-11 rounded-2xl bg-gold/15 flex items-center justify-center text-gold"><IconSpeaker size={22} /></div>
         <div>
-          <h2 className="font-amiri font-bold text-emerald-dark text-2xl">Ses audios</h2>
+          <h2 className="font-amiri font-bold text-heading text-2xl">Ses audios</h2>
           <p className="text-muted text-sm">{audios.length} audio{audios.length > 1 ? "s" : ""}</p>
         </div>
       </div>
 
       {audios.length === 0 ? (
-        <div className="bg-white rounded-2xl p-16 text-center border border-line">
-          <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-emerald/10 flex items-center justify-center text-emerald"><IconSpeaker size={28} /></div>
+        <div className="bg-surface rounded-2xl p-16 text-center border border-line">
+          <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-emerald/10 flex items-center justify-center text-link"><IconSpeaker size={28} /></div>
           <p className="text-muted">Aucun audio pour le moment</p>
         </div>
       ) : (
@@ -110,14 +110,14 @@ export default function OustazDetail() {
                 titre: getAudioTitle(a),
                 auteur: getName(),
               })}
-              className="bg-white rounded-2xl p-4 border border-line
+              className="bg-surface rounded-2xl p-4 border border-line
                          hover:border-emerald/15
                          transition text-left w-full flex items-center gap-4">
               <div className="w-12 h-12 rounded-full bg-gold flex items-center justify-center shrink-0">
                 <IconPlay size={14} />
               </div>
               <div className="flex-1 min-w-0">
-                <div className="font-semibold text-emerald-dark text-sm truncate">
+                <div className="font-semibold text-heading text-sm truncate">
                   {getAudioTitle(a)}
                 </div>
                 {a.duree && (

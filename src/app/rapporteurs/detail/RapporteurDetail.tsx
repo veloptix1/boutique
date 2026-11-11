@@ -25,10 +25,10 @@ export default function RapporteurDetail() {
     })();
   }, [slug]);
 
-  if (loading) return <div className="min-h-dvh flex items-center justify-center bg-cream"><p className="text-emerald">Chargement...</p></div>;
+  if (loading) return <div className="min-h-dvh flex items-center justify-center bg-cream"><p className="text-link">Chargement...</p></div>;
   if (!rapporteur) return (
     <main className="page text-center">
-      <h1 className="font-amiri font-bold text-emerald-dark text-3xl mb-4">Rapporteur introuvable</h1>
+      <h1 className="font-amiri font-bold text-heading text-3xl mb-4">Rapporteur introuvable</h1>
       <BackLink href="/rapporteurs" label="Retour" />
     </main>
   );
@@ -52,7 +52,7 @@ export default function RapporteurDetail() {
   ];
 
   const colorMap: Record<string, { bg: string; text: string; border: string }> = {
-    emerald: { bg: "bg-emerald/10", text: "text-emerald", border: "border-emerald/20" },
+    emerald: { bg: "bg-emerald/10", text: "text-link", border: "border-emerald/20" },
     gold: { bg: "bg-gold/15", text: "text-gold", border: "border-gold/30" },
   };
 
@@ -74,7 +74,7 @@ export default function RapporteurDetail() {
           </div>
         )}
 
-        <h1 className="font-amiri font-bold text-emerald-dark text-[1.75rem] leading-tight sm:text-4xl mb-3">
+        <h1 className="font-amiri font-bold text-heading text-[1.75rem] leading-tight sm:text-4xl mb-3">
           {getName()}
         </h1>
 
@@ -83,7 +83,7 @@ export default function RapporteurDetail() {
         )}
 
         {getTitre() && (
-          <div className="inline-block px-4 py-1.5 rounded-full bg-emerald/10 text-emerald
+          <div className="inline-block px-4 py-1.5 rounded-full bg-emerald/10 text-link
                           text-sm font-bold">
             {getTitre()}
           </div>
@@ -93,35 +93,35 @@ export default function RapporteurDetail() {
       {/* Infos */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
         {rapporteur.epoque && (
-          <div className="bg-white rounded-2xl p-4 border border-line text-center">
+          <div className="bg-surface rounded-2xl p-4 border border-line text-center">
             <div className="text-xs font-bold text-gold mb-1">Époque</div>
-            <div className="text-sm text-emerald-dark font-semibold">{rapporteur.epoque}</div>
+            <div className="text-sm text-heading font-semibold">{rapporteur.epoque}</div>
           </div>
         )}
         {rapporteur.lieu && (
-          <div className="bg-white rounded-2xl p-4 border border-line text-center">
+          <div className="bg-surface rounded-2xl p-4 border border-line text-center">
             <div className="text-xs font-bold text-gold mb-1">Lieu</div>
-            <div className="text-sm text-emerald-dark font-semibold">{rapporteur.lieu}</div>
+            <div className="text-sm text-heading font-semibold">{rapporteur.lieu}</div>
           </div>
         )}
         {rapporteur.nombre_hadiths && (
-          <div className="bg-white rounded-2xl p-4 border border-line text-center">
+          <div className="bg-surface rounded-2xl p-4 border border-line text-center">
             <div className="text-xs font-bold text-gold mb-1">Hadiths rapportés</div>
-            <div className="text-sm text-emerald-dark font-semibold">{rapporteur.nombre_hadiths}</div>
+            <div className="text-sm text-heading font-semibold">{rapporteur.nombre_hadiths}</div>
           </div>
         )}
       </div>
 
       {/* Biographie */}
       {rapporteur.biographie_fr && (
-        <div className="bg-white rounded-2xl p-6 sm:p-8 border border-line mb-6">
+        <div className="bg-surface rounded-2xl p-6 sm:p-8 border border-line mb-6">
           <div className="flex items-center gap-3 mb-5">
             <div className="w-11 h-11 rounded-2xl bg-emerald/10 flex items-center justify-center text-2xl">
               📖
             </div>
-            <h2 className="font-amiri font-bold text-emerald-dark text-xl">Sa biographie</h2>
+            <h2 className="font-amiri font-bold text-heading text-xl">Sa biographie</h2>
           </div>
-          <p className="text-gray-700 leading-relaxed whitespace-pre-line text-sm sm:text-base">
+          <p className="text-ink leading-relaxed whitespace-pre-line text-sm sm:text-base">
             {rapporteur.biographie_fr}
           </p>
         </div>
@@ -133,7 +133,7 @@ export default function RapporteurDetail() {
           if (section.lines.length === 0) return null;
           const c = colorMap[section.color];
           return (
-            <div key={i} className={`bg-white rounded-2xl p-6 sm:p-8 border ${c.border}`}>
+            <div key={i} className={`bg-surface rounded-2xl p-6 sm:p-8 border ${c.border}`}>
               <div className="flex items-center gap-3 mb-5">
                 <div className={`w-11 h-11 rounded-2xl flex items-center justify-center text-2xl ${c.bg}`}>
                   {section.icon}
@@ -142,7 +142,7 @@ export default function RapporteurDetail() {
               </div>
               <ul className="space-y-3">
                 {section.lines.map((line, j) => (
-                  <li key={j} className="flex items-start gap-3 text-sm text-gray-700 leading-relaxed">
+                  <li key={j} className="flex items-start gap-3 text-sm text-ink leading-relaxed">
                     <span className={`mt-1.5 shrink-0 w-2 h-2 rounded-full ${c.text.replace("text-", "bg-")}`} />
                     <span>{line}</span>
                   </li>

@@ -21,10 +21,10 @@ export default function Hero() {
         بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
       </p>
 
-      <h1 className="mt-6 font-amiri text-[2.6rem] font-bold leading-none text-emerald-dark sm:text-6xl">
+      <h1 className="mt-6 font-amiri text-[2.6rem] font-bold leading-none text-heading sm:text-6xl">
         AL BASIRAH
       </h1>
-      <p className="mt-2 font-amiri text-2xl font-bold text-emerald" dir="rtl">بصيرة</p>
+      <p className="mt-2 font-amiri text-2xl font-bold text-link" dir="rtl">بصيرة</p>
 
       <p className="mx-auto mt-5 max-w-md text-base leading-relaxed text-muted">
         Écoutez la parole des savants, lisez les hadiths et les livres de référence,

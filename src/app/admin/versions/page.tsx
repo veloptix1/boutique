@@ -73,7 +73,7 @@ export default function AdminVersionsPage() {
     <main className="p-6 lg:p-12 max-w-[1400px] mx-auto">
       <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
         <div>
-          <h1 className="font-amiri font-bold text-emerald-dark text-3xl">
+          <h1 className="font-amiri font-bold text-heading text-3xl">
             Versions de l''application
           </h1>
           <p className="text-muted text-sm">
@@ -90,7 +90,7 @@ export default function AdminVersionsPage() {
       {/* Version actuelle */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-8">
         {/* Android actuel */}
-        <div className="bg-white rounded-2xl p-6 border border-line">
+        <div className="bg-surface rounded-2xl p-6 border border-line">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-12 h-12 rounded-2xl bg-emerald/10 flex items-center justify-center">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="#0d5c4a">
@@ -99,7 +99,7 @@ export default function AdminVersionsPage() {
             </div>
             <div>
               <div className="text-xs font-bold text-gold">Android</div>
-              <div className="font-bold text-emerald-dark text-lg">
+              <div className="font-bold text-heading text-lg">
                 {lastAndroid ? `v${lastAndroid.version}` : "—"}
               </div>
             </div>
@@ -118,16 +118,16 @@ export default function AdminVersionsPage() {
         </div>
 
         {/* iOS actuel */}
-        <div className="bg-white rounded-2xl p-6 border border-gray-200">
+        <div className="bg-surface rounded-2xl p-6 border border-line">
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-12 h-12 rounded-2xl bg-gray-100 flex items-center justify-center">
+            <div className="w-12 h-12 rounded-2xl bg-emerald/10 flex items-center justify-center">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="#333">
                 <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/>
               </svg>
             </div>
             <div>
               <div className="text-xs font-bold text-gold">iOS</div>
-              <div className="font-bold text-emerald-dark text-lg">
+              <div className="font-bold text-heading text-lg">
                 {lastIOS ? `v${lastIOS.version}` : "—"}
               </div>
             </div>
@@ -147,9 +147,9 @@ export default function AdminVersionsPage() {
       </div>
 
       {/* Historique */}
-      <div className="bg-white rounded-2xl border border-line overflow-hidden">
+      <div className="bg-surface rounded-2xl border border-line overflow-hidden">
         <div className="px-6 py-4 border-b border-line">
-          <h2 className="font-bold text-emerald-dark">Historique des versions</h2>
+          <h2 className="font-bold text-heading">Historique des versions</h2>
         </div>
 
         {loading ? (
@@ -159,7 +159,7 @@ export default function AdminVersionsPage() {
         ) : (
           <table className="w-full">
             <thead className="bg-emerald/5">
-              <tr className="text-left text-xs font-bold text-emerald-dark">
+              <tr className="text-left text-xs font-bold text-heading">
                 <th className="px-6 py-4">Plateforme</th>
                 <th className="px-6 py-4">Version</th>
                 <th className="px-6 py-4 hidden md:table-cell">Code</th>
@@ -175,12 +175,12 @@ export default function AdminVersionsPage() {
                     <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full
                                      text-xs font-bold
                       ${v.platform === "android"
-                        ? "bg-emerald/10 text-emerald"
-                        : "bg-gray-200 text-ink/80"}`}>
+                        ? "bg-emerald/10 text-link"
+                        : "bg-emerald/15 text-ink/80"}`}>
                       {v.platform === "android" ? "Android" : "iOS"}
                     </span>
                   </td>
-                  <td className="px-6 py-4 font-semibold text-emerald-dark text-sm">
+                  <td className="px-6 py-4 font-semibold text-heading text-sm">
                     v{v.version}
                   </td>
                   <td className="px-6 py-4 text-sm text-ink/80 hidden md:table-cell">
@@ -191,7 +191,7 @@ export default function AdminVersionsPage() {
                       <span className="px-2.5 py-1 rounded-full bg-terracotta/10 text-terracotta
                                        text-xs font-bold">Oui</span>
                     ) : (
-                      <span className="px-2.5 py-1 rounded-full bg-gray-100 text-muted
+                      <span className="px-2.5 py-1 rounded-full bg-emerald/10 text-muted
                                        text-xs font-bold">Non</span>
                     )}
                   </td>
@@ -199,15 +199,15 @@ export default function AdminVersionsPage() {
                     <button onClick={() => toggleActif(v)}
                       className={`px-2.5 py-1 rounded-full text-xs font-bold transition
                         ${v.actif
-                          ? "bg-emerald/10 text-emerald hover:bg-emerald/20"
-                          : "bg-gray-100 text-muted hover:bg-gray-200"}`}>
+                          ? "bg-emerald/10 text-link hover:bg-emerald/20"
+                          : "bg-emerald/10 text-muted hover:bg-emerald/15"}`}>
                       {v.actif ? "Actif" : "Inactif"}
                     </button>
                   </td>
                   <td className="px-6 py-4 text-right">
                     <div className="flex justify-end gap-2">
                       <button onClick={() => setEditing(v)}
-                        className="px-3 py-1.5 rounded-lg bg-emerald/10 text-emerald
+                        className="px-3 py-1.5 rounded-lg bg-emerald/10 text-link
                                    text-xs font-semibold hover:bg-emerald/20">
                         Modifier
                       </button>
@@ -227,7 +227,7 @@ export default function AdminVersionsPage() {
 
       {/* Guide */}
       <div className="mt-8 bg-gold/5 rounded-2xl p-6 border border-gold/20">
-        <h3 className="font-bold text-emerald-dark text-base mb-3">
+        <h3 className="font-bold text-heading text-base mb-3">
           📌 Comment publier une mise à jour ?
         </h3>
         <ol className="space-y-2 text-sm text-ink/80">
@@ -242,10 +242,10 @@ export default function AdminVersionsPage() {
       {editing && (
         <div className="fixed inset-0 z-[1000] bg-black/60 flex items-start justify-center
                         p-4 overflow-y-auto">
-          <div className="bg-white rounded-2xl w-full max-w-2xl my-8">
-            <div className="sticky top-0 bg-white border-b border-line px-6 py-4
+          <div className="bg-surface rounded-2xl w-full max-w-2xl my-8">
+            <div className="sticky top-0 bg-surface border-b border-line px-6 py-4
                             flex items-center justify-between rounded-t-3xl">
-              <h2 className="font-bold text-emerald-dark">
+              <h2 className="font-bold text-heading">
                 {editing.id ? "Modifier" : "Publier"} une version
               </h2>
               <button onClick={() => setEditing(null)}
@@ -261,7 +261,7 @@ export default function AdminVersionsPage() {
                       className={`px-4 py-3 rounded-xl border text-sm font-semibold transition
                         ${editing.platform === p
                           ? "bg-emerald text-white border-emerald"
-                          : "bg-white text-muted border-line hover:border-emerald/30"}`}>
+                          : "bg-surface text-muted border-line hover:border-emerald/30"}`}>
                       {p === "android" ? "Android" : "iOS"}
                     </button>
                   ))}
@@ -307,7 +307,7 @@ export default function AdminVersionsPage() {
                     className={`w-full px-4 py-3 rounded-xl border text-sm font-semibold transition
                       ${editing.obligatoire
                         ? "bg-terracotta text-white border-terracotta"
-                        : "bg-white text-muted border-line"}`}>
+                        : "bg-surface text-muted border-line"}`}>
                     {editing.obligatoire ? "Oui" : "Non"}
                   </button>
                 </Field>
@@ -317,18 +317,18 @@ export default function AdminVersionsPage() {
                     className={`w-full px-4 py-3 rounded-xl border text-sm font-semibold transition
                       ${editing.actif
                         ? "bg-emerald text-white border-emerald"
-                        : "bg-white text-muted border-line"}`}>
+                        : "bg-surface text-muted border-line"}`}>
                     {editing.actif ? "Oui" : "Non"}
                   </button>
                 </Field>
               </div>
             </div>
 
-            <div className="sticky bottom-0 bg-white border-t border-line px-6 py-4
+            <div className="sticky bottom-0 bg-surface border-t border-line px-6 py-4
                             flex justify-end gap-3 rounded-b-3xl">
               <button onClick={() => setEditing(null)}
                 className="px-6 py-3 rounded-2xl border border-line
-                           text-emerald-dark font-semibold text-sm">
+                           text-heading font-semibold text-sm">
                 Annuler
               </button>
               <button onClick={save} disabled={saving}
@@ -344,8 +344,8 @@ export default function AdminVersionsPage() {
       <style jsx global>{`
         .inp {
           width: 100%; padding: 12px 16px; border-radius: 14px;
-          border: 2px solid rgba(13,92,74,0.1); outline: none;
-          font-size: 14px; font-family: inherit; background: white;
+          border: 1px solid rgb(var(--line) / 0.25); outline: none;
+          font-size: 14px; font-family: inherit; background: rgb(var(--surface)); color: rgb(var(--ink));
         }
         .inp:focus { border-color: #d4af37; }
       `}</style>
@@ -356,7 +356,7 @@ export default function AdminVersionsPage() {
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div>
-      <label className="block text-xs font-semibold text-emerald-dark mb-1.5">
+      <label className="block text-xs font-semibold text-heading mb-1.5">
         {label}
       </label>
       {children}

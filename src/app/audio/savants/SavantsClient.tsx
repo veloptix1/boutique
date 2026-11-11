@@ -95,8 +95,8 @@ export default function SavantsClient() {
       {loading ? (
         <ListSkeleton />
       ) : filtered.length === 0 ? (
-        <div className="bg-white rounded-2xl p-8 text-center border border-line">
-          <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-emerald/10 flex items-center justify-center text-emerald">
+        <div className="bg-surface rounded-2xl p-8 text-center border border-line">
+          <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-emerald/10 flex items-center justify-center text-link">
             <IconSearch size={28} />
           </div>
           <p className="text-muted">Aucun savant trouvé</p>
@@ -107,7 +107,7 @@ export default function SavantsClient() {
             <Link
               key={s.id}
               href={`/audio/savants/detail?slug=${s.slug}`}
-              className="group bg-white rounded-2xl overflow-hidden
+              className="group bg-surface rounded-2xl overflow-hidden
                          border border-line
                          hover:border-emerald/20 transition-all no-underline
                          flex flex-col"
@@ -134,7 +134,7 @@ export default function SavantsClient() {
                     {s.nom_ar}
                   </div>
                 )}
-                <h3 className="font-bold text-emerald-dark text-sm leading-tight mb-1
+                <h3 className="font-bold text-heading text-sm leading-tight mb-1
                                line-clamp-2 min-h-[2.3em]">
                   {getName(s)}
                 </h3>
